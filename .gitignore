@@ -16,8 +16,8 @@ django-test-coverage
 testrecorder
 buildout
 bin/buildout
-gert/media/uploads
-gert/django
+sfte/media/uploads
+sfte/django
 .idea/*
 env/*
-gert/media/cache
+sfte/media/cache
