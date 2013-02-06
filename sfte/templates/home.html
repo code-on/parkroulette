@@ -9,9 +9,17 @@
     </form>
     {% if address %}
         {% if coordinates %}
-            <h4>Coordinates: {{ coordinates|join:", " }}</h4>
-
-            <h4>Frequency: {% if frequency %}{{ frequency|floatformat:"-3" }}%{% else %}Not found{% endif %}</h4>
+            <div class="row-fluid">
+              <div class="span2">
+                  <h4>Coordinates:<br/> {{ coordinates|join:", " }}</h4>
+                  <h4>Frequency: {% if frequency %}{{ frequency|floatformat:"-3" }}%{% else %}Not found{% endif %}</h4>
+              </div>
+              <div class="span2">
+                  {% with lng=coordinates.0  lat=coordinates.1 %}
+                      <img src="http://maps.google.com/maps/api/staticmap?center={{ lat }},{{ lng }}&markers={{ lat }},{{ lng }}&zoom=16&size=200x200&sensor=false" />
+                  {% endwith %}
+              </div>
+            </div>
 
             <table class="table-bordered table-striped">
                 {% for objs in citations %}

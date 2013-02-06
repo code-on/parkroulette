@@ -1,16 +1,17 @@
 from django.db import DatabaseError
+from django.db import connection
 from django.template.response import TemplateResponse
 from geopy import geocoders
 
 
 def get_coordinates(address):
-    g = geocoders.Google(domain='maps.google.com')
-    place, (lat, lng) = g.geocode('{address}, San Francisco, CA, United States'.format(address=address))
+    g = geocoders.GoogleV3(domain='maps.google.com')
+    place, (lat, lng) = g.geocode('{address}, San Francisco, CA, United States'.format(address=address),
+                                  exactly_one=False)[0]
     return lng, lat
 
 
 def get_pt_frequency(coordinates):
-    from django.db import connection
     cursor = connection.cursor()
     cursor.execute("""
         SELECT cnt, hours, cnt / hours AS tickets_per_hour, start_datetime, end_datetime FROM (
@@ -28,7 +29,6 @@ def get_pt_frequency(coordinates):
 
 
 def get_pt_citations(coordinates):
-    from django.db import connection
     cursor = connection.cursor()
     try:
         cursor.execute("""
