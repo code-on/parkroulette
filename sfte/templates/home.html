@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block extra_js %}
+
+{% endblock %}
+{% block content %}
+    <form>
+        <input type="text" name="address" placeholder="address" value="{{ address }}"/>
+        <input type="submit" value="Search" />
+    </form>
+    {% if address %}
+        {% if coordinates %}
+            <h2>Coordinates: {{ coordinates|join:", " }}</h2>
+            {% if frequency %}
+                <h2>Frequency: {{ frequency }}</h2>
+            {% endif %}
+
+            <table>
+                {% for objs in citations %}
+                <tr>
+                    {% for value in objs %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h2>Not found coordinates</h2>
+        {% endif %}
+    {% endif %}
+{% endblock %}
