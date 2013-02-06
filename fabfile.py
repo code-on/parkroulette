@@ -16,9 +16,7 @@ def stage():
 
     with cd(env.project_dir):
         run('./manage.py collectstatic --noinput')
-
-    with cd(env.base_dir):
-        run('touch conf/run.wsgi')
+        run('touch wsgi.py')
 
 
 def reset():
