@@ -10,9 +10,8 @@
     {% if address %}
         {% if coordinates %}
             <h4>Coordinates: {{ coordinates|join:", " }}</h4>
-            {% if frequency %}
-                <h4>Frequency: {{ frequency|floatformat:"-3" }}%</h4>
-            {% endif %}
+
+            <h4>Frequency: {% if frequency %}{{ frequency|floatformat:"-3" }}%{% else %}Not found{% endif %}</h4>
 
             <table class="table-bordered table-striped">
                 {% for objs in citations %}
