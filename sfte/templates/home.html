@@ -3,18 +3,18 @@
 
 {% endblock %}
 {% block content %}
-    <form>
-        <input type="text" name="address" placeholder="address" value="{{ address }}"/>
-        <input type="submit" value="Search" />
+    <form class="form-search">
+        <input class="search-query" type="text" name="address" placeholder="address" value="{{ address|default:"" }}" />
+        <input class="btn" type="submit" value="Search" />
     </form>
     {% if address %}
         {% if coordinates %}
-            <h2>Coordinates: {{ coordinates|join:", " }}</h2>
+            <h4>Coordinates: {{ coordinates|join:", " }}</h4>
             {% if frequency %}
-                <h2>Frequency: {{ frequency }}</h2>
+                <h4>Frequency: {{ frequency|floatformat:"-3" }}%</h4>
             {% endif %}
 
-            <table>
+            <table class="table-bordered table-striped">
                 {% for objs in citations %}
                 <tr>
                     {% for value in objs %}
