@@ -83,3 +83,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     rel('static'),
 )
+
+
+try:
+    from settings_local import *
+except ImportError:
+    pass
+

@@ -3,15 +3,35 @@
 
 {% endblock %}
 {% block content %}
-    <form class="form-search">
-        <input class="search-query" type="text" name="address" placeholder="address" value="{{ address|default:"" }}" />
-        <input class="btn" type="submit" value="Search" />
-    </form>
+
+  <div class="well">
+    <div class="row">
+      <div class="span7">
+        <h3>Calculate the chance you will get a parking ticket at any address in San Francisco.</h3>
+        <p>Or just find out what the parking laws are at any address. Based on public records of actual tickets.</p>
+
+        <br><br>
+
+        <form>
+          <label>Type your parking address:</label>
+          <input type="text" name="address" placeholder="f.e. Market st. 1234" value="{{ address|default:"" }}" />
+          <br>
+          <input class="btn btn-warning" type="submit" value="Chance of ticket" />
+          <input class="btn btn-warning" type="submit" value="Tell me the laws" />
+      </form>
+     </div>
+     <div class="offset2 span2 hidden-phone">
+       <img src="/static/no-parking.png">
+     </div>
+   </div>
+  </div>
+
+
+    
     {% if address %}
         {% if coordinates %}
             <div class="row-fluid">
               <div class="span2">
-                  <h4>Coordinates:<br/> {{ coordinates|join:", " }}</h4>
                   <h4>Frequency: {% if frequency %}{{ frequency|floatformat:"-3" }}%{% else %}Not found{% endif %}</h4>
               </div>
               <div class="span2">
