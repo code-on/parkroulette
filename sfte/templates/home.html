@@ -14,7 +14,7 @@
 
         <form>
           <label>Type your parking address:</label>
-          <input type="text" name="address" placeholder="f.e. Market st. 1234" value="{{ address|default:"" }}" />
+          <input type="text" name="address" placeholder="f.e. 1234 Market st" value="{{ address|default:"" }}" />
           <br>
           <input class="btn btn-warning" type="submit" value="Chance of ticket" />
           <input class="btn btn-warning" type="submit" value="Tell me the laws" />
@@ -32,21 +32,32 @@
         {% if coordinates %}
             <div class="row-fluid">
               <div class="span2">
-                  <h4>Frequency: {% if frequency %}{{ frequency|floatformat:"-3" }}%{% else %}Not found{% endif %}</h4>
-              </div>
-              <div class="span2">
                   {% with lng=coordinates.0  lat=coordinates.1 %}
                       <img src="http://maps.google.com/maps/api/staticmap?center={{ lat }},{{ lng }}&markers={{ lat }},{{ lng }}&zoom=16&size=200x200&sensor=false" />
                   {% endwith %}
               </div>
+              <div class="span8">
+                  <h4>{{ address }}
+                  <h4>
+                  {% if frequency %}
+                  Based on statistical information, there is a <strong>{{ frequency|floatformat:"-2" }}%</strong> chance you will get a ticket if you park illegally at the same address at the same time of day and same day of week.
+                  {% else %}
+                  Sorry, we cannot provide information for this address.
+                  {% endif %}
+                  </h4>
+              </div>
+              
             </div>
 
-            <table class="table-bordered table-striped">
-                {% for objs in citations %}
+            <p>In 2012, the top reasons for a parking citation within 10 meters of {{ address}} on Friday mornings between 10am and 11am was: </p>
+
+            <table class="table table-bordered table-striped">
+                {% for num, id, reason, price, street, etc in citations %}
                 <tr>
-                    {% for value in objs %}
-                    <td>{{ value }}</td>
-                    {% endfor %}
+                    <td>{{ num }}</td>
+                    <td>{{ id }}</td>
+                    <td>{{ reason }}</td>
+                    <td>{{ price }}</td>
                 </tr>
                 {% endfor %}
             </table>
