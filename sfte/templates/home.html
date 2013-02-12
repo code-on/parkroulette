@@ -34,7 +34,8 @@
                     } else {
                         $('#chance-block').html('Sorry, we cannot provide information for this address.')
                     }
-                }
+                },
+                error: function(data){alert('error')}
             });
         });
 
@@ -45,7 +46,8 @@
                 success: function(data){
                     change_info(data['lat'], data['lng'], data['place']);
                     $('#laws-block').html(data['laws'])
-                }
+                },
+                error: function(data){alert('error')}
             });
         });
     })

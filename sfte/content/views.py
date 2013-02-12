@@ -13,12 +13,10 @@ def get_pt_frequency(lat, lng, start_time=None, end_time=None, week_day=None):
     filters = []
     filters_text = ''
     selects = ''
-
     if week_day:
         filters.append('EXTRACT(ISODOW FROM day) = {0}'.format(week_day))
 
     if start_time is not None:
-        pass
         #selects = ''', EXTRACT(hour FROM start_datetime) AS start_hour,
         #               EXTRACT(minute FROM start_datetime) AS start_minute,
         #               EXTRACT(hour FROM end_datetime) AS end_hour,
