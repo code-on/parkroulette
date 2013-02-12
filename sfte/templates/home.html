@@ -1,68 +1,107 @@
 {% extends "base.html" %}
-{% block extra_js %}
 
+{% block extra_js %}
+<script>
+    var is_loading = false,
+        cur_lat = null,
+        cur_lng = null;
+
+    function change_info(lat, lng, place){
+        if ((cur_lat != lat) || (cur_lng != lng)) {
+            cur_lat = lat;
+            cur_lng = lng;
+            if (lat && lng) {
+                var lat_lng = lat + ',' + lng;
+                $('#img-block').html('<img src="http://maps.google.com/maps/api/staticmap?center='+lat_lng+'&markers='+lat_lng+'&zoom=16&size=200x200&sensor=false" />');
+                $('#place-block').html(place)
+            } else {
+                $('#img-block').html('');
+                $('#place-block').html('Unknown place')
+            }
+        }
+    }
+
+
+    $(function(){
+        $('#chance-button').click(function(){
+            $('#search-form').ajaxSubmit({
+                url: '{% url "get-chance" %}',
+                type: 'post',
+                success: function(data){
+                    change_info(data['lat'], data['lng'], data['place']);
+                    if (data['chance']) {
+                        $('#chance-block').html('Based on statistical information, there is a <strong>'+data['chance']+'%</strong> chance you will get a ticket if you park illegally at the same address at the same time of day and same day of week.')
+                    } else {
+                        $('#chance-block').html('Sorry, we cannot provide information for this address.')
+                    }
+                }
+            });
+        });
+
+        $('#laws-button').click(function(){
+            $('#search-form').ajaxSubmit({
+                url: '{% url "get-laws" %}',
+                type: 'post',
+                success: function(data){
+                    change_info(data['lat'], data['lng'], data['place']);
+                    $('#laws-block').html(data['laws'])
+                }
+            });
+        });
+    })
+</script>
 {% endblock %}
 {% block content %}
 
-  <div class="well">
-    <div class="row">
-      <div class="span7">
-        <h3>Calculate the chance you will get a parking ticket at any address in San Francisco.</h3>
-        <p>Or just find out what the parking laws are at any address. Based on public records of actual tickets.</p>
+    <div class="well">
+        <div class="row">
+          <div class="span7">
+            <h3>Calculate the chance you will get a parking ticket at any address in San Francisco.</h3>
+            <p>Or just find out what the parking laws are at any address. Based on public records of actual tickets.</p>
 
-        <br><br>
+            <br>
+            <form id="search-form">
+                {{ form.text.label }}<br/>
+                {{ form.text }}
+                <div class="row">
+                    <div class="span1">
+                        {{ form.week_day.label }}<br/>
+                        {{ form.week_day }}
+                    </div>
+                    <div class="span1">
+                        {{ form.from_time.label }}<br/>
+                        {{ form.from_time }}
+                    </div>
+                    <div class="span1">
+                        {{ form.to_time.label }}<br/>
+                        {{ form.to_time }}
+                    </div>
+                </div>
+              <br>
+              <input id="chance-button" class="btn btn-warning" type="button" value="Chance of ticket" />
+              <input id="laws-button" class="btn btn-warning" type="button" value="Tell me the laws" />
+            </form>
+          </div>
+          <div class="offset2 span2 hidden-phone">
+            <img src="/static/no-parking.png">
+          </div>
+        </div>
+    </div>
 
-        <form>
-          <label>Type your parking address:</label>
-          <input type="text" name="address" placeholder="f.e. 1234 Market st" value="{{ address|default:"" }}" />
-          <br>
-          <input class="btn btn-warning" type="submit" value="Chance of ticket" />
-          <input class="btn btn-warning" type="submit" value="Tell me the laws" />
-      </form>
-     </div>
-     <div class="offset2 span2 hidden-phone">
-       <img src="/static/no-parking.png">
-     </div>
-   </div>
-  </div>
+    <div class="row-fluid">
+      <div id="img-block" class="span2">
+          {% with lng=coordinates.0  lat=coordinates.1 %}
 
+          {% endwith %}
+      </div>
+      <div class="span8">
+          <h4 id="place-block">{{ place }}</h4>
+          <div id="chance-block">
+          </div>
+      </div>
+    </div>
 
-    
-    {% if address %}
-        {% if coordinates %}
-            <div class="row-fluid">
-              <div class="span2">
-                  {% with lng=coordinates.0  lat=coordinates.1 %}
-                      <img src="http://maps.google.com/maps/api/staticmap?center={{ lat }},{{ lng }}&markers={{ lat }},{{ lng }}&zoom=16&size=200x200&sensor=false" />
-                  {% endwith %}
-              </div>
-              <div class="span8">
-                  <h4>{{ address }}
-                  <h4>
-                  {% if frequency %}
-                  Based on statistical information, there is a <strong>{{ frequency|floatformat:"-2" }}%</strong> chance you will get a ticket if you park illegally at the same address at the same time of day and same day of week.
-                  {% else %}
-                  Sorry, we cannot provide information for this address.
-                  {% endif %}
-                  </h4>
-              </div>
-              
-            </div>
+    <div id="laws-block">
 
-            <p>In 2012, the top reasons for a parking citation within 10 meters of {{ address}} on Friday mornings between 10am and 11am was: </p>
-
-            <table class="table table-bordered table-striped">
-                {% for num, id, reason, price, street, etc in citations %}
-                <tr>
-                    <td>{{ num }}</td>
-                    <td>{{ id }}</td>
-                    <td>{{ reason }}</td>
-                    <td>{{ price }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-            <h2>Not found coordinates</h2>
-        {% endif %}
-    {% endif %}
+    </div>
 {% endblock %}
