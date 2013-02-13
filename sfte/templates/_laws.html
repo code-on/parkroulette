@@ -1,21 +1,33 @@
-<p>
-    In 2012, the top reasons for a parking citation within 10 meters of "{{ place }}"
-    {% if week_day %}
-        on {{ week_day }}
-    {% endif %}
-    {% if start_time == None%}{% else %}
-        between {{ start_time }} and {{ end_time }}
-    {% endif %}
-    was:
-</p>
+{% if lat and lng %}
+    <div id="img-block" class="span2">
+        <img src="http://maps.google.com/maps/api/staticmap?center={{ lat }},{{ lng }}&markers={{ lat }},{{ lng }}&zoom=16&size=200x200&sensor=false" />
+    </div>
+    <div class="span8">
+        <h4 id="place-block">{{ place }}</h4>
+        <div>
+            <p>
+                In 2012, the top reasons for a parking citation within 10 meters of "{{ place }}"
+                {% if week_day %}
+                    on {{ week_day }}
+                {% endif %}
+                {% if start_time == None%}{% else %}
+                    between {{ start_time }} and {{ end_time }}
+                {% endif %}
+                was:
+            </p>
 
-<table class="table table-bordered table-striped">
-    {% for num, id, reason, price, street, etc in citations %}
-        <tr>
-            <td>{{ num }}</td>
-            <td>{{ id }}</td>
-            <td>{{ reason }}</td>
-            <td>{{ price }}</td>
-        </tr>
-    {% endfor %}
-</table>
+            <table class="table table-bordered table-striped">
+                {% for num, id, reason, price, street, etc in citations %}
+                    <tr>
+                        <td>{{ num }}</td>
+                        <td>{{ id }}</td>
+                        <td>{{ reason }}</td>
+                        <td>{{ price }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% else %}
+    Sorry, we cannot find coordinates of this address.
+{% endif %}

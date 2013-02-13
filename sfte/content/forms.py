@@ -3,6 +3,16 @@ from django import forms
 from django.utils.functional import cached_property
 from geopy import geocoders
 
+WEEK_DAYS_DICT = dict((
+    ('7', 'Sunday'),
+    ('1', 'Monday'),
+    ('2', 'Tuesday'),
+    ('3', 'Wednesday'),
+    ('4', 'Thursday'),
+    ('5', 'Friday'),
+    ('6', 'Saturday'),
+))
+
 
 class TicketSearchForm(forms.Form):
     WEEK_DAY_CHOICES = (
@@ -54,8 +64,21 @@ class TicketSearchForm(forms.Form):
         )[0]
         return {'place': place, 'lat': lat, 'lng': lng}
 
+    def get_week_day(self):
+        return WEEK_DAYS_DICT.get(self.cleaned_data.get('week_day'))
+
+    def get_place(self):
+        return self.geo_data['place']
+
     def get_time(self):
-        # ToDo: check for empty fields
-        if not self.cleaned_data['from_time'] or not self.cleaned_data['to_time']:
+        ft, tt = self.cleaned_data['from_time'], self.cleaned_data['to_time']
+        if not ft or not tt:
             return None, None
-        return datetime.time(int(self.cleaned_data['from_time'])), datetime.time(int(self.cleaned_data['to_time']))
+        if ft and not tt:
+            tt = 23
+        elif tt and not ft:
+            ft = 0
+        ft, tt = int(ft), int(tt)
+        if ft > tt:
+            ft, tt = tt, ft
+        return datetime.time(ft), datetime.time(tt)

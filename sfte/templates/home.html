@@ -2,54 +2,28 @@
 
 {% block extra_js %}
 <script>
-    var is_loading = false,
-        cur_lat = null,
-        cur_lng = null;
-
-    function change_info(lat, lng, place){
-        if ((cur_lat != lat) || (cur_lng != lng)) {
-            cur_lat = lat;
-            cur_lng = lng;
-            if (lat && lng) {
-                var lat_lng = lat + ',' + lng;
-                $('#img-block').html('<img src="http://maps.google.com/maps/api/staticmap?center='+lat_lng+'&markers='+lat_lng+'&zoom=16&size=200x200&sensor=false" />');
-                $('#place-block').html(place)
-            } else {
-                $('#img-block').html('');
-                $('#place-block').html('Unknown place')
-            }
-        }
-    }
-
-
     $(function(){
-        $('#chance-button').click(function(){
+        $('.action').click(function(){
+            var $this = $(this);
             $('#search-form').ajaxSubmit({
-                url: '{% url "get-chance" %}',
+                url: $(this).data('url'),
                 type: 'post',
-                success: function(data){
-                    change_info(data['lat'], data['lng'], data['place']);
-                    if (data['chance']) {
-                        $('#chance-block').html('Based on statistical information, there is a <strong>'+data['chance']+'%</strong> chance you will get a ticket if you park illegally at the same address at the same time of day and same day of week.')
-                    } else {
-                        $('#chance-block').html('Sorry, we cannot provide information for this address.')
-                    }
+                beforeSend: function(){
+                    $this.addClass('loading');
+                    $('.action').attr("disabled", "disabled")
                 },
-                error: function(data){alert('error')}
-            });
-        });
-
-        $('#laws-button').click(function(){
-            $('#search-form').ajaxSubmit({
-                url: '{% url "get-laws" %}',
-                type: 'post',
-                success: function(data){
-                    change_info(data['lat'], data['lng'], data['place']);
-                    $('#laws-block').html(data['laws'])
+                success: function(data) {
+                    $('#output-block').html(data['html'])
                 },
-                error: function(data){alert('error')}
-            });
-        });
+                error: function(jqXHR, textStatus, errorThrown){
+                    $('#output-block').html('Sorry, unexpected error')
+                },
+                complete: function() {
+                    $('.action').removeAttr("disabled");
+                    $this.removeClass('loading');
+                }
+            })
+        })
     })
 </script>
 {% endblock %}
@@ -80,8 +54,8 @@
                     </div>
                 </div>
               <br>
-              <input id="chance-button" class="btn btn-warning" type="button" value="Chance of ticket" />
-              <input id="laws-button" class="btn btn-warning" type="button" value="Tell me the laws" />
+              <input id="chance-button" data-url="{% url "get-chance" %}" class="action btn btn-warning" type="button" value="Chance of ticket" />
+              <input id="laws-button" data-url="{% url "get-laws" %}" class="action btn btn-warning" type="button" value="Tell me the laws" />
             </form>
           </div>
           <div class="offset2 span2 hidden-phone">
@@ -90,7 +64,7 @@
         </div>
     </div>
 
-    <div class="row-fluid">
+    <div class="row-fluid" id="output-block">
       <div id="img-block" class="span2">
           {% with lng=coordinates.0  lat=coordinates.1 %}
 
@@ -98,12 +72,8 @@
       </div>
       <div class="span8">
           <h4 id="place-block">{{ place }}</h4>
-          <div id="chance-block">
+          <div id="output-block">
           </div>
       </div>
-    </div>
-
-    <div id="laws-block">
-
     </div>
 {% endblock %}
