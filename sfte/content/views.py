@@ -36,17 +36,17 @@ def get_pt_frequency(lat, lng, start_time=None, end_time=None, week_day=None):
     cursor.execute(sql, (lng, lat))
     row = cursor.fetchone()
 
-    count = row[0]
+    tcount = count = row[0]
 
     if week_day:
-        count *= 7
+        tcount *= 7
 
     if start_time is not None:
         hours = end_time.hour - start_time.hour
-        count *= 24.0 / hours
+        tcount *= 24.0 / hours
 
     hours = row[1]
-    frequency = count / hours
+    frequency = tcount / hours
     return {'frequency': frequency, 'count': count}
 
 
@@ -137,7 +137,7 @@ def get_chance(request):
     }
     form = TicketSearchForm(request.REQUEST)
     if form.is_valid():
-        times = form.get_time()
+        times = form.times
         Log.objects.create(
             address=form.cleaned_data['text'],
             from_time=times[0], to_time=times[1], week_day=form.get_week_day(),
@@ -162,6 +162,8 @@ def get_chance(request):
             })
         else:
             response['html'] = 'Sorry, we cannot find coordinates of this address.'
+    else:
+        response['errors'] = form.get_errors()
     return HttpResponse(json.dumps(response), mimetype="application/json")
 
 
@@ -172,7 +174,7 @@ def get_laws(request):
     }
     form = TicketSearchForm(request.POST)
     if form.is_valid():
-        times = form.get_time()
+        times = form.times
         Log.objects.create(
             address=form.cleaned_data['text'],
             from_time=times[0], to_time=times[1], week_day=form.get_week_day(),
@@ -192,4 +194,6 @@ def get_laws(request):
             })
         else:
             response['html'] = 'Sorry, we cannot find coordinates of this address.'
+    else:
+        response['errors'] = form.get_errors()
     return HttpResponse(json.dumps(response), mimetype="application/json")

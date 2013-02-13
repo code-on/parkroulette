@@ -55,6 +55,14 @@ class TicketSearchForm(forms.Form):
         required=False,
     )
 
+    def clean(self):
+        data = self.cleaned_data
+        if self.cleaned_data['from_time'] and self.cleaned_data['to_time']:
+            ft, tt = self.times
+            if ft >= tt:
+                raise forms.ValidationError('"To time" must be later than "From time"')
+        return data
+
     @cached_property
     def geo_data(self):
         g = geocoders.GoogleV3(domain='maps.google.com')
@@ -70,7 +78,8 @@ class TicketSearchForm(forms.Form):
     def get_place(self):
         return self.geo_data['place']
 
-    def get_time(self):
+    @cached_property
+    def times(self):
         ft, tt = self.cleaned_data['from_time'], self.cleaned_data['to_time']
         if not ft and not tt:
             return None, None
@@ -79,6 +88,10 @@ class TicketSearchForm(forms.Form):
         elif tt and not ft:
             ft = 0
         ft, tt = int(ft), int(tt)
-        if ft > tt:
-            ft, tt = tt, ft
         return datetime.time(ft), datetime.time(tt)
+
+    def get_errors(self):
+        output = {}
+        for key, value in self.errors.items():
+            output[self.add_prefix(key)] = self.error_class(value).as_text()
+        return output

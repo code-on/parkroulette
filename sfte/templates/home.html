@@ -9,11 +9,26 @@
                 url: $(this).data('url'),
                 type: 'post',
                 beforeSend: function(){
+                    var $form = $('#search-form')
                     $this.addClass('loading');
-                    $('.action').attr("disabled", "disabled")
+                    $('.action').attr("disabled", "disabled");
+                    $('.alert-error', $form).remove();
+                    $('.error-msg', $form).remove()
                 },
-                success: function(data) {
-                    $('#output-block').html(data['html'])
+                success: function(data, status, xhr, $form) {
+                    if (data.errors){
+                        for (var key in data.errors){
+                            var field = key.split('-').pop();
+                            if (field == '__all__'){
+                                $form.append('<div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a></a>'+data.errors[key]+'</div>');
+                            } else {
+                                $('[name='+key+']', $form).after('<span class="help-inline error-msg">'+data.errors[key]+'</span>');
+                            }
+                        }
+                    }else{
+                        $('#output-block').html(data['html'])
+
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown){
                     $('#output-block').html('Sorry, unexpected error')
@@ -53,10 +68,9 @@
                         {{ form.to_time }}
                     </div>
                 </div>
-              <br>
-              <input id="chance-button" data-url="{% url "get-chance" %}" class="action btn btn-warning" type="button" value="Chance of ticket" />
-              <input id="laws-button" data-url="{% url "get-laws" %}" class="action btn btn-warning" type="button" value="Tell me the laws" />
             </form>
+            <input id="chance-button" data-url="{% url "get-chance" %}" class="action btn btn-warning" type="button" value="Chance of ticket" />
+            <input id="laws-button" data-url="{% url "get-laws" %}" class="action btn btn-warning" type="button" value="Tell me the laws" />
           </div>
           <div class="offset2 span2 hidden-phone">
             <img src="/static/no-parking.png">
