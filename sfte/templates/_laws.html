@@ -5,6 +5,7 @@
     <div class="span8">
         <h4 id="place-block">{{ place }}</h4>
         <div>
+        {% if citations %}
             <p>
                 In 2012, the top reasons for a parking citation within 10 meters of "{{ place }}"
                 {% if week_day %}
@@ -26,6 +27,9 @@
                     </tr>
                 {% endfor %}
             </table>
+        {% else %}
+            We didn't find any issues around 10 meters of "{{ place }}" for selected day/time.
+        {% endif %}
         </div>
     </div>
 {% else %}

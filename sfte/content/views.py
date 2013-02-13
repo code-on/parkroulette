@@ -1,5 +1,6 @@
 import json
 from content.forms import TicketSearchForm
+from content.models import Log
 from django.db import DatabaseError
 from django.db import connection
 from django.http import HttpResponse
@@ -132,51 +133,63 @@ def home(request, template='home.html'):
 @csrf_exempt
 def get_chance(request):
     response = {
-        'html': None,
+        'html': '',
     }
     form = TicketSearchForm(request.REQUEST)
-    if form.is_valid() and form.geo_data['lat']:
+    if form.is_valid():
         times = form.get_time()
-        week_day = form.cleaned_data['week_day']
-        fr_data = get_pt_frequency(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day)
-        chance = fr_data['frequency']
-        if chance:
-            chance *= 100
-        response['html'] = render_to_string('_chance.html', {
-            'chance': chance,
-            'count': get_tickest_count(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day),
-            'patrol_count': fr_data['count'],
-            'place': form.get_place(),
-            'start_time': times[0],
-            'end_time': times[1],
-            'week_day': form.get_week_day(),
-            'lat': form.geo_data['lat'],
-            'lng': form.geo_data['lng'],
-        })
-    else:
-        response['html'] = 'Sorry, we cannot find coordinates of this address.'
+        Log.objects.create(
+            address=form.cleaned_data['text'],
+            from_time=times[0], to_time=times[1], week_day=form.get_week_day(),
+            type=Log.CHANCE,
+        )
+        if form.geo_data['lat']:
+            week_day = form.cleaned_data['week_day']
+            fr_data = get_pt_frequency(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day)
+            chance = fr_data['frequency']
+            if chance:
+                chance *= 100
+            response['html'] = render_to_string('_chance.html', {
+                'chance': chance,
+                'count': get_tickest_count(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day),
+                'patrol_count': fr_data['count'],
+                'place': form.get_place(),
+                'start_time': times[0],
+                'end_time': times[1],
+                'week_day': form.get_week_day(),
+                'lat': form.geo_data['lat'],
+                'lng': form.geo_data['lng'],
+            })
+        else:
+            response['html'] = 'Sorry, we cannot find coordinates of this address.'
     return HttpResponse(json.dumps(response), mimetype="application/json")
 
 
 @csrf_exempt
 def get_laws(request):
     response = {
-        'html': None,
+        'html': '',
     }
     form = TicketSearchForm(request.POST)
-    if form.is_valid() and form.geo_data['lat']:
+    if form.is_valid():
         times = form.get_time()
-        week_day = form.cleaned_data['week_day']
-        citations = get_pt_citations(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day)
-        response['html'] = render_to_string('_laws.html', {
-            'citations': citations,
-            'place': form.get_place(),
-            'start_time': times[0],
-            'end_time': times[1],
-            'week_day': form.get_week_day(),
-            'lat': form.geo_data['lat'],
-            'lng': form.geo_data['lng'],
-        })
-    else:
-        response['html'] = 'Sorry, we cannot find coordinates of this address.'
+        Log.objects.create(
+            address=form.cleaned_data['text'],
+            from_time=times[0], to_time=times[1], week_day=form.get_week_day(),
+            type=Log.LAWS,
+        )
+        if form.geo_data['lat']:
+            week_day = form.get_week_day()
+            citations = get_pt_citations(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day)
+            response['html'] = render_to_string('_laws.html', {
+                'citations': citations,
+                'place': form.get_place(),
+                'start_time': times[0],
+                'end_time': times[1],
+                'week_day': form.get_week_day(),
+                'lat': form.geo_data['lat'],
+                'lng': form.geo_data['lng'],
+            })
+        else:
+            response['html'] = 'Sorry, we cannot find coordinates of this address.'
     return HttpResponse(json.dumps(response), mimetype="application/json")

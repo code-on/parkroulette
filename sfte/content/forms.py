@@ -72,7 +72,7 @@ class TicketSearchForm(forms.Form):
 
     def get_time(self):
         ft, tt = self.cleaned_data['from_time'], self.cleaned_data['to_time']
-        if not ft or not tt:
+        if not ft and not tt:
             return None, None
         if ft and not tt:
             tt = 23
