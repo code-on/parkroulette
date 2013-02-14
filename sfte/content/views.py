@@ -38,6 +38,9 @@ def get_pt_frequency(lat, lng, start_time=None, end_time=None, week_day=None):
 
     tcount = count = row[0]
 
+    if count == 0:
+        return {'frequency': None, 'count': count}
+
     if week_day:
         tcount *= 7
 
@@ -149,9 +152,12 @@ def get_chance(request):
             chance = fr_data['frequency']
             if chance:
                 chance *= 100
+                tickets_count = get_tickest_count(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day)
+            else:
+                tickets_count = None
             response['html'] = render_to_string('_chance.html', {
                 'chance': chance,
-                'count': get_tickest_count(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day),
+                'count': tickets_count,
                 'patrol_count': fr_data['count'],
                 'place': form.get_place(),
                 'start_time': times[0],
