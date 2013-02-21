@@ -16,7 +16,8 @@
                     $('.error-msg', $form).remove()
 
                     //Google analytics tracking
-                    _gaq.push(['_trackEvent', 'click', $this.attr('id'), 'address', $('#id_text').val()])
+                    _gaq.push(['_trackEvent', 'click', $this.attr('id'), 'address', $('#id_text').val()]);
+                    _gaq.push(['_trackPageview'])
                 },
                 success: function(data, status, xhr, $form) {
                     if (data.errors){
