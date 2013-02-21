@@ -23,6 +23,17 @@ TEMPLATE_DIRS = (
     rel('templates'),
 )
 
+T = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+    'context.settings',
+)
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -51,9 +62,6 @@ ROOT_URLCONF = 'urls'
 WSGI_APPLICATION = 'wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -63,9 +71,6 @@ DATABASES = {
         'HOST': 'localhost',
     }
 }
-
-# Internationalization
-# https://docs.djangoproject.com/en/dev/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
