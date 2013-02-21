@@ -14,6 +14,9 @@
                     $('.action').attr("disabled", "disabled");
                     $('.alert-error', $form).remove();
                     $('.error-msg', $form).remove()
+
+                    //Google analytics tracking
+                    _gaq.push(['_trackEvent', 'click', $this.attr('id'), 'address', $('#id_text').val()])
                 },
                 success: function(data, status, xhr, $form) {
                     if (data.errors){
