@@ -9,7 +9,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-def get_pt_frequency(lat, lng, start_time=None, end_time=None, week_day=None):
+def get_pt_frequency(lat, lng, distance, start_time=None, end_time=None, week_day=None):
     cursor = connection.cursor()
     filters = []
     filters_text = ''
@@ -30,9 +30,8 @@ def get_pt_frequency(lat, lng, start_time=None, end_time=None, week_day=None):
         FROM paths
         WHERE ST_DWithin(path,
             ST_GeomFromText('POINT(%s %s)', 4269),
-            -- 10 meters
-            0.0001){filters};
-        """.format(filters=filters_text)
+            {distance}){filters};
+        """.format(filters=filters_text, distance=distance)
     cursor.execute(sql, (lng, lat))
     row = cursor.fetchone()
 
@@ -53,7 +52,7 @@ def get_pt_frequency(lat, lng, start_time=None, end_time=None, week_day=None):
     return {'frequency': frequency, 'count': count}
 
 
-def get_tickest_count(lat, lng, start_time=None, end_time=None, week_day=None):
+def get_tickest_count(lat, lng, distance, start_time=None, end_time=None, week_day=None):
     cursor = connection.cursor()
     filters = []
     filters_text = ''
@@ -77,12 +76,12 @@ def get_tickest_count(lat, lng, start_time=None, end_time=None, week_day=None):
             WHERE ST_DWithin(
                 geopoint,
                 ST_SetSRID(ST_Point(%s, %s), 4269),
-                0.0002){filters}
-            """.format(filters=filters_text), (lng, lat))
+                {distance}){filters}
+            """.format(filters=filters_text, distance=distance), (lng, lat))
     row = cursor.fetchone()
     return row[0]
 
-def get_pt_citations(lat, lng, start_time=None, end_time=None, week_day=None):
+def get_pt_citations(lat, lng, distance, start_time=None, end_time=None, week_day=None):
     cursor = connection.cursor()
     filters = []
     filters_text = ''
@@ -115,11 +114,11 @@ def get_pt_citations(lat, lng, start_time=None, end_time=None, week_day=None):
             WHERE ST_DWithin(
                 geopoint,
                 ST_SetSRID(ST_Point(%s, %s), 4269),
-                0.0002){filters}
+                {distance}){filters}
             GROUP BY
                 violation, violation_description, fine_amt, street
             ORDER BY cnt DESC;
-            """.format(filters=filters_text), (lng, lat, lng, lat))
+            """.format(filters=filters_text, distance=distance), (lng, lat, lng, lat))
     except DatabaseError:
         return []
     rows = cursor.fetchall()
@@ -147,12 +146,13 @@ def get_chance(request):
             type=Log.CHANCE,
         )
         if form.geo_data['lat']:
+            distance = form.cleaned_data['distance']
             week_day = form.cleaned_data['week_day']
-            fr_data = get_pt_frequency(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day)
+            fr_data = get_pt_frequency(form.geo_data['lat'], form.geo_data['lng'], distance, times[0], times[1], week_day)
             chance = fr_data['frequency']
             if chance:
                 chance *= 100
-                tickets_count = get_tickest_count(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day)
+                tickets_count = get_tickest_count(form.geo_data['lat'], form.geo_data['lng'], distance, times[0], times[1], week_day)
             else:
                 tickets_count = None
             response['html'] = render_to_string('_chance.html', {
@@ -187,8 +187,9 @@ def get_laws(request):
             type=Log.LAWS,
         )
         if form.geo_data['lat']:
+            distance = form.cleaned_data['distance']
             week_day = form.get_week_day()
-            citations = get_pt_citations(form.geo_data['lat'], form.geo_data['lng'], times[0], times[1], week_day)
+            citations = get_pt_citations(form.geo_data['lat'], form.geo_data['lng'], distance, times[0], times[1], week_day)
             response['html'] = render_to_string('_laws.html', {
                 'citations': citations,
                 'place': form.get_place(),
