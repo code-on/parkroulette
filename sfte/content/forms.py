@@ -32,9 +32,19 @@ class TicketSearchForm(forms.Form):
         (12, '12PM'), (13, '1PM'), (14, '2PM'), (15, '3PM'), (16, '4PM'), (17, '5PM'),
         (18, '6PM'), (19, '7PM'), (20, '8PM'), (21, '9PM'), (22, '10PM'), (23, '11PM'),
     )
+    DISTANCE_CHOICES = (
+        ('0.0001', '10m'), ('0.0002', '20m'), ('0.0003', '30m'),
+        ('0.0004', '40m'), ('0.0005', '50m'), ('0.001', '100m'),
+    )
     text = forms.CharField(
         label='Type your parking address:',
         widget=forms.TextInput(attrs={'placeholder': 'f.e. 1234 Market st'})
+    )
+    distance = forms.ChoiceField(
+        initial=DISTANCE_CHOICES[1][0],
+        choices=DISTANCE_CHOICES,
+        label='Distance',
+        widget=forms.Select(attrs={'class': 'small-widget'}),
     )
     from_time = forms.ChoiceField(
         choices=HOUR_CHOICES,
