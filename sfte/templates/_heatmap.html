@@ -6,7 +6,7 @@
         <h4 id="place-block">{{ place }}</h4>
         <div class="row-fluid">
             <div class="span6">
-                <h5>Data by laws</h5>
+                <h5>Tickets</h5>
                 <table class="table table-slim table-bordered" id="tickets-heatmap">
                     <thead>
                     {% for days in tickets_heatmap|slice:":1" %}
@@ -33,7 +33,7 @@
                 </table>
             </div>
             <div class="span6">
-                <h5>Data by patrols</h5>
+                <h5>Patrols</h5>
                 <table class="table table-slim table-bordered" id="paths-heatmap">
                     <thead>
                     {% for days in paths_heatmap|slice:":1" %}
