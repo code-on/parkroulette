@@ -1,7 +1,4 @@
-try:
-    from collections import Counter  # for python 2.7
-except ImportError:
-    from utils.counter import Counter
+from content import HOURS_DICT
 from decimal import Decimal
 import json
 from content.forms import TicketSearchForm
@@ -12,6 +9,11 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
+
+try:
+    from collections import Counter  # for python 2.7
+except ImportError:
+    from utils.counter import Counter
 
 cache = get_cache('default')
 
@@ -189,7 +191,7 @@ def _get_heatmap(datetimes):
 
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']]
     for hour in range(24):
-        hour_data = [hour]  # ToDo: change to readable hour value
+        hour_data = [HOURS_DICT[hour]]  # ToDo: change to readable hour value
         for day in range(7):
             hour_data.append(grouped_tickets.get((day, hour), 0))
             grouped_tickets.setdefault((day, hour), 0)
@@ -222,7 +224,6 @@ def get_heatmap(request):
         )
         if form.geo_data['lat']:
             distance = form.cleaned_data['distance']
-            week_day = form.cleaned_data['week_day']
             tickets_heatmap = get_heatmap_tickets(form.geo_data['geopoint'], distance)
             paths_heatmap = get_heatmap_paths(form.geo_data['geopoint'], distance)
             response['html'] = render_to_string('_heatmap.html', {

@@ -1,4 +1,5 @@
 import datetime
+from content import HOURS_DICT
 from django import forms
 from django.contrib.gis.geos import fromstr
 from django.utils.functional import cached_property
@@ -31,13 +32,7 @@ class TicketSearchForm(forms.Form):
         (6, 'Friday'),
         (7, 'Saturday'),
     )
-    HOUR_CHOICES = (
-        ('', '--------'),
-        (0, '12AM'), (1, '1AM'), (2, '2AM'), (3, '3AM'), (4, '4AM'), (5, '5AM'),
-        (6, '6AM'), (7, '7AM'), (8, '8AM'), (9, '9AM'), (10, '10AM'), (11, '11AM'),
-        (12, '12PM'), (13, '1PM'), (14, '2PM'), (15, '3PM'), (16, '4PM'), (17, '5PM'),
-        (18, '6PM'), (19, '7PM'), (20, '8PM'), (21, '9PM'), (22, '10PM'), (23, '11PM'),
-    )
+    HOUR_CHOICES = (('', '--------'),) + tuple(HOURS_DICT.items())
     DISTANCE_CHOICES = (
         ('0.0001', '10m'), ('0.0002', '20m'), ('0.0003', '30m'),
         ('0.0004', '40m'), ('0.0005', '50m'), ('0.001', '100m'),
