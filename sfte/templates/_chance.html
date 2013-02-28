@@ -5,7 +5,7 @@
     <h4 id="place-block">{{ place }}</h4>
     <div>
         {% if chance %}
-            <strong>{{ count }}</strong> tickets were issued within 10 meters of <strong>{{ place }}</strong>
+            <strong>{{ count }}</strong> tickets were issued within {{ distance }} meters of <strong>{{ place }}</strong>
             {% if week_day %}
                 on <strong>{{ week_day }}</strong>
             {% endif %}

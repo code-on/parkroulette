@@ -7,7 +7,7 @@
         <div>
         {% if citations %}
             <p>
-                In 2012, the top reasons for a parking citation within 10 meters of "{{ place }}"
+                In 2012, the top reasons for a parking citation within {{ distance }} meters of "{{ place }}"
                 {% if week_day %}
                     on {{ week_day }}
                 {% endif %}
