@@ -1,4 +1,7 @@
-from collections import Counter
+try:
+    from collections import Counter  # for python 2.7
+except ImportError:
+    from utils.counter import Counter
 from decimal import Decimal
 import json
 from content.forms import TicketSearchForm
