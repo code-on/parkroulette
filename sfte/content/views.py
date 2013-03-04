@@ -106,7 +106,7 @@ def home(request, template='home.html'):
 
 
 def get_chance(request):
-    form = TicketSearchForm(request.GET)
+    form = TicketSearchForm(request.GET or None)
     context = {'form': form}
     if form.is_valid():
         times = form.times

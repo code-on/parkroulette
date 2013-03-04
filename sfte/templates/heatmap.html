@@ -2,11 +2,12 @@
 
 {% block extra_ga %}
     {% if form.is_valid %}
-        _gaq.push(['_trackEvent', 'click', 'heatmap, 'address', $('#{{ form.text.auto_id }}').val()]);
+        _gaq.push(['_trackEvent', 'click', 'heatmap', 'address', $('#{{ form.text.auto_id }}').val()]);
     {% endif %}
 {% endblock %}
 
 {% block output %}
+    {% if form.is_valid %}
     {% if lat and lng %}
         <div id="img-block" class="span2">
             <img src="http://maps.google.com/maps/api/staticmap?center={{ lat }},{{ lng }}&markers={{ lat }},{{ lng }}&zoom=16&size=200x200&sensor=false" />
@@ -15,7 +16,7 @@
             <h4 id="place-block">{{ place }}</h4>
             <div class="row-fluid">
                 <div class="span6">
-                    <h5>Data by laws</h5>
+                    <h5>Tickets</h5>
                     <table class="table table-slim table-bordered" id="tickets-heatmap">
                         <thead>
                         {% for days in tickets_heatmap|slice:":1" %}
@@ -42,7 +43,7 @@
                     </table>
                 </div>
                 <div class="span6">
-                    <h5>Data by patrols</h5>
+                    <h5>Patrols</h5>
                     <table class="table table-slim table-bordered" id="paths-heatmap">
                         <thead>
                         {% for days in paths_heatmap|slice:":1" %}
@@ -89,5 +90,6 @@
         </script>
     {% else %}
         Sorry, we cannot find coordinates of this address.
+    {% endif %}
     {% endif %}
 {% endblock %}
