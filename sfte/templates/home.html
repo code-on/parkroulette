@@ -4,40 +4,7 @@
 <script>
     $(function(){
         $('.action').click(function(){
-            var $this = $(this);
-            $('#search-form').ajaxSubmit({
-                url: $(this).data('url'),
-                type: 'post',
-                beforeSend: function(){
-                    var $form = $('#search-form')
-                    $this.addClass('loading');
-                    $('.action').attr("disabled", "disabled");
-                    $('.alert-error', $form).remove();
-                    $('.error-msg', $form).remove()
-                },
-                success: function(data, status, xhr, $form) {
-                    if (data.errors){
-                        for (var key in data.errors){
-                            var field = key.split('-').pop();
-                            if (field == '__all__'){
-                                $form.append('<div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a></a>'+data.errors[key]+'</div>');
-                            } else {
-                                $('[name='+key+']', $form).after('<span class="help-inline error-msg">'+data.errors[key]+'</span>');
-                            }
-                        }
-                    }else{
-                        $('#output-block').html(data['html'])
-
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown){
-                    $('#output-block').html('Sorry, unexpected error')
-                },
-                complete: function() {
-                    $('.action').removeAttr("disabled");
-                    $this.removeClass('loading');
-                }
-            })
+            $('#search-form').attr('action', $(this).data('url')).submit();
         })
     })
 </script>
@@ -51,31 +18,49 @@
             <p>Or just find out what the parking laws are at any address. Based on public records of actual tickets.</p>
 
             <br>
-            <form id="search-form">
+            <form id="search-form" action="{% url "get-chance" %}">
                 {{ form.text.label }}<br/>
                 {{ form.text }}
+                {% for error in form.text.errors %}
+                    <span class="help-inline error-msg">{{ error }}</span>
+                {% endfor %}
                 <div class="row">
                     <div class="span1">
                         {{ form.distance.label }}<br/>
                         {{ form.distance }}
+                        {% for error in form.distance.errors %}
+                            <span class="help-inline error-msg">{{ error }}</span>
+                        {% endfor %}
                     </div>
                     <div class="span1">
                         {{ form.week_day.label }}<br/>
                         {{ form.week_day }}
+                        {% for error in form.week_day.errors %}
+                            <span class="help-inline error-msg">{{ error }}</span>
+                        {% endfor %}
                     </div>
                     <div class="span1">
                         {{ form.from_time.label }}<br/>
                         {{ form.from_time }}
+                        {% for error in form.from_time.errors %}
+                            <span class="help-inline error-msg">{{ error }}</span>
+                        {% endfor %}
                     </div>
                     <div class="span1">
                         {{ form.to_time.label }}<br/>
                         {{ form.to_time }}
+                        {% for error in form.to_time.errors %}
+                            <span class="help-inline error-msg">{{ error }}</span>
+                        {% endfor %}
                     </div>
                 </div>
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a></a>{{ error }}</div>
+                {% endfor %}
             </form>
-            <input id="chance-button" data-url="{% url "get-chance" %}" class="action btn btn-warning" type="button" value="Chance of ticket" />
-            <input id="laws-button" data-url="{% url "get-laws" %}" class="action btn btn-warning" type="button" value="Tell me the laws" />
-            <input id="heatmap-button" data-url="{% url "get-heatmap" %}" class="action btn btn-warning" type="button" value="Heatmap" />
+            <input id="chance-button" data-url="{% url "get-chance" %}" class="action btn btn-warning" type="submit" value="Chance of ticket" />
+            <input id="laws-button" data-url="{% url "get-laws" %}" class="action btn btn-warning" type="submit" value="Tell me the laws" />
+            <input id="heatmap-button" data-url="{% url "get-heatmap" %}" class="action btn btn-warning" type="submit" value="Heatmap" />
           </div>
           <div class="offset2 span2 hidden-phone">
             <img src="/static/no-parking.png">
@@ -83,16 +68,5 @@
         </div>
     </div>
 
-    <div class="row-fluid" id="output-block">
-      <div id="img-block" class="span2">
-          {% with lng=coordinates.0  lat=coordinates.1 %}
-
-          {% endwith %}
-      </div>
-      <div class="span8">
-          <h4 id="place-block">{{ place }}</h4>
-          <div id="output-block">
-          </div>
-      </div>
-    </div>
+    <div class="row-fluid" id="output-block">{% block output %}{% endblock %}</div>
 {% endblock %}

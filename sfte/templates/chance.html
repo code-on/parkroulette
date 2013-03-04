@@ -1,0 +1,29 @@
+{% extends "home.html" %}
+
+{% block output %}
+    {% if lat %}
+        <div id="img-block" class="span2">
+            <img src="http://maps.google.com/maps/api/staticmap?center={{ lat }},{{ lng }}&markers={{ lat }},{{ lng }}&zoom=16&size=200x200&sensor=false" />
+        </div>
+        <div class="span8">
+            <h4 id="place-block">{{ place }}</h4>
+            <div>
+                {% if chance %}
+                    <strong>{{ count }}</strong> tickets were issued within {{ distance }} meters of <strong>{{ place }}</strong>
+                    {% if week_day %}
+                        on <strong>{{ week_day }}</strong>
+                    {% endif %}
+                    {% if start_time != None %}
+                        between <strong>{{ start_time }}</strong> and <strong>{{ end_time }}</strong>
+                    {% endif %}
+                    in 2012 while that address was patrolled <strong>{{ patrol_count }}</strong> times.
+                    Based on that information, there is a <strong>{{ chance|floatformat:2 }}%</strong> chance you will get a ticket if you park illegally at the same address at the same time of day and same day of week.
+                {% else %}
+                    Sorry, no records found for selected time
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        Sorry, we cannot find coordinates of this address.
+    {% endif %}
+{% endblock %}
