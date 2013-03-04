@@ -1,5 +1,11 @@
 {% extends "home.html" %}
 
+{% block extra_ga %}
+    {% if form.is_valid %}
+        _gaq.push(['_trackEvent', 'click', 'heatmap, 'address', $('#{{ form.text.auto_id }}').val()]);
+    {% endif %}
+{% endblock %}
+
 {% block output %}
     {% if lat and lng %}
         <div id="img-block" class="span2">
