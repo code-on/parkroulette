@@ -16,57 +16,15 @@
             <h4 id="place-block">{{ place }}</h4>
             <div class="row-fluid">
                 <div class="span6">
-                    <h5>Tickets</h5>
+                    <h5>Tickets ({{ tickets_count }})</h5>
                     <table class="table table-slim table-bordered" id="tickets-heatmap">
-                        <thead>
-                        {% for days in tickets_heatmap|slice:":1" %}
-                            <tr>
-                                {% for name in days %}
-                                    <th>{{ name }}</th>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </thead>
-                        <tbody>
-                        {% for hour_data in tickets_heatmap|slice:"1:" %}
-                            <tr class="stats-row">
-                                {% for day_data in hour_data %}
-                                    {% if forloop.first %}
-                                        <th class="stats-title">{{ day_data }}</th>
-                                    {% else %}
-                                        <td>{{ day_data }}</td>
-                                    {% endif %}
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
+                        {% with tickets_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
                     </table>
                 </div>
                 <div class="span6">
-                    <h5>Patrols</h5>
+                    <h5>Patrols ({{ paths_count }})</h5>
                     <table class="table table-slim table-bordered" id="paths-heatmap">
-                        <thead>
-                        {% for days in paths_heatmap|slice:":1" %}
-                            <tr>
-                                {% for name in days %}
-                                    <th>{{ name }}</th>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </thead>
-                        <tbody>
-                        {% for hour_data in paths_heatmap|slice:"1:" %}
-                            <tr class="stats-row">
-                                {% for day_data in hour_data %}
-                                    {% if forloop.first %}
-                                        <th class="stats-title">{{ day_data }}</th>
-                                    {% else %}
-                                        <td>{{ day_data }}</td>
-                                    {% endif %}
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
+                        {% with paths_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
                     </table>
                 </div>
             </div>

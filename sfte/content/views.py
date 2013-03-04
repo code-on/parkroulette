@@ -169,17 +169,24 @@ def get_laws(request):
 
 def _get_heatmap(datetimes):
     day_hours = map(lambda x: (x.weekday() % 7, x.hour), datetimes)
-    day_hours.sort()  # Is it needed?
     grouped_tickets = Counter(day_hours)
 
-    data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']]
+    data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
+    day_total = [0, 0, 0, 0, 0, 0, 0]
     for hour in range(24):
-        hour_data = [HOURS_DICT[hour]]  # ToDo: change to readable hour value
+        hour_data = [HOURS_DICT[hour]]
+        hour_total = 0
         for day in range(7):
-            hour_data.append(grouped_tickets.get((day, hour), 0))
-            grouped_tickets.setdefault((day, hour), 0)
+            count = grouped_tickets.get((day, hour), 0)
+            hour_data.append(count)
+            day_total[day] += count
+            hour_total += count
+            #grouped_tickets.setdefault((day, hour), 0)
+        hour_data.append(hour_total)
         data.append(hour_data)
-    return data
+    all_count = sum(day_total)
+    data.append(['Total'] + day_total + [''])
+    return data, all_count
 
 
 def get_heatmap_tickets(geopoint, distance):
@@ -204,12 +211,14 @@ def get_heatmap(request):
         )
         if form.geo_data['lat']:
             distance = form.cleaned_data['distance']
-            tickets_heatmap = get_heatmap_tickets(form.geo_data['geopoint'], distance)
-            paths_heatmap = get_heatmap_paths(form.geo_data['geopoint'], distance)
+            tickets_heatmap, tickets_count = get_heatmap_tickets(form.geo_data['geopoint'], distance)
+            paths_heatmap, paths_count = get_heatmap_paths(form.geo_data['geopoint'], distance)
             context.update({
                 'distance': form.get_distance_display(),
                 'tickets_heatmap': tickets_heatmap,
+                'tickets_count': tickets_count,
                 'paths_heatmap': paths_heatmap,
+                'paths_count': paths_count,
                 'place': form.get_place(),
                 'lat': form.geo_data['lat'],
                 'lng': form.geo_data['lng'],

@@ -1,0 +1,29 @@
+<thead>
+{% for days in heatmap|slice:":1" %}
+    <tr>
+        {% for name in days %}
+            <th>{{ name }}</th>
+        {% endfor %}
+    </tr>
+{% endfor %}
+</thead>
+<tbody>
+{% for hour_data in heatmap|slice:"1:-1" %}
+    <tr class="stats-row">
+        {% for day_data in hour_data %}
+            {% if forloop.first or forloop.last %}
+                <th class="stats-title">{{ day_data }}</th>
+            {% else %}
+                <td>{{ day_data }}</td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+{% endfor %}
+{% for hour_data in heatmap|slice:"-1:" %}
+    <tr>
+        {% for day_data in hour_data %}
+            <th>{{ day_data }}</th>
+        {% endfor %}
+    </tr>
+{% endfor %}
+</tbody>
