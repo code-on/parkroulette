@@ -33,7 +33,7 @@ def _get_path_qs(geopoint, distance, start_time=None, end_time=None, week_day=No
             where=[
                 'EXTRACT(hour FROM start_datetime) < %s',
                 'EXTRACT(hour FROM end_datetime) >= %s',
-                ],
+            ],
             params=[end_time.hour, start_time.hour]
         )
     return ph_qs
@@ -76,7 +76,9 @@ def get_pt_frequency(geopoint, distance, start_time=None, end_time=None, week_da
         pcount *= (end_time.hour - start_time.hour)
 
     frequency = 1.0 * pcount / hours_count
-    return {'frequency': frequency, 'count': count}
+    if frequency:
+        chance = frequency * 100
+    return {'frequency': frequency, 'count': count, 'hours_count': hours_count}
 
 
 def get_tickets_count(geopoint, distance, start_time=None, end_time=None, week_day=None):
@@ -128,8 +130,10 @@ def get_chance(request):
             context.update({
                 'distance': form.get_distance_display(),
                 'chance': chance,
-                'count': tickets_count,
+                'ticket_count': tickets_count,
                 'patrol_count': fr_data['count'],
+                'hours_count': fr_data['hours_count'],
+                'year': 2012,
                 'place': form.get_place(),
                 'start_time': times[0],
                 'end_time': times[1],
@@ -205,21 +209,40 @@ def get_heatmap(request):
     form = TicketSearchForm(request.GET)
     context = {'form': form}
     if form.is_valid():
+        times = form.times
         Log.objects.create(
             address=form.cleaned_data['text'],
+            from_time=times[0], to_time=times[1], week_day=form.get_week_day_display(),
             type=Log.HEATMAP,
         )
+    if form.geo_data['lat']:
         if form.geo_data['lat']:
             distance = form.cleaned_data['distance']
+            week_day = form.cleaned_data['week_day']
             tickets_heatmap, tickets_count = get_heatmap_tickets(form.geo_data['geopoint'], distance)
             paths_heatmap, paths_count = get_heatmap_paths(form.geo_data['geopoint'], distance)
+            fr_data = get_pt_frequency(form.geo_data['geopoint'], distance, times[0], times[1], week_day)
+            chance = fr_data['frequency']
+            if chance:
+                chance *= 100
+                tickets_count = get_tickets_count(form.geo_data['geopoint'], distance, times[0], times[1], week_day)
+            else:
+                tickets_count = None
             context.update({
                 'distance': form.get_distance_display(),
+                'chance': chance,
+                'ticket_count': tickets_count,
+                'patrol_count': fr_data['count'],
+                'hours_count': fr_data['hours_count'],
+                'year': 2012,
                 'tickets_heatmap': tickets_heatmap,
                 'tickets_count': tickets_count,
                 'paths_heatmap': paths_heatmap,
                 'paths_count': paths_count,
                 'place': form.get_place(),
+                'start_time': times[0],
+                'end_time': times[1],
+                'week_day': form.get_week_day_display(),
                 'lat': form.geo_data['lat'],
                 'lng': form.geo_data['lng'],
             })
