@@ -4,10 +4,12 @@ import json
 from content.forms import TicketSearchForm
 from content.models import Log, Ticket, Path
 from django.core.cache import get_cache
+from django.core.urlresolvers import reverse
 from django.db.models import Max, Min
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
+from django.utils.http import urlquote
 from django.views.decorators.csrf import csrf_exempt
 from collections import Counter
 from django.views.generic import TemplateView
@@ -171,38 +173,54 @@ def get_laws(request):
     return TemplateResponse(request, 'laws.html', context)
 
 
-def _get_heatmap(datetimes):
+def _get_heatmap(datetimes, url):
+    day_param_func = lambda d: '&day={0}'.format(d)
+    day_func = lambda c, d: '<a href="{0}{1}">{2}</a>'.format(url, day_param_func(d), c)
+
+    hour_param_func = lambda h: '&from_time={0}&to_time={1}'.format(h, h + 1)
+    hour_func = lambda c, h: '<a href="{0}{1}">{2}</a>'.format(url, hour_param_func(h), c)
+
+    cell_func = lambda c, d, h: '<a href="{0}{1}{2}">{3}</a>'.format(
+        url, hour_param_func(h), day_param_func(h), c
+    )
+
     day_hours = map(lambda x: (x.weekday() % 7, x.hour), datetimes)
     grouped_tickets = Counter(day_hours)
 
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
+    for i in range(1, 8):
+        data[0][i] = day_func(data[0][i], i)
+
     day_total = [0, 0, 0, 0, 0, 0, 0]
     for hour in range(24):
-        hour_data = [HOURS_DICT[hour]]
+        hour_data = [hour_func(HOURS_DICT[hour], hour)]
         hour_total = 0
         for day in range(7):
             count = grouped_tickets.get((day, hour), 0)
-            hour_data.append(count)
+            hour_data.append(cell_func(count, day, hour))
             day_total[day] += count
             hour_total += count
-            #grouped_tickets.setdefault((day, hour), 0)
-        hour_data.append(hour_total)
+        hour_data.append(hour_func(hour_total, hour))
         data.append(hour_data)
     all_count = sum(day_total)
+    for i in range(7):
+        day_total[i] = day_func(day_total[i], i+1)
     data.append(['Total'] + day_total + [''])
     return data, all_count
 
 
-def get_heatmap_tickets(geopoint, distance):
+def get_heatmap_tickets(geopoint, distance, text):
+    url = '{0}?text={1}&distance={2}'.format(reverse('get-laws'), urlquote(text), distance)
     tc_qs = _get_ticket_qs(geopoint, distance)
     datetimes = tc_qs.values_list('issue_datetime', flat=True)
-    return _get_heatmap(datetimes)
+    return _get_heatmap(datetimes, url)
 
 
-def get_heatmap_paths(geopoint, distance):
+def get_heatmap_paths(geopoint, distance, text):
+    url = '{0}?text={1}&distance={2}'.format(reverse('get-laws'), urlquote(text), distance)
     ph_qs = _get_path_qs(geopoint, distance)
     datetimes = ph_qs.values_list('start_datetime', flat=True)
-    return _get_heatmap(datetimes)
+    return _get_heatmap(datetimes, url)
 
 
 def get_heatmap(request):
@@ -218,8 +236,9 @@ def get_heatmap(request):
         if form.geo_data['lat']:
             distance = form.cleaned_data['distance']
             week_day = form.cleaned_data['week_day']
-            tickets_heatmap, tickets_count = get_heatmap_tickets(form.geo_data['geopoint'], distance)
-            paths_heatmap, paths_count = get_heatmap_paths(form.geo_data['geopoint'], distance)
+            text = form.cleaned_data['text']
+            tickets_heatmap, tickets_count = get_heatmap_tickets(form.geo_data['geopoint'], distance, text)
+            paths_heatmap, paths_count = get_heatmap_paths(form.geo_data['geopoint'], distance, text)
             fr_data = get_pt_frequency(form.geo_data['geopoint'], distance, times[0], times[1], week_day)
             chance = fr_data['frequency']
             if chance:

@@ -1,3 +1,4 @@
+{% autoescape off %}
 <thead>
 {% for days in heatmap|slice:":1" %}
     <tr>
@@ -27,3 +28,4 @@
     </tr>
 {% endfor %}
 </tbody>
+{% endautoescape %}
