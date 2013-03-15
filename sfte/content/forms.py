@@ -69,7 +69,7 @@ class TicketSearchForm(forms.Form):
     def clean(self):
         data = self.cleaned_data
         if self.cleaned_data['from_time'] and self.cleaned_data['to_time']:
-            ft, tt = self.times
+            ft, tt = self.hours
             if ft >= tt:
                 raise forms.ValidationError('"To time" must be later than "From time"')
         return data
@@ -94,16 +94,23 @@ class TicketSearchForm(forms.Form):
         return self.geo_data['place']
 
     @cached_property
-    def times(self):
+    def hours(self):
         ft, tt = self.cleaned_data['from_time'], self.cleaned_data['to_time']
         if not ft and not tt:
             return None, None
         if ft and not tt:
-            tt = 23
+            tt = 24
         elif tt and not ft:
             ft = 0
         ft, tt = int(ft), int(tt)
-        return datetime.time(ft), datetime.time(tt)
+        return ft, tt
+
+    @cached_property
+    def times(self):
+        start_hour, end_hour = self.hours
+        if not start_hour:
+            return None, None
+        return datetime.time(start_hour % 24), datetime.time(end_hour % 24)
 
     def get_errors(self):
         output = {}
