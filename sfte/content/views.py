@@ -215,7 +215,6 @@ def get_heatmap(request):
             from_time=times[0], to_time=times[1], week_day=form.get_week_day_display(),
             type=Log.HEATMAP,
         )
-    if form.geo_data['lat']:
         if form.geo_data['lat']:
             distance = form.cleaned_data['distance']
             week_day = form.cleaned_data['week_day']
