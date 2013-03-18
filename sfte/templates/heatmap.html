@@ -44,8 +44,13 @@
             }
         }
             $("#tickets-heatmap td").hottie(heatmap_options);
+            $("#tickets-heatmap th.column-total").hottie(heatmap_options);
+            $("#tickets-heatmap th.row-total").hottie(heatmap_options);
 
             $("#paths-heatmap td").hottie(heatmap_options);
+            $("#paths-heatmap th.column-total").hottie(heatmap_options);
+            $("#paths-heatmap th.row-total").hottie(heatmap_options);
+
         </script>
     {% else %}
         Sorry, we cannot find coordinates of this address.

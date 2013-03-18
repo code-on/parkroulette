@@ -12,8 +12,10 @@
 {% for hour_data in heatmap|slice:"1:-1" %}
     <tr class="stats-row">
         {% for day_data in hour_data %}
-            {% if forloop.first or forloop.last %}
+            {% if forloop.first %}
                 <th class="stats-title">{{ day_data }}</th>
+            {% elif forloop.last %}
+                <th class="row-total">{{ day_data }}</th>
             {% else %}
                 <td>{{ day_data }}</td>
             {% endif %}
@@ -23,7 +25,11 @@
 {% for hour_data in heatmap|slice:"-1:" %}
     <tr>
         {% for day_data in hour_data %}
-            <th>{{ day_data }}</th>
+            {% if forloop.first or forloop.last %}
+                <th>{{ day_data }}</th>
+            {% else %}
+                <th class="column-total">{{ day_data }}</th>
+            {% endif %}
         {% endfor %}
     </tr>
 {% endfor %}
