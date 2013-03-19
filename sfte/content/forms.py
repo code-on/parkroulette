@@ -91,7 +91,8 @@ class TicketSearchForm(forms.Form):
         return DISTANCE_DICT[self.cleaned_data['distance']]
 
     def get_place(self):
-        return self.geo_data['place']
+        #return self.geo_data['place']
+        return self.cleaned_data['text']
 
     @cached_property
     def hours(self):

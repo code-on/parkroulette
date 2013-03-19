@@ -1,6 +1,6 @@
 {% if chance %}
-    <strong>{{ ticket_count }}</strong> were issued within {{ distance }} meters of <strong>{{ place }}</strong>
-    while that address was <strong>{{ patrol_count }}</strong> over {{ hours_count }}
+    <strong>{{ ticket_count }} tickets</strong> were issued within {{ distance }} meters of <strong>{{ place }}</strong>
+    while that address was <strong>patrolled {{ patrol_count }} times</strong> over <strong>{{ hours_count }} hours </strong>
     {% if start_time != None %}
         between <strong>{{ start_time }}</strong> and <strong>{{ end_time }}</strong>
     {% endif %}
