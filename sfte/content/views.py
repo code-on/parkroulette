@@ -182,7 +182,7 @@ def _get_heatmap(datetimes, url):
 
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
     for i in range(1, 8):
-        data[0][i] = day_func(data[0][i], i)
+        data[0][i] = day_func(data[0][i], i-1)
 
     day_total = [0, 0, 0, 0, 0, 0, 0]
     for hour in range(24):
@@ -197,7 +197,7 @@ def _get_heatmap(datetimes, url):
         data.append(hour_data)
     all_count = sum(day_total)
     for i in range(7):
-        day_total[i] = day_func(day_total[i], i+1)
+        day_total[i] = day_func(day_total[i], i)
     data.append(['Total'] + day_total + [''])
     return data, all_count
 
