@@ -59,9 +59,13 @@
                     <div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a></a>{{ error }}</div>
                 {% endfor %}
             </form>
-            <input id="chance-button" data-url="{% url "get-chance" %}" class="action btn btn-warning" type="submit" value="Chance of ticket" />
-            <input id="laws-button" data-url="{% url "get-laws" %}" class="action btn btn-warning" type="submit" value="Tell me the laws" />
-            <input id="heatmap-button" data-url="{% url "get-heatmap" %}" class="action btn btn-warning" type="submit" value="Heatmap" />
+            <div class="span3" style="margin-left: 0px;">
+                <input id="chance-button" data-url="{% url "get-chance" %}" class="action btn btn-warning btn-block" type="submit" value="Chance of ticket" />
+
+                <input id="laws-button" data-url="{% url "get-laws" %}" class="action btn btn-warning btn-block" type="submit" value="Tell me the laws" />
+
+                <input id="heatmap-button" data-url="{% url "get-heatmap" %}" class="action btn btn-warning btn-block" type="submit" value="Heatmap" />
+            </div>
           </div>
           <div class="offset1 span2 hidden-phone">
             <img src="/static/no-parking.png">
