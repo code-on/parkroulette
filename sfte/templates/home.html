@@ -13,8 +13,8 @@
 {% block content %}
     <div class="well">
         <div class="row">
-          <div class="span7">
-            <h3>Calculate the chance you will get a parking ticket at any address in San Francisco.</h3>
+          <div class="span8">
+            <h4>Calculate the chance you will get a parking ticket at any address in San Francisco.</h4>
             <p>Or just find out what the parking laws are at any address. Based on public records of actual tickets.</p>
 
             <br>
@@ -25,28 +25,29 @@
                     <span class="help-inline error-msg">{{ error }}</span>
                 {% endfor %}
                 <div class="row">
-                    <div class="span1">
+                    <div style="width: 30px; float: left;" class="hidden-phone">&nbsp;</div>
+                    <div class="paramsinput">
                         {{ form.distance.label }}<br/>
                         {{ form.distance }}
                         {% for error in form.distance.errors %}
                             <span class="help-inline error-msg">{{ error }}</span>
                         {% endfor %}
                     </div>
-                    <div class="span1">
+                    <div class="paramsinput">
                         {{ form.week_day.label }}<br/>
                         {{ form.week_day }}
                         {% for error in form.week_day.errors %}
                             <span class="help-inline error-msg">{{ error }}</span>
                         {% endfor %}
                     </div>
-                    <div class="span1">
+                    <div class="paramsinput">
                         {{ form.from_time.label }}<br/>
                         {{ form.from_time }}
                         {% for error in form.from_time.errors %}
                             <span class="help-inline error-msg">{{ error }}</span>
                         {% endfor %}
                     </div>
-                    <div class="span1">
+                    <div class="paramsinput">
                         {{ form.to_time.label }}<br/>
                         {{ form.to_time }}
                         {% for error in form.to_time.errors %}
@@ -62,7 +63,7 @@
             <input id="laws-button" data-url="{% url "get-laws" %}" class="action btn btn-warning" type="submit" value="Tell me the laws" />
             <input id="heatmap-button" data-url="{% url "get-heatmap" %}" class="action btn btn-warning" type="submit" value="Heatmap" />
           </div>
-          <div class="offset2 span2 hidden-phone">
+          <div class="offset1 span2 hidden-phone">
             <img src="/static/no-parking.png">
           </div>
         </div>
