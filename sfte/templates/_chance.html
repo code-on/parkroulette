@@ -1,6 +1,6 @@
-{% if chance %}
+{% if chance %}{% load humanize %}
     <strong>{{ ticket_count }} tickets</strong> were issued within {{ distance }} meters of <strong>{{ place }}</strong>
-    while that address was <strong>patrolled {{ patrol_count }} times</strong> over <strong>{{ hours_count }} hours </strong>
+    while that address was <strong>patrolled {{ patrol_count }} times</strong> over <strong>{{ hours_count|intcomma }} hours </strong>
     {% if start_time != None %}
         between <strong>{{ start_time }}</strong> and <strong>{{ end_time }}</strong>
     {% endif %}
@@ -8,7 +8,7 @@
         on <strong>{{ week_day }}</strong>
     {% endif %}
     in {{ year }}.
-    Based on that information, there is a <strong>{{ chance|floatformat:2 }}%</strong> percent chance you will get a ticket at that address if you park against the rules.
+    Based on that information, there is a <strong>{{ chance|floatformat:1 }}%</strong> percent chance you will get a ticket at that address if you park against the rules.
 {% else %}
     Sorry, no records found for selected time
 {% endif %}
