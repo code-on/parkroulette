@@ -18,7 +18,7 @@
             <p>Or just find out what the parking laws are at any address. Based on public records of actual tickets.</p>
 
             <br>
-            <form id="search-form" action="{% url "get-chance" %}">
+            <form id="search-form" action="{% url "get-heatmap" %}">
                 {{ form.text.label }}<br/>
                 {{ form.text }}
                 {% for error in form.text.errors %}
