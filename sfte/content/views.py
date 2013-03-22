@@ -103,7 +103,7 @@ def home(request, template='home.html'):
     return TemplateResponse(request, template, context)
 
 
-@render_to('changce.html')
+@render_to('chance.html')
 def get_chance(request):
     form = TicketSearchForm(request.GET or None)
     context = {'form': form}
