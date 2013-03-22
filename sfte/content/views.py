@@ -8,6 +8,7 @@ from django.db.models import Max, Min
 from django.template.response import TemplateResponse
 from django.utils.http import urlquote
 from collections import Counter
+from utils.views import render_to
 
 cache = get_cache('default')
 
@@ -64,7 +65,7 @@ def get_pt_frequency(geopoint, distance, start_hour=None, end_hour=None, week_da
     hours_count = _get_all_hours_count()
 
     if count == 0:
-        return {'frequency': None, 'count': count}
+        return {'frequency': None, 'count': count, 'hours_count': 0}
 
     if week_day:
         pcount *= 7
@@ -102,6 +103,7 @@ def home(request, template='home.html'):
     return TemplateResponse(request, template, context)
 
 
+@render_to('changce.html')
 def get_chance(request):
     form = TicketSearchForm(request.GET or None)
     context = {'form': form}
@@ -136,9 +138,10 @@ def get_chance(request):
                 'lng': form.geo_data['lng'],
                 'lat': form.geo_data['lat'],
             })
-    return TemplateResponse(request, 'chance.html', context)
+    return context
 
 
+@render_to('laws.html')
 def get_laws(request):
     form = TicketSearchForm(request.GET)
     context = {'form': form}
@@ -163,7 +166,7 @@ def get_laws(request):
                 'lat': form.geo_data['lat'],
                 'lng': form.geo_data['lng'],
             })
-    return TemplateResponse(request, 'laws.html', context)
+    return context
 
 
 def _get_heatmap(datetimes, url):
@@ -216,6 +219,7 @@ def get_heatmap_paths(geopoint, distance, text):
     return _get_heatmap(datetimes, url)
 
 
+@render_to('heatmap.html')
 def get_heatmap(request):
     form = TicketSearchForm(request.GET)
     context = {'form': form}
@@ -230,8 +234,8 @@ def get_heatmap(request):
             distance = form.cleaned_data['distance']
             week_day = form.cleaned_data['week_day']
             text = form.cleaned_data['text']
-            tickets_heatmap, tickets_count = get_heatmap_tickets(form.geo_data['geopoint'], distance, text)
-            paths_heatmap, paths_count = get_heatmap_paths(form.geo_data['geopoint'], distance, text)
+            tickets_heatmap, tickets_heatmap_count = get_heatmap_tickets(form.geo_data['geopoint'], distance, text)
+            paths_heatmap, paths_heatmap_count = get_heatmap_paths(form.geo_data['geopoint'], distance, text)
             fr_data = get_pt_frequency(form.geo_data['geopoint'], distance, form.hours[0], form.hours[1], week_day)
             chance = fr_data['frequency']
             if chance:
@@ -247,9 +251,9 @@ def get_heatmap(request):
                 'hours_count': fr_data['hours_count'],
                 'year': 2012,
                 'tickets_heatmap': tickets_heatmap,
-                'tickets_count': tickets_count,
+                'tickets_heatmap_count': tickets_heatmap_count,
                 'paths_heatmap': paths_heatmap,
-                'paths_count': paths_count,
+                'paths_heatmap_count': paths_heatmap_count,
                 'place': form.get_place(),
                 'start_time': times[0],
                 'end_time': times[1],
@@ -257,4 +261,4 @@ def get_heatmap(request):
                 'lat': form.geo_data['lat'],
                 'lng': form.geo_data['lng'],
             })
-    return TemplateResponse(request, 'heatmap.html', context)
+    return context
