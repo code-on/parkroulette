@@ -5,15 +5,18 @@ from django.contrib.gis.geos import fromstr
 from django.utils.functional import cached_property
 from geopy import geocoders
 
-WEEK_DAYS_DICT = dict((
-    ('0', 'Sunday'),
-    ('1', 'Monday'),
-    ('2', 'Tuesday'),
-    ('3', 'Wednesday'),
-    ('4', 'Thursday'),
-    ('5', 'Friday'),
-    ('6', 'Saturday'),
-))
+
+WEEK_DAYS = (
+    ('1', 'Sunday'),
+    ('2', 'Monday'),
+    ('3', 'Tuesday'),
+    ('4', 'Wednesday'),
+    ('5', 'Thursday'),
+    ('6', 'Friday'),
+    ('7', 'Saturday'),
+)
+
+WEEK_DAYS_DICT = dict(WEEK_DAYS)
 
 DISTANCE_DICT = dict((
     ('0.0001', '10'), ('0.0002', '20'), ('0.0003', '30'),
@@ -24,14 +27,7 @@ DISTANCE_DICT = dict((
 class TicketSearchForm(forms.Form):
     WEEK_DAY_CHOICES = (
         ('', '--------'),
-        (1, 'Sunday'),
-        (2, 'Monday'),
-        (3, 'Tuesday'),
-        (4, 'Wednesday'),
-        (5, 'Thursday'),
-        (6, 'Friday'),
-        (7, 'Saturday'),
-    )
+    ) + WEEK_DAYS
     HOUR_CHOICES = (('', '--------'),) + tuple(HOURS_DICT.items())
     DISTANCE_CHOICES = (
         ('0.0001', '10m'), ('0.0002', '20m'), ('0.0003', '30m'),
