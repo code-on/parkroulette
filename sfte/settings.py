@@ -29,6 +29,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.static',
+    'django.core.context_processors.request',
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'context.settings',
@@ -63,6 +64,10 @@ ROOT_URLCONF = 'urls'
 
 WSGI_APPLICATION = 'wsgi.application'
 
+
+# not used for now
+LIMIT_LATITUDES = (-125, -114)
+LIMIT_LONGTITUDES = (32, 42)
 
 DATABASES = {
     'default': {

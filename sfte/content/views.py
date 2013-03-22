@@ -143,7 +143,7 @@ def get_chance(request):
 
 @render_to('laws.html')
 def get_laws(request):
-    form = TicketSearchForm(request.GET)
+    form = TicketSearchForm(request.GET or None)
     context = {'form': form}
     if form.is_valid():
         times = form.times
@@ -221,7 +221,7 @@ def get_heatmap_paths(geopoint, distance, text):
 
 @render_to('heatmap.html')
 def get_heatmap(request):
-    form = TicketSearchForm(request.GET)
+    form = TicketSearchForm(request.GET or None)
     context = {'form': form}
     if form.is_valid():
         times = form.times
