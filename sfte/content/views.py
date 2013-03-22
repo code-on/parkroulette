@@ -64,7 +64,7 @@ def get_pt_frequency(geopoint, distance, start_hour=None, end_hour=None, week_da
     hours_count = _get_all_hours_count()
 
     if count == 0:
-        return {'frequency': None, 'count': count}
+        return {'frequency': None, 'count': count, 'hours_count': 0}
 
     if week_day:
         pcount *= 7
