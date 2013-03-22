@@ -8,6 +8,7 @@ from django.db.models import Max, Min
 from django.template.response import TemplateResponse
 from django.utils.http import urlquote
 from collections import Counter
+from utils.views import render_to
 
 cache = get_cache('default')
 
@@ -102,6 +103,7 @@ def home(request, template='home.html'):
     return TemplateResponse(request, template, context)
 
 
+@render_to('changce.html')
 def get_chance(request):
     form = TicketSearchForm(request.GET or None)
     context = {'form': form}
@@ -136,9 +138,10 @@ def get_chance(request):
                 'lng': form.geo_data['lng'],
                 'lat': form.geo_data['lat'],
             })
-    return TemplateResponse(request, 'chance.html', context)
+    return context
 
 
+@render_to('laws.html')
 def get_laws(request):
     form = TicketSearchForm(request.GET)
     context = {'form': form}
@@ -163,7 +166,7 @@ def get_laws(request):
                 'lat': form.geo_data['lat'],
                 'lng': form.geo_data['lng'],
             })
-    return TemplateResponse(request, 'laws.html', context)
+    return context
 
 
 def _get_heatmap(datetimes, url):
@@ -216,6 +219,7 @@ def get_heatmap_paths(geopoint, distance, text):
     return _get_heatmap(datetimes, url)
 
 
+@render_to('heatmap.html')
 def get_heatmap(request):
     form = TicketSearchForm(request.GET)
     context = {'form': form}
@@ -257,4 +261,4 @@ def get_heatmap(request):
                 'lat': form.geo_data['lat'],
                 'lng': form.geo_data['lng'],
             })
-    return TemplateResponse(request, 'heatmap.html', context)
+    return context
