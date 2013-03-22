@@ -19,13 +19,13 @@
             </div>
             <div class="row-fluid">
                 <div class="span6">
-                    <h5>Tickets ({{ tickets_count }})</h5>
+                    <h5>Tickets ({{ tickets_heatmap_count }})</h5>
                     <table class="table table-slim table-bordered" id="tickets-heatmap">
                         {% with tickets_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
                     </table>
                 </div>
                 <div class="span6">
-                    <h5>Patrols ({{ paths_count }})</h5>
+                    <h5>Patrols ({{ paths_heatmap_count }})</h5>
                     <table class="table table-slim table-bordered" id="paths-heatmap">
                         {% with paths_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
                     </table>

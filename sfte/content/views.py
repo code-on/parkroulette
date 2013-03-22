@@ -230,8 +230,8 @@ def get_heatmap(request):
             distance = form.cleaned_data['distance']
             week_day = form.cleaned_data['week_day']
             text = form.cleaned_data['text']
-            tickets_heatmap, tickets_count = get_heatmap_tickets(form.geo_data['geopoint'], distance, text)
-            paths_heatmap, paths_count = get_heatmap_paths(form.geo_data['geopoint'], distance, text)
+            tickets_heatmap, tickets_heatmap_count = get_heatmap_tickets(form.geo_data['geopoint'], distance, text)
+            paths_heatmap, paths_heatmap_count = get_heatmap_paths(form.geo_data['geopoint'], distance, text)
             fr_data = get_pt_frequency(form.geo_data['geopoint'], distance, form.hours[0], form.hours[1], week_day)
             chance = fr_data['frequency']
             if chance:
@@ -247,9 +247,9 @@ def get_heatmap(request):
                 'hours_count': fr_data['hours_count'],
                 'year': 2012,
                 'tickets_heatmap': tickets_heatmap,
-                'tickets_count': tickets_count,
+                'tickets_heatmap_count': tickets_heatmap_count,
                 'paths_heatmap': paths_heatmap,
-                'paths_count': paths_count,
+                'paths_heatmap_count': paths_heatmap_count,
                 'place': form.get_place(),
                 'start_time': times[0],
                 'end_time': times[1],
