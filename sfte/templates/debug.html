@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+    {% if form.geo_data.lat %}
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script>
+        var paths = {{ path_data|safe }};
+        var colors = ['#ff0000', '#00ff00', '#0000ff', '#000000', '#555555', '#ffff00', '#00ffff', '#ff00ff']
+        function init() {
+            var center = new google.maps.LatLng({{ form.geo_data.lat }}, {{ form.geo_data.lng }})
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 14,
+              center: center,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            var marker = new google.maps.Marker({
+              position: center,
+              map: map
+            });
+
+
+            var polylines = new Array(paths.lengths);
+            for (var i=0; i<paths.length; i++) {
+                var path_data = paths[i],
+                    path = [];
+                for (var j=0; j<path_data.length; j++){
+                    path.push(new google.maps.LatLng(path_data[j][1], path_data[j][0]))
+                }
+                polylines[i] = new google.maps.Polyline({
+                  path: path,
+                  strokeColor: colors[Math.floor(Math.random()*colors.length)],
+                  strokeOpacity: 1.0,
+                  strokeWeight: 1
+                });
+                polylines[i].setMap(map);
+            }
+          }
+        // Register an event listener to fire once when the page finishes loading.
+        google.maps.event.addDomListener(window, 'load', init);
+    </script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="well">
+        <div class="row">
+          <div class="span8">
+            <h4>Calculate the chance you will get a parking ticket at any address in San Francisco.</h4>
+            <p>Or just find out what the parking laws are at any address. Based on public records of actual tickets.</p>
+
+            <br>
+            <form id="search-form" action="{% url "debug" %}">
+                {{ form.text.label }}<br/>
+                {{ form.text }}
+                {% for error in form.text.errors %}
+                    <span class="help-inline error-msg">{{ error }}</span>
+                {% endfor %}
+                <div class="row">
+                    <div style="width: 30px; float: left;" class="hidden-phone">&nbsp;</div>
+                    <div class="paramsinput">
+                        {{ form.distance.label }}<br/>
+                        {{ form.distance }}
+                        {% for error in form.distance.errors %}
+                            <span class="help-inline error-msg">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a></a>{{ error }}</div>
+                {% endfor %}
+
+                <div class="span3" style="margin-left: 0px;">
+                    <input id="chance-button"class="btn btn-warning btn-block" type="submit" value="Show map" />
+                </div>
+            </form>
+          </div>
+          <div class="offset1 span2 hidden-phone">
+            <img src="/static/no-parking.png">
+          </div>
+        </div>
+    </div>
+
+    <div class="row-fluid" id="output-block">
+        <div id="map" style="height:500px"></div>
+    </div>
+{% endblock %}

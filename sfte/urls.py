@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^chance/$', 'content.views.get_chance', name='get-chance'),
     url(r'^laws/$', 'content.views.get_laws', name='get-laws'),
     url(r'^heatmap/$', 'content.views.get_heatmap', name='get-heatmap'),
+    url(r'^debug/$', 'content.views.debug', name='debug'),
 
     url(r'^admin/', include(admin.site.urls)),
 )

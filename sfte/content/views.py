@@ -1,3 +1,4 @@
+import json
 from content import HOURS_DICT
 from decimal import Decimal
 from content.forms import TicketSearchForm
@@ -262,3 +263,21 @@ def get_heatmap(request):
                 'lng': form.geo_data['lng'],
             })
     return context
+
+
+@render_to('debug.html')
+def debug(request):
+    form = TicketSearchForm(request.GET or None)
+    paths = []
+    if form.is_valid():
+        if form.geo_data['lat']:
+            distance = form.cleaned_data['distance']
+            ways = _get_path_qs(form.geo_data['geopoint'], distance).values_list('path', flat=True)
+            for way in ways:
+                paths.append(way.tuple)
+    path_data = json.dumps(paths)
+    return {
+        'path_data': path_data,
+        'path_count': len(paths),
+        'form': form,
+    }
