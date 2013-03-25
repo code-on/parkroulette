@@ -133,9 +133,8 @@
       }
 
       var getColor = function(percent){
-        
-      if (percent == null)
-        return nullColor;
+      if ((percent == null) || isNaN(percent))
+        return settings.nullColor;
 
       var colors = settings.colorArray.length;
 
