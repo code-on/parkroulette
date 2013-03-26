@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-    {% if form.geo_data.lat %}
+    {% if form_is_valid and form.geo_data.lat %}
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script>
         var paths = {{ path_data|safe }};

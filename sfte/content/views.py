@@ -269,7 +269,8 @@ def get_heatmap(request):
 def debug(request):
     form = TicketSearchForm(request.GET or None)
     paths = []
-    if form.is_valid():
+    form_is_valid = form.is_valid()
+    if form_is_valid:
         if form.geo_data['lat']:
             distance = form.cleaned_data['distance']
             ways = _get_path_qs(form.geo_data['geopoint'], distance).values_list('path', flat=True)
@@ -280,4 +281,5 @@ def debug(request):
         'path_data': path_data,
         'path_count': len(paths),
         'form': form,
+        'form_is_valid': form_is_valid,
     }
