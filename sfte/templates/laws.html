@@ -28,14 +28,26 @@
                     </p>
 
                     <table class="table table-bordered table-striped">
-                        {% for num, id, reason, price, street, etc in citations %}
+                        <thead>
                             <tr>
-                                <td>{{ num }}</td>
-                                <td>{{ id }}</td>
-                                <td>{{ reason }}</td>
-                                <td>{{ price }}</td>
+                                <th>count</th>
+                                <th>street</th>
+                                <th>violation</th>
+                                <th>violation description</th>
+                                <th>fine amt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for count, street, violation, violation_description, fine_amt in citations %}
+                            <tr>
+                                <td>{{ count }}</td>
+                                <td>{{ street }}</td>
+                                <td>{{ violation }}</td>
+                                <td>{{ violation_description }}</td>
+                                <td>{{ fine_amt }}</td>
                             </tr>
                         {% endfor %}
+                        </tbody>
                     </table>
                 {% else %}
                     We didn't find any issues around 10 meters of "{{ place }}" for selected day/time.

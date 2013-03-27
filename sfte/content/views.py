@@ -92,7 +92,7 @@ def get_pt_citations(geopoint, distance, start_hour=None, end_hour=None, week_da
 
     grouped_tickets = Counter(tc_qs.values_list('street', 'violation', 'violation_description', 'fine_amt'))
 
-    table = map(lambda x: [x[1]] + list(x[0][1:]), grouped_tickets.items())
+    table = map(lambda x: [x[1]] + list(x[0]), grouped_tickets.items())
     table.sort(key=lambda x: x[0], reverse=True)
     return table
 
