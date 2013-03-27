@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
+    <style>
+        #map img {
+            max-width: none;
+        }
+    </style>
     {% if form_is_valid and form.geo_data.lat %}
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script>
