@@ -35,6 +35,7 @@ class Path(models.Model):
     objects = models.GeoManager()
 
     class Meta:
+        managed = False
         db_table = 'paths'
 
 
@@ -66,4 +67,5 @@ class Ticket(models.Model):
     objects = models.GeoManager()
 
     class Meta:
+        managed = False
         db_table = 'tickets'
