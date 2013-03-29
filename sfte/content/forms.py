@@ -1,10 +1,13 @@
 import datetime
+import logging
+import time
 from content import HOURS_DICT
 from django import forms
 from django.contrib.gis.geos import fromstr
 from django.utils.functional import cached_property
 from geopy import geocoders
 
+logger = logging.getLogger()
 
 WEEK_DAYS = (
     ('1', 'Sunday'),
@@ -72,11 +75,13 @@ class TicketSearchForm(forms.Form):
 
     @cached_property
     def geo_data(self):
+        start_time = time.time()
         g = geocoders.GoogleV3(domain='maps.google.com')
         place, (lat, lng) = g.geocode(
             u'{address}, San Francisco, CA, United States'.format(address=self.cleaned_data['text']),
             exactly_one=False
         )[0]
+        logger.info('Time for getting coords by address: {}s'.format(time.time()-start_time))
         geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269) if lat else None
         return {'place': place, 'lat': lat, 'lng': lng, 'geopoint': geopoint}
 
