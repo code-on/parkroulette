@@ -22,3 +22,25 @@ def stage():
 def reset():
     with cd(env.project_dir):
         run('./manage.py reset_staging')
+
+
+def _wwwrun(cmd):
+    sudo(cmd, user='www-data')
+
+@hosts('root@parkroulette.com')
+def deploy():
+    if not raw_input('Are you sure you want to deploy ?[y/N]').lower() == 'y':
+        print 'Canceled.'
+        return
+
+    local('git tag -a `date +%y%m%d%H%M` -m "v`date +%y%m%d%H%M`"')
+    local('git push production master')
+
+    with cd(env.base_dir):
+        _wwwrun('git pull')
+        _wwwrun('find . -name "*.pyc" -exec rm {} \;')
+
+
+    with cd(env.project_dir):
+        _wwwrun('./manage.py collectstatic --noinput')
+        _wwwrun('touch wsgi.py') # code reload
