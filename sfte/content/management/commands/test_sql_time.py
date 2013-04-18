@@ -24,7 +24,10 @@ addresses = [
 class Command(BaseCommand):
     def handle(self, *args, **options):
         for (address, (lat, lng)) in addresses:
-            geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269)
-            start_time = time.time()
-            list(_get_path_qs(geopoint, '0.0002').values_list('start_datetime', flat=True))
-            print('{time}s: {address}'.format(time=time.time()-start_time, address=address))
+            self.handle_point(lat, lng)
+
+    def handle_point(self, lat, lng)
+        geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269)
+        start_time = time.time()
+        list(_get_path_qs(geopoint, '0.0002').values_list('start_datetime', flat=True))
+        print('{time}s: {lat} {lng}'.format(time=time.time()-start_time, lat=lat, lng=lng))
