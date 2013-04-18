@@ -23,8 +23,15 @@ addresses = [
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        for (address, (lat, lng)) in addresses:
-            self.handle_point(lat, lng)
+        if 'all' in args:
+            for lat in xrange(3771, 3778):
+            lat = '%.2f' % (lat/100.)
+            for lng in xrange(12238, 12250):
+                lng = '%.2f' % (lng/100.)
+                self.handle_point(lat, lng)
+        else:
+            for (address, (lat, lng)) in addresses:
+                self.handle_point(lat, lng)
 
     def handle_point(self, lat, lng):
         geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269)
