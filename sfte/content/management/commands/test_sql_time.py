@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 lat = '%.2f' % (lat/100.)
                 for lng in xrange(12238, 12250):
                     lng = '-%.2f' % (lng/100.)
-                    handle_funclat, lng)
+                    handle_func(lat, lng)
         else:
             for (address, (lat, lng)) in addresses:
                 handle_func(lat, lng)
