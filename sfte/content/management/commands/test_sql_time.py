@@ -1,5 +1,5 @@
 import time
-from content.views import _get_path_qs
+from content.views import _get_path_qs, _get_ticket_qs
 from django.contrib.gis.geos import fromstr
 from django.core.management import BaseCommand
 
@@ -47,5 +47,5 @@ class Command(BaseCommand):
     def handle_point_ticket(self, lat, lng):
         geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269)
         start_time = time.time()
-        list(_get_path_qs(geopoint, '0.0002').values_list('ticket_id', flat=True))
+        list(_get_ticket_qs(geopoint, '0.0002').values_list('ticket_id', flat=True))
         print('{time}s: {lat} {lng}'.format(time=time.time()-start_time, lat=lat, lng=lng))
