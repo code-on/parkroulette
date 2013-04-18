@@ -22,7 +22,12 @@ addresses = [
 
 
 class Command(BaseCommand):
+
     def handle(self, *args, **options):
+        handle_func = self.handle_point_path
+        if 'tickets' in args:
+            handle_func = self.handle_point_ticket
+
         if 'all' in args:
             for lat in xrange(3771, 3778):
                 lat = '%.2f' % (lat/100.)
@@ -33,8 +38,14 @@ class Command(BaseCommand):
             for (address, (lat, lng)) in addresses:
                 self.handle_point(lat, lng)
 
-    def handle_point(self, lat, lng):
+    def handle_point_path(self, lat, lng):
         geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269)
         start_time = time.time()
         list(_get_path_qs(geopoint, '0.0002').values_list('start_datetime', flat=True))
+        print('{time}s: {lat} {lng}'.format(time=time.time()-start_time, lat=lat, lng=lng))
+
+    def handle_point_ticket(self, lat, lng):
+        geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269)
+        start_time = time.time()
+        list(_get_path_qs(geopoint, '0.0002').values_list('ticket_id', flat=True))
         print('{time}s: {lat} {lng}'.format(time=time.time()-start_time, lat=lat, lng=lng))
