@@ -27,7 +27,7 @@ class Command(BaseCommand):
             for lat in xrange(3771, 3778):
                 lat = '%.2f' % (lat/100.)
                 for lng in xrange(12238, 12250):
-                    lng = '%.2f' % (lng/100.)
+                    lng = '-%.2f' % (lng/100.)
                     self.handle_point(lat, lng)
         else:
             for (address, (lat, lng)) in addresses:
