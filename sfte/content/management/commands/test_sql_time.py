@@ -33,10 +33,10 @@ class Command(BaseCommand):
                 lat = '%.2f' % (lat/100.)
                 for lng in xrange(12238, 12250):
                     lng = '-%.2f' % (lng/100.)
-                    self.handle_point(lat, lng)
+                    handle_funclat, lng)
         else:
             for (address, (lat, lng)) in addresses:
-                self.handle_point(lat, lng)
+                handle_func(lat, lng)
 
     def handle_point_path(self, lat, lng):
         geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269)
