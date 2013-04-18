@@ -26,7 +26,7 @@ class Command(BaseCommand):
         for (address, (lat, lng)) in addresses:
             self.handle_point(lat, lng)
 
-    def handle_point(self, lat, lng)
+    def handle_point(self, lat, lng):
         geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269)
         start_time = time.time()
         list(_get_path_qs(geopoint, '0.0002').values_list('start_datetime', flat=True))
