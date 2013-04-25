@@ -5,11 +5,12 @@ import logging
 import time
 import datetime
 from content import HOURS_DICT, WEEK_DAYS_DICT, DISTANCE_DICT
-from content.models import Path, Ticket, Log
+from content.models import Path, Log
+from content.query import _get_path_qs, _get_ticket_qs
 from django.contrib.gis.geos import fromstr
 from django.core.cache import get_cache
 from django.core.urlresolvers import reverse
-from django.db.models import Max, Min, Avg, Count
+from django.db.models import Max, Min
 from django.utils.functional import cached_property
 from django.utils.http import urlquote
 from django.utils.text import slugify
@@ -147,37 +148,18 @@ class Data(object):
         return cache.get('hours_count')
 
     def get_path_qs(self, ignore_daytime=False):
-        ph_qs = Path.objects.filter(path__dwithin=(self.geopoint, Decimal(self.distance)))
         if not ignore_daytime:
-            if self.week_day:
-                ph_qs = ph_qs.filter(day__week_day=self.week_day)
-
-            if self.start_hour is not None:
-                ph_qs = ph_qs.extra(
-                    where=[
-                        'EXTRACT(hour FROM start_datetime) < %s',
-                        'EXTRACT(hour FROM end_datetime) >= %s',
-                    ],
-                    params=[self.end_hour, self.start_hour]
-                )
-        return ph_qs
+            extra_args = [self.start_hour, self.end_hour, self.week_day]
+        else:
+            extra_args = []
+        return _get_path_qs(self.geopoint, self.distance, *extra_args)
 
     def get_ticket_qs(self, ignore_daytime=False):
-        tc_qs = Ticket.objects.filter(geopoint__dwithin=(self.geopoint, Decimal(self.distance)))
         if not ignore_daytime:
-            if self.week_day:
-                tc_qs = tc_qs.filter(issue_datetime__week_day=self.week_day)
-
-            # for now django can't filter by __hour__lt (only by __hour in dev version) //28.02.2013
-            if self.start_hour is not None:
-                tc_qs = tc_qs.extra(
-                    where=[
-                        'EXTRACT(hour FROM issue_datetime) < %s',
-                        'EXTRACT(hour FROM issue_datetime) >= %s',
-                    ],
-                    params=[self.end_hour, self.start_hour]
-                )
-        return tc_qs
+            extra_args = [self.start_hour, self.end_hour, self.week_day]
+        else:
+            extra_args = []
+        return _get_ticket_qs(self.geopoint, self.distance, *extra_args)
 
     def laws_list(self):
         tc_qs = self.get_ticket_qs()
