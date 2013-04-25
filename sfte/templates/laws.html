@@ -2,60 +2,60 @@
 
 {% block extra_ga %}
     {% if form.is_valid %}
-        _gaq.push(['_trackEvent', 'click', 'laws', 'address', $('#{{ form.text.auto_id }}').val()]);
+        _gaq.push(['_trackEvent', 'click', 'laws', 'address', '{{ data.address }}']);
     {% endif %}
 {% endblock %}
 
 {% block output %}
     {% if form.is_valid %}
-    {% if lat and lng %}
-        <div id="img-block" class="span2">
-            <img src="http://maps.google.com/maps/api/staticmap?center={{ lat }},{{ lng }}&markers={{ lat }},{{ lng }}&zoom=16&size=200x200&sensor=false" />
-        </div>
-        <div class="span8">
-            <h4 id="place-block">{{ place }}</h4>
-            <div>
-                {% if citations %}
-                    <p>
-                        In 2012, the top reasons for a parking citation within {{ distance }} meters of "{{ place }}"
-                        {% if week_day %}
-                            on {{ week_day }}
-                        {% endif %}
-                        {% if start_time == None%}{% else %}
-                            between {{ start_time }} and {{ end_time }}
-                        {% endif %}
-                        was:
-                    </p>
-
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>count</th>
-                                <th>street</th>
-                                <th>violation</th>
-                                <th>violation description</th>
-                                <th>fine amt</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for count, street, violation, violation_description, fine_amt in citations %}
-                            <tr>
-                                <td>{{ count }}</td>
-                                <td>{{ street }}</td>
-                                <td>{{ violation }}</td>
-                                <td>{{ violation_description }}</td>
-                                <td>{{ fine_amt }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    We didn't find any issues around 10 meters of "{{ place }}" for selected day/time.
-                {% endif %}
+        {% if data.lat and data.lng %}
+            <div id="img-block" class="span2">
+                <img src="http://maps.google.com/maps/api/staticmap?center={{ data.lat }},{{ data.lng }}&markers={{ data.lat }},{{ data.lng }}&zoom=16&size=200x200&sensor=false" />
             </div>
-        </div>
-    {% else %}
-        Sorry, we cannot find coordinates of this address.
-    {% endif %}
+            <div class="span8">
+                <h4 id="place-block">{{ data.place }}</h4>
+                <div>
+                    {% if data.laws_list %}
+                        <p>
+                            In 2012, the top reasons for a parking citation within {{ data.get_distance_display }} meters of "{{ data.place }}"
+                            {% if data.week_day %}
+                                on {{ data.get_week_day_display }}
+                            {% endif %}
+                            {% if data.start_time != None %}
+                                between {{ data.start_time }} and {{ data.end_time }}
+                            {% endif %}
+                            was:
+                        </p>
+
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>count</th>
+                                    <th>street</th>
+                                    <th>violation</th>
+                                    <th>violation description</th>
+                                    <th>fine amt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for count, street, violation, violation_description, fine_amt in data.laws_list %}
+                                <tr>
+                                    <td>{{ count }}</td>
+                                    <td>{{ street }}</td>
+                                    <td>{{ violation }}</td>
+                                    <td>{{ violation_description }}</td>
+                                    <td>{{ fine_amt }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        We didn't find any issues around {{ data.get_distance_display }} of "{{ data.place }}" for selected day/time.
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            Sorry, we cannot find coordinates of this address.
+        {% endif %}
     {% endif %}
 {% endblock %}
