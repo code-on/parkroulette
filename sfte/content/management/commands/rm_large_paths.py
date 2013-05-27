@@ -17,5 +17,5 @@ class Command(BaseCommand):
             for p in Path.objects.all()[i:i+CHUNK_SIZE].iterator():
                 if len(p.path) > 250:
                     removed += 1
+                    print removed
                     p.delete()
-                print '%d (%d)' % (p.path_id, removed)
