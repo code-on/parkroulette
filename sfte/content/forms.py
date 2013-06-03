@@ -1,47 +1,7 @@
-import datetime
-import logging
-import time
-from content import HOURS_DICT
+from content import HOURS_DICT, WEEK_DAYS
+from content.data import Data
 from django import forms
-from django.contrib.gis.geos import fromstr
-from django.core.cache import get_cache
 from django.utils.functional import cached_property
-from django.utils.text import slugify
-from geopy import geocoders
-
-logger = logging.getLogger()
-cache = get_cache('addresses')
-
-
-def get_place_data(address):
-    sl_address = slugify(address)
-    data = cache.get(sl_address)
-    if not data:
-        g = geocoders.GoogleV3(domain='maps.google.com')
-        data = g.geocode(
-            u'{address}, San Francisco, CA, United States'.format(address=address),
-            exactly_one=False
-        )[0]
-        cache.set(sl_address, data)
-    return data
-
-
-WEEK_DAYS = (
-    ('1', 'Sunday'),
-    ('2', 'Monday'),
-    ('3', 'Tuesday'),
-    ('4', 'Wednesday'),
-    ('5', 'Thursday'),
-    ('6', 'Friday'),
-    ('7', 'Saturday'),
-)
-
-WEEK_DAYS_DICT = dict(WEEK_DAYS)
-
-DISTANCE_DICT = dict((
-    ('0.0001', '10'), ('0.0002', '20'), ('0.0003', '30'),
-    ('0.0004', '40'), ('0.0005', '50'), ('0.001', '100'),
-))
 
 
 class TicketSearchForm(forms.Form):
@@ -90,23 +50,14 @@ class TicketSearchForm(forms.Form):
                 raise forms.ValidationError('"To time" must be later than "From time"')
         return data
 
-    @cached_property
-    def geo_data(self):
-        start_time = time.time()
-        place, (lat, lng) = get_place_data(self.cleaned_data['text'])
-        logger.info('Time for getting coords by address: {}s'.format(time.time()-start_time))
-        geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269) if lat else None
-        return {'place': place, 'lat': lat, 'lng': lng, 'geopoint': geopoint}
-
-    def get_week_day_display(self):
-        return WEEK_DAYS_DICT.get(self.cleaned_data.get('week_day'))
-
-    def get_distance_display(self):
-        return DISTANCE_DICT[self.cleaned_data['distance']]
-
-    def get_place(self):
-        #return self.geo_data['place']
-        return self.cleaned_data['text']
+    def get_data_object(self):
+        return Data(
+            address=self.cleaned_data['text'],
+            distance=self.cleaned_data['distance'],
+            week_day=self.cleaned_data['week_day'],
+            start_hour=self.hours[0],
+            end_hour=self.hours[1],
+        )
 
     @cached_property
     def hours(self):
@@ -119,13 +70,6 @@ class TicketSearchForm(forms.Form):
             ft = 0
         ft, tt = int(ft), int(tt)
         return ft, tt
-
-    @cached_property
-    def times(self):
-        start_hour, end_hour = self.hours
-        if not start_hour:
-            return None, None
-        return datetime.time(start_hour % 24), datetime.time(end_hour % 24)
 
     def get_errors(self):
         output = {}

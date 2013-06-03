@@ -6,10 +6,10 @@
             max-width: none;
         }
     </style>
-    {% if form_is_valid and form.geo_data.lat %}
+    {% if form_is_valid and data.lat %}
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script>
-        var paths = {{ path_data|safe }};
+        var paths = {{ data.get_json_paths_for_debug|safe }};
         var colors = ['#ff0000', '#00ff00', '#0000ff', '#000000', '#555555', '#ffff00', '#00ffff', '#ff00ff']
         function init() {
             var center = new google.maps.LatLng({{ form.geo_data.lat }}, {{ form.geo_data.lng }})

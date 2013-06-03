@@ -1,5 +1,5 @@
 import time
-from content.views import _get_path_qs, _get_ticket_qs
+from content.query import _get_path_qs, _get_ticket_qs
 from django.contrib.gis.geos import fromstr
 from django.core.management import BaseCommand
 
