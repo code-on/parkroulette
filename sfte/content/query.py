@@ -3,7 +3,7 @@ from content.models import Ticket, Path
 
 
 def _get_path_qs(geopoint, distance, start_hour=None, end_hour=None, week_day=None):
-    ph_qs = Path.objects.filter(path__dwithin=(geopoint, Decimal(distance)))
+    ph_qs = Path.objects.filter(valid=True).filter(path__dwithin=(geopoint, Decimal(distance))).
 
     if week_day:
         ph_qs = ph_qs.filter(day__week_day=week_day)
