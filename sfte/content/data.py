@@ -187,9 +187,11 @@ class Data(object):
         # don't worked, need store "fine_amt" in decimal field, not monetary field
         #return self.get_ticket_qs().aggregate(average=Avg('fine_amt'), count=Count())['average']
 
-        values = list(self.get_ticket_qs().filter(fine_amt__isnull=False).values_list('fine_amt', flat=True))
-        values = map(lambda x: Decimal(x[1:]), values)
-        return sum(values)/len(values)
+        #TODO: divide by zero
+        #values = list(self.get_ticket_qs().filter(fine_amt__isnull=False).values_list('fine_amt', flat=True))
+        #values = map(lambda x: Decimal(x[1:]), values)
+        #eturn sum(values)/len(values)
+        pass
 
     @cached_property
     def tickets_exp_cost(self):

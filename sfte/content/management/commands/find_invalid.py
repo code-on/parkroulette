@@ -9,7 +9,7 @@ class Command(BaseCommand):
         for path in all:
             for point in path.path:
                 if not handle_func(-122.515335, 37.818328, -122.359646, 37.700121, point[0], point[1]):
-                    print 'Invalid path with id: {0}'.format(path.path_id)
+                    print 'Invalid Path with id: {0}'.format(path.path_id)
                     path.valid = False
                     path.save()
                     break

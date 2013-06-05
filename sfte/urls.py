@@ -15,4 +15,12 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 )
 
+urlpatterns += patterns('django.contrib.flatpages.views',
+    url(r'^about/$', 'flatpage', {'url': '/about/'}, name='about'),
+    url(r'^contact/$', 'flatpage', {'url': '/contact/'}, name='contact'),
+    url(r'^privacy/$', 'flatpage', {'url': '/privacy/'}, name='privacy'),
+    url(r'^disclaimer/$', 'flatpage', {'url': '/disclaimer/'}, name='disclaimer'),
+
+)
+
 urlpatterns += staticfiles_urlpatterns()

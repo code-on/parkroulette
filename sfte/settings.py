@@ -37,6 +37,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # Application definition
 
+SITE_ID = 1
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,6 +48,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.gis',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
 
     'content',
 )
