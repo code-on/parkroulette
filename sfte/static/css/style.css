@@ -1,3 +1,23 @@
+#share-result {
+    position: absolute;
+    right: 800px;
+    margin-top: 10px;
+}
+
+#output-text {
+    margin-bottom: 5px;
+}
+
+#block-share{
+    width: 400px;
+    margin-top: 10px;
+}
+
+#block-share div{
+    width: 400px;
+}
+
+
 .navcontainer ul {
     margin: 0;
     padding: 0;
@@ -11,4 +31,8 @@
 
 .navcontainer ul li a {
    padding: .2em 1em;
+}
+
+.results {
+    font-size: 25px;
 }

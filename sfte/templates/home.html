@@ -48,12 +48,16 @@
 
 {% block content %}
     <div class="row">
-          <div class="span3" style="margin-top:-40px">
-              <h1>Parkroulette</h1>
-          </div>
-          <div class="span share42init" style="margin-top:-20px;margin-left:-25px"></div>
-
-</div
+      <div class="span3" style="margin-top:-40px">
+            <h1>Parkroulette</h1>
+      </div>
+      <div class=span3 style="margin-left: -30px;margin-top: -27px;">
+      <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+        <a class="addthis_button_facebook at300b"></a>
+        <a class="addthis_button_twitter at300b"></a>
+        <a class="addthis_button_google_plusone_share at300b"></a>
+      </div>
+      </div>
     </div>
     <div class="well">
         <div class="row">
@@ -86,20 +90,17 @@
                 <input id="heatmap-button" data-url="{% url "get-heatmap" %}" class="action btn btn-warning btn-block" type="submit" value="Get chance of ticket" />
               </div>
             </form>
-
-
           </div>
           <div class="offset1 span2 hidden-phone" style="margin-top: 15px">
             <img src="/static/no-parking.png">
           </div>
         </div>
     </div>
-    <div class="row" style="border:1px green">
-        <div class="span6">
-<a class="twitter-timeline" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</script>
-
+    <div class="row">
+        <div class="span6" id="twitter-block">
+              <a class="twitter-timeline" height="385" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              </script>
         </div>
         <div class="span6">
             <div class="flexslider">
