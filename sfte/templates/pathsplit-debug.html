@@ -1,0 +1,59 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script>
+
+        var colors = ['#ff0000', '#00ff00', '#0000ff', '#000000']
+
+
+
+        function init() {
+
+            console.info('works')
+
+            var center = new google.maps.LatLng(37.77, -122.41)
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 11,
+              center: center,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            {% if route %}
+
+            var route = {{ route_json|safe }}
+
+            var polypath = []
+
+            for (var i=0; i<route.length; i++) {
+                polypath.push(new google.maps.LatLng(route[i][1], route[i][0]))
+            }
+
+            polylne = new google.maps.Polyline({
+              path: polypath,
+              strokeColor: colors[Math.floor(Math.random()*colors.length)],
+              strokeOpacity: 1.0,
+              strokeWeight: 2
+            });
+
+            polylne.setMap(map);
+
+            {% endif %}
+
+        }
+
+        google.maps.event.addDomListener(window, 'load', init);
+    </script>
+</head>
+<body>
+    <form>
+        <a href="./?id={{ prev_id }}">Prev</a>
+        <input name="id">
+        <input type="submit">
+        <a href="./?id={{ next_id }}">Next</a>
+    </form>
+    <div id="map" style="height:500px; width: 600px;"></div>
+    {% for i in route %}
+        {{ i }}<br>
+    {% endfor %}
+</body>
+</html>
