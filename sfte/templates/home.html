@@ -37,6 +37,15 @@
     }
 </script>
 {% endif %}
+
+ <script>
+    $(function(){
+       $('.action').click(function(){
+          $('#search-form').attr('action', $(this).data('url')).submit();
+       })
+   })
+</script>
+
 {% endblock %}
 
 {% block content %}

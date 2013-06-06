@@ -50,6 +50,26 @@
                     </div>
                 </div>
             </div>
+           <script>
+            var heatmap_options = {
+                colorArray : [
+                    "#63BE7B",
+                    "#FBE983",
+                    "#F8696B"
+                ],
+                nullColor: "#63BE7B",
+                readValue : function(e) {
+                    return e[0].childNodes[0].text
+                }
+            }
+                $("#tickets-heatmap td").hottie(heatmap_options);
+                $("#tickets-heatmap th.column-total").hottie(heatmap_options);
+                $("#tickets-heatmap th.row-total").hottie(heatmap_options);
+
+                $("#paths-heatmap td").hottie(heatmap_options);
+                $("#paths-heatmap th.column-total").hottie(heatmap_options);
+                $("#paths-heatmap th.row-total").hottie(heatmap_options);
+            </script>
         {% else %}
             Sorry, we cannot find coordinates of this address.
         {% endif %}
