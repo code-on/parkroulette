@@ -31,6 +31,7 @@ class Path(models.Model):
     start_datetime = models.DateTimeField(null=True, blank=True)
     end_datetime = models.DateTimeField(null=True, blank=True)
     waypoints = models.MultiPointField(srid=4269, null=True, blank=True)
+    valid = models.BooleanField(default=True)
 
     objects = models.GeoManager()
 

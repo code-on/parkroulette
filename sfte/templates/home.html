@@ -37,77 +37,125 @@
     }
 </script>
 {% endif %}
-<script>
+
+ <script>
     $(function(){
-        $('.action').click(function(){
-            $('#search-form').attr('action', $(this).data('url')).submit();
-        })
-    })
+       $('.action').click(function(){
+          $('#search-form').attr('action', $(this).data('url')).submit();
+       })
+   })
 </script>
+
 {% endblock %}
 
 {% block content %}
+    <!--modal -->
+ <div class="modal hide fade" tabindex="-1" role="dialog" id="share_modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h5>Share</h5>
+  </div>
+  <div class="modal-body">
+    <form>
+    <textarea style="width:520px;" name="limitedtextarea" id="textarea"
+         onkeydown="limitText(this.form.limitedtextarea,'#count',119)"
+         onkeyup="limitText(this.form.limitedtextarea,'#count',119)">I'm about to check my parking ticket chance at parkroulette.com</textarea>
+        <div class="count" style="font-size: 12px">You have <span id="count">56</span> characters left</div>
+  </form>
+    <div class="row">
+      <div class ="span3">
+          <a href="javascript:void(0)" onclick="fb_top('fb-popup-link','#textarea')" id="fb-popup-link" target="_blank">
+            <img src="/static/img/btn_facebook.png"></a>
+        <a href="javascript:void(0)" onclick="twitter_top('tweeter-popup-link','#textarea')" id="tweeter-popup-link" target="_blank">
+            <img src="/static/img/btn_twitter.png" ></a>
+        <a href="javascript:void(0)" onclick="googleone_top('googleone-popup-link')" id="googleone-popup-link" target="_blank">
+            <img src="/static/img/btn_google_plusone.png" ></a>
+      </div>
+      <div class="pull-right">
+      <a href="#" class="btn" data-dismiss="modal" onclick="$('#search-form').submit()">No, thanks</a>
+      </div>
+    </div>
+  </div>
+</div><!--end  modal -->
+
+
+    <div class="row">
+      <div class="span3" style="margin-top:-40px">
+            <h1>Parkroulette</h1>
+      </div>
+      <div class="span3 share-top">
+        <a href="javascript:void(0)" onclick="fb_top()" id="fb-top-link" target="_blank">
+            <img src="/static/img/btn_facebook.png"></a>
+        <a href="javascript:void(0)" onclick="twitter_top()" id="tweeter-top-link" target="_blank">
+            <img src="/static/img/btn_twitter.png" ></a>
+        <a href="javascript:void(0)" onclick="googleone_top()" id="googleone-link" target="_blank">
+            <img src="/static/img/btn_google_plusone.png" ></a>
+      </div>
+    </div>
     <div class="well">
         <div class="row">
           <div class="span8">
-            <h4>Calculate the chance you will get a parking ticket at any address in San Francisco.</h4>
-            <p>Or just find out what the parking laws are at any address. Based on public records of actual tickets.</p>
+            <h2 id="share-top-text">Calculate the chance you will get a parking ticket at any address in San Francisco</h2>
+            <p>Based on public records of actual tickets we will give you a chance of getting ticket if you park illegally on a chosen address</p>
 
-            <br>
-            <form id="search-form" action="{% url "get-heatmap" %}">
+            <h5>Try it:</h5>
+            <form id="search-form" action="{% url "get-heatmap" %}" style="margin-top: 50px; margin-left: -31px">
+             <div class="span3">
                 {{ form.text.label }}<br/>
                 {{ form.text }}
                 {% for error in form.text.errors %}
                     <span class="help-inline error-msg">{{ error }}</span>
                 {% endfor %}
-                <div class="row">
-                    <div style="width: 30px; float: left;" class="hidden-phone">&nbsp;</div>
-                    <div class="paramsinput">
+              </div>
+              <div class="span2 paramsinput">
                         {{ form.distance.label }}<br/>
                         {{ form.distance }}
                         {% for error in form.distance.errors %}
                             <span class="help-inline error-msg">{{ error }}</span>
                         {% endfor %}
-                    </div>
-                    <div class="paramsinput">
-                        {{ form.week_day.label }}<br/>
-                        {{ form.week_day }}
-                        {% for error in form.week_day.errors %}
-                            <span class="help-inline error-msg">{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    <div class="paramsinput">
-                        {{ form.from_time.label }}<br/>
-                        {{ form.from_time }}
-                        {% for error in form.from_time.errors %}
-                            <span class="help-inline error-msg">{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    <div class="paramsinput">
-                        {{ form.to_time.label }}<br/>
-                        {{ form.to_time }}
-                        {% for error in form.to_time.errors %}
-                            <span class="help-inline error-msg">{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
+              </div>
+
                 {% for error in form.non_field_errors %}
                     <div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a></a>{{ error }}</div>
                 {% endfor %}
+
+              <div class="span3" style="margin-top: 20px">
+                <a href="#share_modal" class="btn btn-warning btn-block" style="width:100%;"  data-toggle="modal">Get chance of ticket</a>
+                <input id="heatmap-button" data-url="{% url "get-heatmap" %}"
+                       type="submit" value="Get chance of ticket" style="display: none" />
+              </div>
             </form>
-            <div class="span3" style="margin-left: 0px;">
-                <input id="chance-button" data-url="{% url "get-chance" %}" class="action btn btn-warning btn-block" type="submit" value="Chance of ticket" />
-
-                <input id="laws-button" data-url="{% url "get-laws" %}" class="action btn btn-warning btn-block" type="submit" value="Tell me the laws" />
-
-                <input id="heatmap-button" data-url="{% url "get-heatmap" %}" class="action btn btn-warning btn-block" type="submit" value="Heatmap" />
-            </div>
           </div>
-          <div class="offset1 span2 hidden-phone">
+          <div class="offset1 span2 hidden-phone" style="margin-top: 15px">
             <img src="/static/no-parking.png">
           </div>
         </div>
     </div>
+
+{% if not data %}
+    <div class="row">
+        <div class="span6" id="twitter-block">
+              <a class="twitter-timeline" height="385" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              </script>
+        </div>
+        <div class="span6">
+            <div class="flexslider">
+                    <ul class="slides">
+                    <li>
+                      <img src="http://dummyimage.com/600x400/757682/fff.jpg&text=1" alt="" />
+                    </li>
+                    <li>
+                      <img src="http://dummyimage.com/600x400/757682/fff.jpg&text=2" alt="" />
+                    </li>
+                    <li>
+                      <img src="http://dummyimage.com/600x400/757682/fff.jpg&text=3" alt="" />
+                    </li>
+                    </ul>
+            </div> <!--end  slider -->
+        </div>
+    </div>
+{% endif %}
 
     <div class="row-fluid" id="output-block">{% block output %}{% endblock %}</div>
 {% endblock %}

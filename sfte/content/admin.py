@@ -12,7 +12,7 @@ class TicketAdmin(admin.GeoModelAdmin):
 
 
 class PathAdmin(admin.GeoModelAdmin):
-    pass
+     list_filter = ('valid',)
 
 
 admin.site.register(Ticket, TicketAdmin)

@@ -14,10 +14,28 @@
             </div>
             <div class="span8">
                 <h4 id="place-block">{{ data.place }}</h4>
-                <div>
+                <div id="output-text">
                     {% include "_chance.html" %}
                 </div>
-                <div class="row-fluid">
+            <div class="span8" id="block-share">
+              <strong><p>Share:</p></strong>
+                <div>
+                    <p id='share-middle-text'>Check out parkroulette.com for parking tickets estimation in San Francisco</p>
+                </div>
+                     <div class="span3" id="share-middle">
+                      <a href="javascript:void(0)" onclick="fb_top('fb-middle-link','#share-middle-text')" id="fb-middle-link" target="_blank">
+                          <img src="/static/img/btn_facebook.png" width="16" height="16"></a>
+                      <a href="javascript:void(0)" onclick="twitter_top('tweeter-middle-link','#share-middle-text')" id="tweeter-middle-link" target="_blank">
+                         <img src="/static/img/btn_twitter.png" width="16" height="16" ></a>
+                      <a href="javascript:void(0)" onclick="googleone_top('googleone-middle-link')" id="googleone-middle-link" target="_blank">
+                         <img src="/static/img/btn_google_plusone.png" width="16" height="16" ></a>
+                     </div>
+
+            </div>
+            <div class="span8 share42init" style="text-align: center;">
+
+            </div>
+                <div class="row-fluid" id="output-table">
                     <div class="span6">
                         <h5>Tickets ({{ data.tickets_heatmap_count }})</h5>
                         <table class="table table-slim table-bordered" id="tickets-heatmap">
@@ -32,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <script>
+           <script>
             var heatmap_options = {
                 colorArray : [
                     "#63BE7B",
@@ -51,7 +69,6 @@
                 $("#paths-heatmap td").hottie(heatmap_options);
                 $("#paths-heatmap th.column-total").hottie(heatmap_options);
                 $("#paths-heatmap th.row-total").hottie(heatmap_options);
-
             </script>
         {% else %}
             Sorry, we cannot find coordinates of this address.
