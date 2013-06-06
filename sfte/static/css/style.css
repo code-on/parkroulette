@@ -1,3 +1,8 @@
+.share-top {
+    margin-left: -30px;
+    margin-top: -27px;
+}
+
 #share-result {
     position: absolute;
     right: 800px;

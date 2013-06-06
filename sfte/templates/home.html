@@ -37,32 +37,56 @@
     }
 </script>
 {% endif %}
-<script>
-    $(function(){
-        $('.action').click(function(){
-            $('#search-form').attr('action', $(this).data('url')).submit();
-        })
-    })
-</script>
 {% endblock %}
 
 {% block content %}
+    <!--modal -->
+ <div class="modal hide fade" tabindex="-1" role="dialog" id="share_modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h5>Share</h5>
+  </div>
+  <div class="modal-body">
+    <form>
+    <textarea style="width:520px;" name="limitedtextarea" id="textarea"
+         onkeydown="limitText(this.form.limitedtextarea,'#count',119)"
+         onkeyup="limitText(this.form.limitedtextarea,'#count',119)">I'm about to check my parking ticket chance at parkroulette.com</textarea>
+        <div class="count" style="font-size: 12px">You have <span id="count">56</span> characters left</div>
+  </form>
+    <div class="row">
+      <div class ="span3">
+          <a href="javascript:void(0)" onclick="fb_top('fb-popup-link','#textarea')" id="fb-popup-link" target="_blank">
+            <img src="/static/img/btn_facebook.png"></a>
+        <a href="javascript:void(0)" onclick="twitter_top('tweeter-popup-link','#textarea')" id="tweeter-popup-link" target="_blank">
+            <img src="/static/img/btn_twitter.png" ></a>
+        <a href="javascript:void(0)" onclick="googleone_top('googleone-popup-link')" id="googleone-popup-link" target="_blank">
+            <img src="/static/img/btn_google_plusone.png" ></a>
+      </div>
+      <div class="pull-right">
+      <a href="#" class="btn" data-dismiss="modal" onclick="$('#search-form').submit()">No, thanks</a>
+      </div>
+    </div>
+  </div>
+</div><!--end  modal -->
+
+
     <div class="row">
       <div class="span3" style="margin-top:-40px">
             <h1>Parkroulette</h1>
       </div>
-      <div class=span3 style="margin-left: -30px;margin-top: -27px;">
-      <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-        <a class="addthis_button_facebook at300b"></a>
-        <a class="addthis_button_twitter at300b"></a>
-        <a class="addthis_button_google_plusone_share at300b"></a>
-      </div>
+      <div class="span3 share-top">
+        <a href="javascript:void(0)" onclick="fb_top()" id="fb-top-link" target="_blank">
+            <img src="/static/img/btn_facebook.png"></a>
+        <a href="javascript:void(0)" onclick="twitter_top()" id="tweeter-top-link" target="_blank">
+            <img src="/static/img/btn_twitter.png" ></a>
+        <a href="javascript:void(0)" onclick="googleone_top()" id="googleone-link" target="_blank">
+            <img src="/static/img/btn_google_plusone.png" ></a>
       </div>
     </div>
     <div class="well">
         <div class="row">
           <div class="span8">
-            <h2>Calculate the chance you will get a parking ticket at any address in San Francisco</h2>
+            <h2 id="share-top-text">Calculate the chance you will get a parking ticket at any address in San Francisco</h2>
             <p>Based on public records of actual tickets we will give you a chance of getting ticket if you park illegally on a chosen address</p>
 
             <h5>Try it:</h5>
@@ -87,7 +111,9 @@
                 {% endfor %}
 
               <div class="span3" style="margin-top: 20px">
-                <input id="heatmap-button" data-url="{% url "get-heatmap" %}" class="action btn btn-warning btn-block" type="submit" value="Get chance of ticket" />
+                <a href="#share_modal" class="btn btn-warning btn-block" style="width:100%;"  data-toggle="modal">Get chance of ticket</a>
+                <input id="heatmap-button" data-url="{% url "get-heatmap" %}"
+                       type="submit" value="Get chance of ticket" style="display: none" />
               </div>
             </form>
           </div>

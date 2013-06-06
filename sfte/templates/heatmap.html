@@ -20,19 +20,15 @@
             <div class="span8" id="block-share">
               <strong><p>Share:</p></strong>
                 <div>
-                    Check out parkroulette.com for parking tickets estimation in San Francisco
+                    <p id='share-middle-text'>Check out parkroulette.com for parking tickets estimation in San Francisco</p>
                 </div>
-                      <script type="text/javascript">
-                      var addthis_share ={
-                            description: 'lalala'
-                        }
-                     </script>
-                     <div class="addthis_toolbox addthis_default_style" id="share-result"
-                          addthis:url="http://example.com" addthis:title="Check out parkroulette.com for parking tickets estimation in San Francisco"
-                          addthis:description="Check out parkroulette.com">
-                     <a class="addthis_button_facebook"></a>
-                     <a class="addthis_button_twitter"></a>
-                     <a class="addthis_button_google_plusone_share"></a>
+                     <div class="span3" id="share-middle">
+                      <a href="javascript:void(0)" onclick="fb_top('fb-middle-link','#share-middle-text')" id="fb-middle-link" target="_blank">
+                          <img src="/static/img/btn_facebook.png" width="16" height="16"></a>
+                      <a href="javascript:void(0)" onclick="twitter_top('tweeter-middle-link','#share-middle-text')" id="tweeter-middle-link" target="_blank">
+                         <img src="/static/img/btn_twitter.png" width="16" height="16" ></a>
+                      <a href="javascript:void(0)" onclick="googleone_top('googleone-middle-link')" id="googleone-middle-link" target="_blank">
+                         <img src="/static/img/btn_google_plusone.png" width="16" height="16" ></a>
                      </div>
 
             </div>
@@ -54,27 +50,6 @@
                     </div>
                 </div>
             </div>
-            <script>
-            var heatmap_options = {
-                colorArray : [
-                    "#63BE7B",
-                    "#FBE983",
-                    "#F8696B"
-                ],
-                nullColor: "#63BE7B",
-                readValue : function(e) {
-                    return e[0].childNodes[0].text
-                }
-            }
-                $("#tickets-heatmap td").hottie(heatmap_options);
-                $("#tickets-heatmap th.column-total").hottie(heatmap_options);
-                $("#tickets-heatmap th.row-total").hottie(heatmap_options);
-
-                $("#paths-heatmap td").hottie(heatmap_options);
-                $("#paths-heatmap th.column-total").hottie(heatmap_options);
-                $("#paths-heatmap th.row-total").hottie(heatmap_options);
-
-            </script>
         {% else %}
             Sorry, we cannot find coordinates of this address.
         {% endif %}
