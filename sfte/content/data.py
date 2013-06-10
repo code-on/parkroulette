@@ -189,7 +189,11 @@ class Data(object):
 
         values = list(self.get_ticket_qs().filter(fine_amt__isnull=False).values_list('fine_amt', flat=True))
         values = map(lambda x: Decimal(x[1:]), values)
-        return sum(values)/len(values)
+        #temporary workaround
+        try:
+            return sum(values)/len(values)
+        except ZeroDivisionError:
+            return
 
 
     @cached_property
