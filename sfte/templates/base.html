@@ -24,6 +24,9 @@
     <script src="{% static "js/jquery.hottie.js" %}"></script>
     <script src="{% static "js/share.js" %}"></script>
 
+    <!--[if lte ie 8]>
+                <script type="text/javascript" src="{% static 'js/respond.min.js' %}"></script>
+    <![endif]-->
     {% block extra_js %}{% endblock %}
 
     <style>
