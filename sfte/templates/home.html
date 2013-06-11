@@ -50,7 +50,7 @@
 
 {% block content %}
     <!--modal -->
- <div class="modal hide fade" tabindex="-1" role="dialog" id="share_modal">
+ <div class="modal hide fade" tabindex="-1" role="dialog" id="sharemodal">
   <div class="modal-header">
     <a class="close" data-dismiss="modal">&times;</a>
     <h5>Share</h5>
@@ -72,7 +72,7 @@
             <img src="/static/img/btn_google_plusone.png" ></a>
       </div>
       <div class="pull-right">
-      <a href="#" class="btn" data-dismiss="modal" onclick="$('#search-form').submit()">No, thanks</a>
+      <a href="#" class="btn" data-dismiss="modal" style="margin-left: -25px" onclick="$('#search-form').submit()">No, thanks</a>
       </div>
     </div>
   </div>
@@ -107,14 +107,15 @@
                 <h5>Try it:</h5>
 
                 <form id="search-form" action="{% url "get-heatmap" %}">
+                    {% for error in form.text.errors %}
+                    <div style="width: 30px; float: left;" class="visible-phone">&nbsp;</div>
+                    <span class="help-inline error-msg" style="margin-left: -5px"> {{ error }}</span>
+                    {% endfor %}
                     <div class="row">
-                        <div class="input">
+                        <div class="input" style="margin-left: 30px">
                             <div class="params">
                                 {{ form.text.label }}<br/>
                                 {{ form.text }}
-                                {% for error in form.text.errors %}
-                                    <span class="help-inline error-msg">{{ error }}</span>
-                                {% endfor %}
                             </div>
                         <div style="width: 30px; float: left;" class="phone">&nbsp;</div>
                             <div class="params-distance">
@@ -127,7 +128,7 @@
                             <div style="width: 30px; float: left;" class="hidden-phone">&nbsp;</div>
                             <div class="button btn-group"><br/>
 
-                                    <a href="#share_modal" class="btn btn-warning btn-block" data-toggle="modal">Get
+                                    <a href="#share_modal" id="modal" class="btn btn-warning btn-block">Get
                                         chance of ticket</a>
                                     <input id="heatmap-button" data-url="{% url "get-heatmap" %}"
                                            type="submit" value="Get chance of ticket" style="display: none"/>
