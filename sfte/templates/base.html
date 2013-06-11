@@ -24,47 +24,14 @@
     <script src="{% static "js/jquery.hottie.js" %}"></script>
     <script src="{% static "js/share.js" %}"></script>
 
-    <!--[if lte ie 8]>
+    <!--[if lte ie 10]>
                 <script type="text/javascript" src="{% static 'js/respond.min.js' %}"></script>
     <![endif]-->
     {% block extra_js %}{% endblock %}
 
-    <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-        .error-msg {
-            color: red;
-        }
-        .small-widget {
-            width: 80px;
-        }
-        .table-slim td, .table-slim th {
-            padding: 0 3px;
-        }
-        .brand small {
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        .paramsinput {
-            margin-left: -10px;
-            display: block;
-            width: 100px;
-            float: left;
-        }
-    </style>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<!-- <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="{% url "home" %}">Parkroulette<small class="hidden-phone"> - San Francisco Ticket Estimator</small></a>
-        </div>
-    </div>
-</div>-->
 
 <div class="container">
     {% block content %}
@@ -81,27 +48,37 @@
   </div>
 </div>
 
+<script>
+    $(window).load($('.flexslider').flexslider());
+    var h = parseFloat($('.flexslider').innerHeight()+8).toFixed(0)
+    $('.twitter-timeline').attr('height', h);
+    $(window).load(!function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+        if (!d.getElementById(id)) {
+            js = d.createElement(s);
+            js.id = id;
+            js.src = p + "://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }
+    }(document, "script", "twitter-wjs"));
+</script>
+
 {% if settings.ENABLE_ANALYTICS %}
-<script type="text/javascript">
-     var _gaq = _gaq || [];
-     _gaq.push(['_setAccount', 'UA-93687-10']);
-     {% block extra_ga %}{% endblock %}
-     _gaq.push(['_trackPageview']);
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-93687-10']);
+        {% block extra_ga %}{% endblock %}
+        _gaq.push(['_trackPageview']);
 
-     (function() {
-       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-     })();
-</script>
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
 {% endif %}
-
-<!-- slider -->
-<script type="text/javascript" charset="utf-8">
-  $(window).load(function() {
-    $('.flexslider').flexslider();
-  });
-</script>
-
 </body>
 </html>

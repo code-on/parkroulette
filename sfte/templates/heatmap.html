@@ -12,15 +12,15 @@
             <div id="img-block" class="span2">
                 <img src="http://maps.google.com/maps/api/staticmap?center={{ data.lat }},{{ data.lng }}&markers={{ data.lat }},{{ data.lng }}&zoom=16&size=200x200&sensor=false" />
             </div>
-            <div class="span8">
+            <div class="span10">
                 <h4 id="place-block">{{ data.place }}</h4>
                 <div id="output-text">
                     {% include "_chance.html" %}
                 </div>
-            <div class="span8" id="block-share">
-              <strong><p>Share:</p></strong>
+            <div id="block-share"></br>
+              <strong>Share:</strong>
                 <div>
-                    <p id='share-middle-text'>Check out parkroulette.com for parking tickets estimation in San Francisco</p>
+                    <span id='share-middle-text'>Check out parkroulette.com for parking tickets estimation in San Francisco</span>
                 </div>
                      <div class="span3" id="share-middle">
                       <a href="javascript:void(0)" onclick="fb_top('fb-middle-link','#share-middle-text')" id="fb-middle-link" target="_blank">
@@ -32,8 +32,7 @@
                      </div>
 
             </div>
-            <div class="span8 share42init" style="text-align: center;">
-
+            </div>
             </div>
                 <div class="row-fluid" id="output-table">
                     <div class="span6">

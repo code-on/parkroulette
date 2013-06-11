@@ -1,26 +1,55 @@
+body {
+    padding-top: 20px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+.error-msg {
+    color: red;
+}
+
+.small-widget {
+    width: 80px;
+}
+
+.table-slim td, .table-slim th {
+    padding: 0 3px;
+}
+
+.brand small {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.input {
+    float: left;
+    margin-left: 30px;
+
+}
+.params {
+
+    display: block;
+    float: left;
+}
+
+.params-distance {
+    width: 81px;
+    float: left;
+}
+
+.button {
+    float: left;
+    width: 325px;
+
+}
+
+.btn {width:100%;}
+
 .share-top {
-    margin-top: 14px;
+    line-height: 60px;
 }
 
-#share-result {
-    position: absolute;
-    right: 800px;
-    margin-top: 10px;
+.header-top {
+    width: 225px;
 }
-
-#output-text {
-    margin-bottom: 5px;
-}
-
-#block-share{
-    width: 400px;
-    margin-top: 10px;
-}
-
-#block-share div{
-    width: 400px;
-}
-
 
 .navcontainer ul {
     margin: 0;
@@ -37,6 +66,6 @@
    padding: .2em 1em;
 }
 
-.results {
-    font-size: 25px;
+.twitter-timeline {
+    width: 100%;
 }
