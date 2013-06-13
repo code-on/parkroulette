@@ -13,9 +13,10 @@ class TicketSearchForm(forms.Form):
         ('0.0001', '10m'), ('0.0002', '20m'), ('0.0003', '30m'),
         ('0.0004', '40m'), ('0.0005', '50m'), ('0.001', '100m'),
     )
-    text = forms.CharField(
+    address = forms.CharField(
         label='Type your parking address:',
-        widget=forms.TextInput(attrs={'placeholder': 'f.e. 1234 Market st'})
+        widget=forms.TextInput(
+            attrs={'type': 'text', 'class': 'input-block-level input-medium', 'placeholder': 'f.e. 1234 Market st'})
     )
     distance = forms.ChoiceField(
         initial=DISTANCE_CHOICES[1][0],
@@ -52,7 +53,7 @@ class TicketSearchForm(forms.Form):
 
     def get_data_object(self):
         return Data(
-            address=self.cleaned_data['text'],
+            address=self.cleaned_data['address'],
             distance=self.cleaned_data['distance'],
             week_day=self.cleaned_data['week_day'],
             start_hour=self.hours[0],

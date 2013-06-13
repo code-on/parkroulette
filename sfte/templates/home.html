@@ -1,174 +1,180 @@
 {% extends "base.html" %}
-
 {% block extra_js %}
-{% if not request.GET.text %}
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script>
-    var $text_field = $('#{{ form.text.auto_id }}');
-    if (Modernizr.geolocation) {
-         navigator.geolocation.getCurrentPosition(fill_address);
-    }
+    {% if not request.GET.text %}
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script>
+            var $text_field = $('#{{ form.text.auto_id }}');
+            if (Modernizr.geolocation) {
+                navigator.geolocation.getCurrentPosition(fill_address);
+            }
 
-    function fill_address(position) {
-        if (!$text_field.val()) {
-            var latitude = position.coords.latitude,
-                longtitude = position.coords.longtitude,
-                geocoder = new google.maps.Geocoder(),
-                latlng = new google.maps.LatLng(latitude, longtitude);
+            function fill_address(position) {
+                if (!$text_field.val()) {
+                    var latitude = position.coords.latitude,
+                            longtitude = position.coords.longtitude,
+                            geocoder = new google.maps.Geocoder(),
+                            latlng = new google.maps.LatLng(latitude, longtitude);
 
-            geocoder.geocode({'latLng': latlng}, function(results, status) {
-                if ((status == google.maps.GeocoderStatus.OK) && results) {
-                    console.log(results)
-                    var res = results[0],
-                        address = res.address_components[0].long_name;
-                    if (1 in res.address_components) {
-                        address = address + ' ' + res.address_components[1].long_name
-                    }
-                    set_address(address)
+                    geocoder.geocode({'latLng': latlng}, function (results, status) {
+                        if ((status == google.maps.GeocoderStatus.OK) && results) {
+                            console.log(results)
+                            var res = results[0],
+                                    address = res.address_components[0].long_name;
+                            if (1 in res.address_components) {
+                                address = address + ' ' + res.address_components[1].long_name
+                            }
+                            set_address(address)
+                        }
+                    })
                 }
-            })
-        }
-    }
+            }
 
-    function set_address(address) {
-        if (!$text_field.val()) {
-            $text_field.val(address)
-        }
-    }
-</script>
-{% endif %}
-
- <script>
-    $(function(){
-       $('.action').click(function(){
-          $('#search-form').attr('action', $(this).data('url')).submit();
-       })
-   })
-</script>
-
+            function set_address(address) {
+                if (!$text_field.val()) {
+                    $text_field.val(address)
+                }
+            }
+        </script>
+    {% endif %}
 {% endblock %}
-
 {% block content %}
     <!--modal -->
- <div class="modal hide fade" tabindex="-1" role="dialog" id="sharemodal">
-  <div class="modal-header">
-    <a class="close" data-dismiss="modal">&times;</a>
-    <h5>Share</h5>
-  </div>
-  <div class="modal-body">
-    <form>
-    <textarea style="width:520px;" name="limitedtextarea" id="textarea"
-         onkeydown="limitText(this.form.limitedtextarea,'#count',119)"
-         onkeyup="limitText(this.form.limitedtextarea,'#count',119)">I'm about to check my parking ticket chance at parkroulette.com</textarea>
-        <div class="count" style="font-size: 12px">You have <span id="count">56</span> characters left</div>
-  </form>
-    <div class="row">
-      <div class ="span3">
-          <a href="javascript:void(0)" onclick="fb_top('fb-popup-link','#textarea')" id="fb-popup-link" target="_blank">
-            <img src="/static/img/btn_facebook.png"></a>
-        <a href="javascript:void(0)" onclick="twitter_top('tweeter-popup-link','#textarea')" id="tweeter-popup-link" target="_blank">
-            <img src="/static/img/btn_twitter.png" ></a>
-        <a href="javascript:void(0)" onclick="googleone_top('googleone-popup-link')" id="googleone-popup-link" target="_blank">
-            <img src="/static/img/btn_google_plusone.png" ></a>
-      </div>
-      <div class="pull-right">
-      <a href="#" class="btn" data-dismiss="modal" style="margin-left: -25px" onclick="$('#search-form').submit()">No, thanks</a>
-      </div>
-    </div>
-  </div>
-</div><!--end  modal -->
+    <div class="modal fade hide" tabindex="-1" role="dialog" id="sharemodal">
+        <div class="modal-header">
+            <h5>Share</h5>
+        </div>
+        <div class="modal-body">
+            <form>
+                <textarea name="limitedtextarea" onkeydown="limitText(this.form.limitedtextarea,'#count',119)"
+                          onkeyup="limitText(this.form.limitedtextarea,'#count',119)" class="input-block-level"
+                          id="textarea">I'm about to check my parking ticket chance at parkroulette.com</textarea>
 
-
-    <div class="row">
-        <div class="span12">
-            <div class="row">
-                <div class="span3 header-top"><h1>Parkroulette</h1></div>
-                <div class="span2 share-top"><a href="javascript:void(0)" onclick="fb_top()" id="fb-top-link"
-                                                target="_blank">
-                    <img src="/static/img/btn_facebook.png"></a>
-                    <a href="javascript:void(0)" onclick="twitter_top()" id="tweeter-top-link" target="_blank">
-                        <img src="/static/img/btn_twitter.png"></a>
-                    <a href="javascript:void(0)" onclick="googleone_top()" id="googleone-link" target="_blank">
-                        <img src="/static/img/btn_google_plusone.png"></a></div>
-                <div class="span7"></div>
+                <div class="count" style="font-size: 12px">You have<span id="count">56</span> characters left</div>
+            </form>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="span3">
+                        <a href="www.facebook.com" onclick="fb_top('fb-popup-link','#textarea')"
+                           id="fb-popup-link" target="_blank">
+                            <img src="/static/img/btn_facebook.png"></a>
+                        <a href="www.tweeter.com" onclick="twitter_top('tweeter-popup-link','#textarea')"
+                           id="tweeter-popup-link" target="_blank">
+                            <img src="/static/img/btn_twitter.png"></a>
+                        <a href="https://www.google.com" onclick="googleone_top('googleone-popup-link')"
+                           id="googleone-popup-link" target="_blank">
+                            <img src="/static/img/btn_google_plusone.png"></a>
+                    </div>
+                    <div class="span9">
+                        <a href="#" class="btn pull-right" data-dismiss="modal" onclick="$('#search-form').submit()">No,
+                            thanks</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <!--end modal -->
 
+    <!--intro -->
+    <div class="row">
+        <div class="span5">
+            <div class="row">
+                <div class="span2" id="intro">
+                    <p class="align-left intro">Parkroulette</p>
+                </div>
+                <div class="span3" id="intro-share">
+                    <a href="javascript:void(0)" onclick="fb_top('fb-top-link','#textarea')"
+                       id="fb-top-link" target="_blank">
+                        <img src="/static/img/btn_facebook.png"></a>
+                    <a href="javascript:void(0)" onclick="twitter_top('tweeter-top-link','#textarea')"
+                       id="tweeter-top-link" target="_blank">
+                        <img src="/static/img/btn_twitter.png"></a>
+                    <a href="javascript:void(0)" onclick="googleone_top('googleone-top-link')"
+                       id="googleone-top-link" target="_blank">
+                        <img src="/static/img/btn_google_plusone.png"></a>
+                </div>
+            </div>
+        </div>
+        <div class="span7">
+            <p class="align-right notify hidden-phone">Would like to have parkroulette in your city? <a href="#">Click
+                here</a></p>
 
+            <p class="align-left notify visible-phone">Would like to have parkroulette in your city? <a href="#">Click
+                here</a></p>
+        </div>
+    </div>
+    <!--end intro -->
+
+    <!--well -->
     <div class="well">
-        <div class="row">
-            <div class="span8">
+        <div class="row-fluid">
+            <div class="span9">
                 <h3 id="share-top-text">Calculate the chance you will get a parking ticket at any address in San
                     Francisco</h3>
 
-                <p>Based on public records of actual tickets we will give you a chance of getting ticket if you park
-                    illegally on a chosen address</p>
+                <p>Based on public records of actual tickets we will give you a chance of
+                    getting ticket if you park illegally on a chosen address</p>
                 <h5>Try it:</h5>
-
-                <form id="search-form" action="{% url "get-heatmap" %}">
-                    {% for error in form.text.errors %}
-                    <div style="width: 30px; float: left;" class="visible-phone">&nbsp;</div>
-                    <span class="help-inline error-msg" style="margin-left: -5px"> {{ error }}</span>
-                    {% endfor %}
-                    <div class="row">
-                        <div class="input" style="margin-left: 30px">
-                            <div class="params">
-                                {{ form.text.label }}<br/>
-                                {{ form.text }}
-                            </div>
-                        <div style="width: 30px; float: left;" class="phone">&nbsp;</div>
-                            <div class="params-distance">
-                                {{ form.distance.label }}<br/>
-                                {{ form.distance }}
-                                {% for error in form.distance.errors %}
-                                    <span class="help-inline error-msg">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            <div style="width: 30px; float: left;" class="hidden-phone">&nbsp;</div>
-                            <div class="button btn-group"><br/>
-
-                                    <a href="#share_modal" id="modal" class="btn btn-warning btn-block">Get
-                                        chance of ticket</a>
-                                    <input id="heatmap-button" data-url="{% url "get-heatmap" %}"
-                                           type="submit" value="Get chance of ticket" style="display: none"/>
-
-                            </div>
-                        </div>
-
+                {% for error in form.errors %}
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {{ form.errors.as_text }}.
                     </div>
-                    {% for error in form.non_field_errors %}
-                        <div class="alert alert-error"><a class="close" data-dismiss="alert">&times;</a></a>{{ error }}
+                {% endfor %}
+                <form id="search-form" action="{% url "get-heatmap" %}">
+                    <div class="row-fluid">
+                        <div class="span5">
+                            <label>{{ form.address.label }}</label>
+                            {{ form.address }}
                         </div>
-                    {% endfor %}
+                        <div class="span2">
+                            <label>{{ form.distance.label }}</label>
+                            {{ form.distance }}
+                        </div>
+                        <div class="span5">
+                            <label>&nbsp;</label>
+                            <a href="#submit" id="submit" class="btn btn-warning btn-block" type="submit">Get
+                                chance of ticket</a>
+                            <input id="heatmap-button" data-url="{% url "get-heatmap" %}"
+                                   type="submit" value="Get chance of ticket" style="display: none"/>
+                        </div>
+                    </div>
                 </form>
             </div>
-            <div class="offset1 span2 hidden-phone">
-                <img src="/static/no-parking.png">
+            <div class="span3">
+                <img src="http://127.0.0.1:8000/static/no-parking.png" class="pull-right hidden-phone">
             </div>
         </div>
     </div>
     {% if not data %}
+        <div class="row hidden-phone" id="how-span" style="height:15px">
+            <div class="span6" style="height:15px"></div>
+            <div class="span6">
+                <span id="how">How it works:</span>
+            </div>
+        </div>
         <div class="row">
             <div class="span6 twitter">
-                <a class="twitter-timeline" height ="385" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a>
-        </div>
+                <a class="twitter-timeline" height="385" href="https://twitter.com/sfgov"
+                   data-widget-id="341934962053890049">Tweets by @sfgov</a>
+                <a herf="#" id="subscribe">Subscribe to our news and releases</a>
+            </div>
+            <span class="visible-phone" id="how-phone">How it works:</span>
+
             <div class="span6 slider">
-                <div class="slides"><span class="slides">How it works</span></div>
                 <div class="flexslider">
                     <ul class="slides">
                         <li>
-                            <img src="http://dummyimage.com/600x400/757682/fff.jpg&text=1" alt=""/>
+                            <img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=1" alt="">
                         </li>
                         <li>
-                            <img src="http://dummyimage.com/600x400/757682/fff.jpg&text=2" alt=""/>
+                            <img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=2" alt="">
                         </li>
                         <li>
-                            <img src="http://dummyimage.com/600x400/757682/fff.jpg&text=3" alt=""/>
+                            <img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=3" alt="">
                         </li>
                     </ul>
                 </div>
-                <!--end  slider -->
+                <!--end slider -->
             </div>
         </div>
     {% endif %}

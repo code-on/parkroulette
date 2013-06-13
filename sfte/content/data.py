@@ -237,7 +237,7 @@ class Data(object):
 
     @cached_property
     def tickets_heatmap_data(self):
-        url = '{0}?text={1}&distance={2}'.format(reverse('get-laws'), urlquote(self.address), self.distance)
+        url = '{0}?address={1}&distance={2}'.format(reverse('get-laws'), urlquote(self.address), self.distance)
         tc_qs = self.get_ticket_qs(ignore_daytime=True)
         datetimes = tc_qs.values_list('issue_datetime', flat=True)
         return _get_heatmap_data(datetimes, url)

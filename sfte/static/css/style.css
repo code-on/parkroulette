@@ -1,89 +1,44 @@
-body {
-    padding-top: 20px; /* 60px to make the container go all the way to the bottom of the topbar */
+.container{padding-top:20px}
+
+.modal-header{height:20px;}
+.modal-header h5 {margin-top:0px;}
+.modal-body {height:140px}
+.modal-body textarea{width:520px;}
+
+p.notify {font-size:16px}
+p.intro {font-size:27px}
+p.align-left { text-align: left; }
+p.align-right { text-align: right; }
+
+select#id_distance{width:65px}
+*+#id_distance {padding: 0px;}
+*+#id_address {padding: 0px;}
+
+#how-span{margin-bottom: 15px}
+#how{font-size:20px}
+#how-phone{font-size:20px; margin-bottom: 10px; margin-top: 10px}
+
+.twitter-timeline{width: 100%}
+.twitter #subscribe{font-size: 18px}
+
+.table-slim td, .table-slim th {padding: 0 3px;}
+.brand small {font-size: 14px;color: #ccc;}
+
+.navcontainer ul {margin: 0;padding: 0;list-style-type: none;text-align: center;}
+.navcontainer ul li {display: inline;}
+.navcontainer ul li a {padding: .2em 1em;}
+
+@media (min-width: 1200px) {
+#intro {width:120px}
+#intro-share {width:120px}
 }
 
-.error-msg {
-    color: red;
+@media (min-width: 768px) and (max-width: 979px) {
+#intro {width:130px}
+#intro-share {width:80px}
+}
+@media (max-width: 767px) { 
+#intro-share{margin-bottom:9px}
 }
 
-.small-widget {
-    width: 80px;
-}
-
-.table-slim td, .table-slim th {
-    padding: 0 3px;
-}
-
-.brand small {
-    font-size: 14px;
-    color: #ccc;
-}
-
-.input {
-    float: left;
-    margin-left: 30px;
-
-}
-.params {
-
-    display: block;
-    float: left;
-}
-
-.params-distance {
-    width: 81px;
-    float: left;
-}
-
-.button {
-    float: left;
-    width: 325px;
-
-}
-
-.btn {width:100%;}
-
-.share-top {
-    line-height: 60px;
-}
-
-.header-top {
-    width: 225px;
-}
-
-.navcontainer ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    text-align: center;
-}
-
-.navcontainer ul li {
-    display: inline;
-}
-
-.navcontainer ul li a {
-   padding: .2em 1em;
-}
-
-.twitter-timeline {
-    width: 100%;
-}
-
-div.twitter {
-    margin-top: 29px;
-}
-div.slides{
-margin-bottom: 5px;
-margin-top: 0px;
-}
-
-@media (max-width: 480px) {
-    div.slides    {
-    margin-top: 10px;
-    }
-}
-span.slides {
-margin-left: 2px;
-font-size: 24px;
-}
+#intro-share img {width:20px;height: 20px}
