@@ -71,10 +71,19 @@ body {
 }
 
 div.twitter {
-    margin-top: 25px;
+    margin-top: 29px;
 }
-h2.slider {
-    line-height: 0;
-    margin-bottom: 23px;
-    margin-top: 3px;
+div.slides{
+margin-bottom: 5px;
+margin-top: 0px;
+}
+
+@media (max-width: 480px) {
+    div.slides    {
+    margin-top: 10px;
+    }
+}
+span.slides {
+margin-left: 2px;
+font-size: 24px;
 }
