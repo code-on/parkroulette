@@ -69,3 +69,12 @@ body {
 .twitter-timeline {
     width: 100%;
 }
+
+div.twitter {
+    margin-top: 25px;
+}
+h2.slider {
+    line-height: 0;
+    margin-bottom: 23px;
+    margin-top: 3px;
+}
