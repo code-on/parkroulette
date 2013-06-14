@@ -10,10 +10,13 @@ p.intro {font-size:27px}
 p.align-left { text-align: left; }
 p.align-right { text-align: right; }
 
+a.intro {color: #000000; text-decoration: none}
+
 select#id_distance{width:65px}
 *+#id_distance {padding: 0px;}
 *+#id_address {padding: 0px;}
 *+#id_email {padding: 0px;}
+*+#id_city {padding: 0px;}
 
 #how-span{margin-bottom: 15px}
 #how{font-size:20px}
