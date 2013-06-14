@@ -11,7 +11,17 @@
         {% if form.is_valid %}
             {% if data.lat and data.lng %}
                 <div id="img-block" class="span2">
-                    <img src="http://maps.google.com/maps/api/staticmap?center={{ data.lat }},{{ data.lng }}&markers={{ data.lat }},{{ data.lng }}&zoom=16&size=200x200&sensor=false"/>
+                    <img id="map" src="fake.jpg"/>
+
+
+                <script type="text/javascript">
+                     var lat = '{{ data.lat }}'.replace(",",".");
+                     var lng = '{{ data.lng }}'.replace(",",".");
+                     var link = "http://maps.google.com/maps/api/staticmap?center="+lat+","+lng+"&markers="+lat+","+lng+"&zoom=16&size=200x200&sensor=false";
+                     $("#map").attr("src", link);
+                     </script>
+
+
                 </div>
                 <div class="span10">
                     <h4 id="place-block">{{ data.place }}</h4>
