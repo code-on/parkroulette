@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^heatmap/$', 'content.views.get_heatmap', name='get-heatmap'),
 
     url(r'^subscribe/$', 'subscribers.views.subscribe', name='subscribe'),
+    url(r'^subscription/$', 'subscriptions.views.create', name='subscription'),
     
     url(r'^debug/$', 'content.views.debug', name='debug'),
     url(r'^pathsplit/$', 'pathsplit.views.debug', name='pathsplit'),

@@ -7,33 +7,40 @@
 {% endblock %}
 
 {% block output %}
-    {% if form.is_valid %}
-        {% if data.lat and data.lng %}
-            <div id="img-block" class="span2">
-                <img src="http://maps.google.com/maps/api/staticmap?center={{ data.lat }},{{ data.lng }}&markers={{ data.lat }},{{ data.lng }}&zoom=16&size=200x200&sensor=false" />
-            </div>
-            <div class="span10">
-                <h4 id="place-block">{{ data.place }}</h4>
-                <div id="output-text">
-                    {% include "_chance.html" %}
+    <div class="row-fluid" id="output-block">
+        {% if form.is_valid %}
+            {% if data.lat and data.lng %}
+                <div id="img-block" class="span2">
+                    <img src="http://maps.google.com/maps/api/staticmap?center={{ data.lat }},{{ data.lng }}&markers={{ data.lat }},{{ data.lng }}&zoom=16&size=200x200&sensor=false"/>
                 </div>
-            <div id="block-share"></br>
-              <strong>Share:</strong>
-                <div>
-                    <span id='share-middle-text'>Check out parkroulette.com for parking tickets estimation in San Francisco</span>
-                </div>
-                     <div class="span3" id="middle-share">
-                      <a href="javascript:void(0)" onclick="fb_top('fb-middle-link','#share-middle-text')" id="fb-middle-link" target="_blank">
-                          <img src="/static/img/btn_facebook.png"></a>
-                      <a href="javascript:void(0)" onclick="twitter_top('tweeter-middle-link','#share-middle-text')" id="tweeter-middle-link" target="_blank">
-                         <img src="/static/img/btn_twitter.png"></a>
-                      <a href="javascript:void(0)" onclick="googleone_top('googleone-middle-link')" id="googleone-middle-link" target="_blank">
-                         <img src="/static/img/btn_google_plusone.png"></a>
-                     </div>
+                <div class="span10">
+                    <h4 id="place-block">{{ data.place }}</h4>
 
-            </div>
-            </div>
-            </div>
+                    <div id="output-text">
+                        {% include "_chance.html" %}
+                    </div>
+                    <div id="block-share"></br>
+                        <strong>Share:</strong>
+
+                        <div>
+                            <span id='share-middle-text'>Check out parkroulette.com for parking tickets estimation in San Francisco</span>
+                        </div>
+                        <div class="span3" id="middle-share">
+                            <a href="javascript:void(0)" onclick="fb_top('fb-middle-link','#share-middle-text')"
+                               id="fb-middle-link" target="_blank">
+                                <img src="/static/img/btn_facebook.png"></a>
+                            <a href="javascript:void(0)"
+                               onclick="twitter_top('tweeter-middle-link','#share-middle-text')"
+                               id="tweeter-middle-link" target="_blank">
+                                <img src="/static/img/btn_twitter.png"></a>
+                            <a href="javascript:void(0)" onclick="googleone_top('googleone-middle-link')"
+                               id="googleone-middle-link" target="_blank">
+                                <img src="/static/img/btn_google_plusone.png"></a>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
                 <div class="row-fluid" id="output-table">
                     <div class="span6">
                         <h5>Tickets ({{ data.tickets_heatmap_count }})</h5>
@@ -48,29 +55,30 @@
                         </table>
                     </div>
                 </div>
-            </div>
-           <script>
-            var heatmap_options = {
-                colorArray : [
-                    "#63BE7B",
-                    "#FBE983",
-                    "#F8696B"
-                ],
-                nullColor: "#63BE7B",
-                readValue : function(e) {
-                    return e[0].childNodes[0].text
-                }
-            }
-                $("#tickets-heatmap td").hottie(heatmap_options);
-                $("#tickets-heatmap th.column-total").hottie(heatmap_options);
-                $("#tickets-heatmap th.row-total").hottie(heatmap_options);
+                </div>
+                <script>
+                    var heatmap_options = {
+                        colorArray: [
+                            "#63BE7B",
+                            "#FBE983",
+                            "#F8696B"
+                        ],
+                        nullColor: "#63BE7B",
+                        readValue: function (e) {
+                            return e[0].childNodes[0].text
+                        }
+                    }
+                    $("#tickets-heatmap td").hottie(heatmap_options);
+                    $("#tickets-heatmap th.column-total").hottie(heatmap_options);
+                    $("#tickets-heatmap th.row-total").hottie(heatmap_options);
 
-                $("#paths-heatmap td").hottie(heatmap_options);
-                $("#paths-heatmap th.column-total").hottie(heatmap_options);
-                $("#paths-heatmap th.row-total").hottie(heatmap_options);
-            </script>
-        {% else %}
-            Sorry, we cannot find coordinates of this address.
+                    $("#paths-heatmap td").hottie(heatmap_options);
+                    $("#paths-heatmap th.column-total").hottie(heatmap_options);
+                    $("#paths-heatmap th.row-total").hottie(heatmap_options);
+                </script>
+            {% else %}
+                Sorry, we cannot find coordinates of this address.
+            {% endif %}
         {% endif %}
-    {% endif %}
+    </div>
 {% endblock %}

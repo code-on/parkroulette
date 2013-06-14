@@ -1,14 +1,14 @@
 from utils.views import render_to
 from django.shortcuts import redirect
-from forms import SubscrubierForm
+from forms import CitySubscriptionForm
 
 
-@render_to('subscr_user.html')
-def subscribe(request):
+@render_to('subscr_city.html')
+def create(request):
     if request.method == "POST":
-        form = SubscrubierForm(request.POST)
+        form = CitySubscriptionForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect("/")
         return {'form': form}
-    return {'form': SubscrubierForm()}
+    return {'form': CitySubscriptionForm()}
