@@ -10,12 +10,12 @@
         </label>
       </div>
       <div class="span6">
-        {% for error in form.errors %}
+        {% for error in user_form.errors %}
         <div class="alert alert-error" style="margin-bottom: 5px">
           <button type="button" class="close" data-dismiss="alert">
             ×
           </button>
-          {{ form.email.errors.as_text }}
+          {{ user_form.email.errors.as_text }}
         </div>
         {% endfor %}
       </div>
@@ -24,7 +24,6 @@
           &nbsp;
           <br>
         </label>
-
       </div>
     </div>
     <div class="row-fluid">
@@ -36,19 +35,16 @@
       <div class="span6">
         <form action="/subscribe/" method="post">
           {% csrf_token %}
-
-
           <label>
             Leave us you e-mail:
           </label>
-          {{ form.email }}
+          {{ user_form.email }}
         </div>
         <div class="span3 ">
           <label>
             &nbsp;
             <br>
           </label>
-
           <input type="submit" type="submit" class="btn btn-block" value="Submit">
         </form>
       </div>

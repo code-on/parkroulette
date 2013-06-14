@@ -10,5 +10,5 @@ def create(request):
         if form.is_valid():
             form.save()
             return redirect("/")
-        return {'form': form}
-    return {'form': CitySubscriptionForm()}
+        return {'city_form': form}
+    return {'city_form': CitySubscriptionForm()}

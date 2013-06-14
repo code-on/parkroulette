@@ -7,8 +7,9 @@ from forms import SubscrubierForm
 def subscribe(request):
     if request.method == "POST":
         form = SubscrubierForm(request.POST)
+        print dir(form)
         if form.is_valid():
             form.save()
             return redirect("/")
-        return {'form': form}
-    return {'form': SubscrubierForm()}
+        return {'user_form': form}
+    return {'user_form': SubscrubierForm()}
