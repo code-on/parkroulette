@@ -95,15 +95,13 @@
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script>
         var $text_field = $('#{{ form.address.auto_id }}');
-
         if (Modernizr.geolocation) {
             navigator.geolocation.getCurrentPosition(fill_address);
         }
-
         function fill_address(position) {
             if (!$text_field.val()) {
                 var latitude = position.coords.latitude,
-                        longtitude = position.coords.longtitude,
+                        longtitude = position.coords.longitude,
                         geocoder = new google.maps.Geocoder(),
                         latlng = new google.maps.LatLng(latitude, longtitude);
 
@@ -120,7 +118,6 @@
                 })
             }
         }
-
         function set_address(address) {
             if (!$text_field.val()) {
                 $text_field.val(address);
