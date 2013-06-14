@@ -1,42 +1,4 @@
 {% extends "base.html" %}
-{% block extra_js %}
-    {% if not request.GET.text %}
-        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-        <script>
-            var $text_field = $('#{{ form.text.auto_id }}');
-            if (Modernizr.geolocation) {
-                navigator.geolocation.getCurrentPosition(fill_address);
-            }
-
-            function fill_address(position) {
-                if (!$text_field.val()) {
-                    var latitude = position.coords.latitude,
-                            longtitude = position.coords.longtitude,
-                            geocoder = new google.maps.Geocoder(),
-                            latlng = new google.maps.LatLng(latitude, longtitude);
-
-                    geocoder.geocode({'latLng': latlng}, function (results, status) {
-                        if ((status == google.maps.GeocoderStatus.OK) && results) {
-                            console.log(results)
-                            var res = results[0],
-                                    address = res.address_components[0].long_name;
-                            if (1 in res.address_components) {
-                                address = address + ' ' + res.address_components[1].long_name
-                            }
-                            set_address(address)
-                        }
-                    })
-                }
-            }
-
-            function set_address(address) {
-                if (!$text_field.val()) {
-                    $text_field.val(address)
-                }
-            }
-        </script>
-    {% endif %}
-{% endblock %}
 {% block content %}
     <!--modal -->
     <div class="modal fade hide" tabindex="-1" role="dialog" id="sharemodal">
@@ -103,9 +65,10 @@
         </div>
     </div>
     <!--end intro -->
-
     <!--well -->
     <div class="well">
+
+    {% block well %}
         <div class="row-fluid">
             <div class="span9">
                 <h3 id="share-top-text">Calculate the chance you will get a parking ticket at any address in San
@@ -144,7 +107,9 @@
                 <img src="http://127.0.0.1:8000/static/no-parking.png" class="pull-right hidden-phone">
             </div>
         </div>
+    {% endblock well %}
     </div>
+
     {% if not data %}
         <div class="row hidden-phone" id="how-span" style="height:15px">
             <div class="span6" style="height:15px"></div>
@@ -155,8 +120,8 @@
         <div class="row">
             <div class="span6 twitter">
                 <a class="twitter-timeline" height="385" href="https://twitter.com/sfgov"
-                   data-widget-id="341934962053890049">Tweets by @sfgov</a>
-                <a herf="#" id="subscribe">Subscribe to our news and releases</a>
+                   data-widget-id="341934962053890049">Tweets by @sfgov</a></br>
+                <a href="{% url "subscribe" %}" id="subscribe">Subscribe to our news and releases</a>
             </div>
             <span class="visible-phone" id="how-phone">How it works:</span>
 

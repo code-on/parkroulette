@@ -13,6 +13,7 @@ p.align-right { text-align: right; }
 select#id_distance{width:65px}
 *+#id_distance {padding: 0px;}
 *+#id_address {padding: 0px;}
+*+#id_email {padding: 0px;}
 
 #how-span{margin-bottom: 15px}
 #how{font-size:20px}
@@ -42,3 +43,4 @@ select#id_distance{width:65px}
 }
 
 #intro-share img {width:20px;height: 20px}
+#middle-share img {width:16px;height: 16px}

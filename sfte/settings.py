@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
 
     'content',
+    'subscribers'
 )
 
 MIDDLEWARE_CLASSES = (
