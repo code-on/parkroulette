@@ -1,5 +1,6 @@
 from utils.views import render_to
 from django.shortcuts import redirect
+
 from forms import SubscrubierForm
 
 
@@ -7,8 +8,7 @@ from forms import SubscrubierForm
 def subscribe(request):
     if request.method == "POST":
         form = SubscrubierForm(request.POST)
-        print dir(form)
-        if form.is_valid():
+        if form.is_valid() and form.clean_email():
             form.save()
             return redirect("/")
         return {'user_form': form}
