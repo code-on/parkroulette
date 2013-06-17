@@ -8,8 +8,9 @@ from forms import SubscriberForm
 def subscribe(request):
     if request.method == "POST":
         form = SubscriberForm(request.POST)
-        if form.is_valid() and form.clean_email():
-            form.save()
-            return redirect("/")
+        if form.is_valid():
+            if form.clean_email():
+                form.save()
+                return redirect("/")
         return {'user_form': form}
     return {'user_form': SubscriberForm()}

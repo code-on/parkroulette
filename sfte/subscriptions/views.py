@@ -7,7 +7,7 @@ from forms import CitySubscriptionForm
 def create(request):
     if request.method == "POST":
         form = CitySubscriptionForm(request.POST)
-        if form.is_valid() and form.clean_email():
+        if form.is_valid() and form.not_exists():
             form.save()
             return redirect("/")
         return {'city_form': form}
