@@ -250,7 +250,7 @@ class Data(object):
 
     @cached_property
     def paths_heatmap_data(self):
-        url = '{0}?text={1}&distance={2}'.format(reverse('get-laws'), urlquote(self.address), self.distance)
+        url = '{0}?address={1}&distance={2}'.format(reverse('get-laws'), urlquote(self.address), self.distance)
         ph_qs = self.get_path_qs(ignore_daytime=True)
         datetimes = ph_qs.values_list('start_datetime', flat=True)
         return _get_heatmap_data(datetimes, url)

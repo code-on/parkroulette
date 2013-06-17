@@ -91,6 +91,16 @@
         }
     });
 </script>
+
+{% if data %}
+    <script type="text/javascript">
+        var lat = '{{ data.lat }}'.replace(",", ".");
+        var lng = '{{ data.lng }}'.replace(",", ".");
+        var link = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&markers=" + lat + "," + lng + "&zoom=16&size=200x200&sensor=false";
+        $("#map").attr("src", link);
+    </script>
+{% endif %}
+
 {% if not request.GET.address %}
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script>

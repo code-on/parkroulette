@@ -10,7 +10,7 @@
     {% if form.is_valid %}
         {% if data.lat %}
             <div id="img-block" class="span4">
-                <img src="http://maps.google.com/maps/api/staticmap?center={{ data.lat }},{{ data.lng }}&markers={{ data.lat }},{{ data.lng }}&zoom=16&size=200x200&sensor=false" />
+                <img id="map"/>
             </div>
             <div class="span8">
                 <h4 id="place-block">{{ data.place }}</h4>

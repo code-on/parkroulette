@@ -11,17 +11,7 @@
         {% if form.is_valid %}
             {% if data.lat and data.lng %}
                 <div id="img-block" class="span2">
-                    <img id="map" src="fake.jpg"/>
-
-
-                <script type="text/javascript">
-                     var lat = '{{ data.lat }}'.replace(",",".");
-                     var lng = '{{ data.lng }}'.replace(",",".");
-                     var link = "http://maps.google.com/maps/api/staticmap?center="+lat+","+lng+"&markers="+lat+","+lng+"&zoom=16&size=200x200&sensor=false";
-                     $("#map").attr("src", link);
-                     </script>
-
-
+                    <img id="map"/>
                 </div>
                 <div class="span10">
                     <h4 id="place-block">{{ data.place }}</h4>
@@ -75,16 +65,18 @@
                         ],
                         nullColor: "#63BE7B",
                         readValue: function (e) {
-                            return e[0].childNodes[0].text
+                            return ($(e).children("a").html())
                         }
                     }
+                    $("#paths-heatmap td").hottie(heatmap_options);
+                    $("#paths-heatmap th.column-total").hottie(heatmap_options);
+                    $("#paths-heatmap th.row-total").hottie(heatmap_options);
+
                     $("#tickets-heatmap td").hottie(heatmap_options);
                     $("#tickets-heatmap th.column-total").hottie(heatmap_options);
                     $("#tickets-heatmap th.row-total").hottie(heatmap_options);
 
-                    $("#paths-heatmap td").hottie(heatmap_options);
-                    $("#paths-heatmap th.column-total").hottie(heatmap_options);
-                    $("#paths-heatmap th.row-total").hottie(heatmap_options);
+
                 </script>
             {% else %}
                 Sorry, we cannot find coordinates of this address.
