@@ -1,8 +1,12 @@
+from django import template
 from django.contrib.gis.geoip import GeoIP
 from django.conf import settings
 
+register = template.Library()
 
-def check_ip(request):
+
+@register.filter
+def city(request):
     g = GeoIP().city(get_ip(request))
     if settings.GEOIP_DEBUG:
         return True

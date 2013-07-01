@@ -4,15 +4,12 @@ from django.contrib.gis.geoip import GeoIP
 
 from content.forms import TicketSearchForm
 from content.models import Log
-from content.geoip import check_ip
 
 
 def home(request, template='home.html'):
     context = {
         'form': TicketSearchForm(),
     }
-    if check_ip(request):
-        context.update({'city': True})
     return TemplateResponse(request, template, context)
 
 
