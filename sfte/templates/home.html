@@ -126,7 +126,7 @@
 		{% if not user_form %} <a href="{% url "subscribe" %}" id="subscribe">Subscribe to our news and releases</a>
 		{% endif %}
 	</div>
-	<span class="visible-phone" id="how-phone">How it works:</span>
+	<span class="visible-phone" id="how-phone">{% comment %}How it works:{% endcomment %}</span>
 	<div class="span6 slider">
 		{% comment %}
 		{# no sliders for now untill we have real content #}
