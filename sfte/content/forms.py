@@ -10,8 +10,9 @@ class TicketSearchForm(forms.Form):
     ) + WEEK_DAYS
     HOUR_CHOICES = (('', '--------'),) + tuple(HOURS_DICT.items())
     DISTANCE_CHOICES = (
-        ('0.0001', '10m'), ('0.0002', '20m'), ('0.0003', '30m'),
-        ('0.0004', '40m'), ('0.0005', '50m'), ('0.001', '100m'),
+        ('0.00015', '50ft (15m)'),
+        ('0.0003', '100ft (30m)'),
+        ('0.0006', '200ft (60m)'),
     )
     address = forms.CharField(
         label='Type your parking address:',
@@ -19,7 +20,7 @@ class TicketSearchForm(forms.Form):
             attrs={'type': 'text', 'class': 'input-block-level input-medium', 'placeholder': 'f.e. 1234 Market st'})
     )
     distance = forms.ChoiceField(
-        initial=DISTANCE_CHOICES[1][0],
+        initial=DISTANCE_CHOICES[0][0],
         choices=DISTANCE_CHOICES,
         label='Distance',
         widget=forms.Select(attrs={'class': 'small-widget'}),

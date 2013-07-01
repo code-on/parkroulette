@@ -1,49 +1,108 @@
-.container{padding-top:20px}
-
-.modal-header{height:20px;}
-.modal-header h5 {margin-top:0px;}
-.modal-body {overflow: hidden;}
-
-
-p.notify {font-size:16px}
-p.intro {font-size:27px}
-p.align-left { text-align: left; }
-p.align-right { text-align: right; }
-
-a.intro {color: #000000; text-decoration: none}
-
-select#id_distance{width:65px}
-*+#id_distance {padding: 0px;}
-*+#id_address {padding: 0px;}
-*+#id_email {padding: 0px;}
-*+#id_city {padding: 0px;}
-
-#how-span{margin-bottom: 15px}
-#how{font-size:20px}
-#how-phone{font-size:20px; margin-bottom: 10px; margin-top: 10px}
-
-.twitter-timeline{width: 100%}
-.twitter #subscribe{font-size: 18px}
-
-.table-slim td, .table-slim th {padding: 0 3px;}
-.brand small {font-size: 14px;color: #ccc;}
-
-.navcontainer ul {margin: 0;padding: 0;list-style-type: none;text-align: center;}
-.navcontainer ul li {display: inline;}
-.navcontainer ul li a {padding: .2em 1em;}
-
-@media (min-width: 1200px) {
-#intro {width:120px}
-#intro-share {width:120px}
+.container {
+	padding-top:20px
 }
-
-@media (min-width: 768px) and (max-width: 979px) {
-#intro {width:130px}
-#intro-share {width:80px}
+.modal-header {
+	height:20px;
 }
-@media (max-width: 767px) { 
-#intro-share{margin-bottom:9px}
+.modal-header h5 {
+	margin-top:0px;
 }
-
-#intro-share img {width:20px;height: 20px}
-#middle-share img {width:16px;height: 16px}
+.modal-body {
+	overflow:hidden;
+}
+p.notify {
+	font-size:16px
+}
+p.intro {
+	font-size:27px
+}
+p.align-left {
+	text-align:left;
+}
+p.align-right {
+	text-align:right;
+}
+a.intro {
+	color:#000000;
+	text-decoration:none
+}
+select#id_distance {
+	width:110px
+}
+*+#id_distance {
+	padding:0px;
+}
+*+#id_address {
+	padding:0px;
+}
+*+#id_email {
+	padding:0px;
+}
+*+#id_city {
+	padding:0px;
+}
+#how-span {
+	margin-bottom:15px
+}
+#how {
+	font-size:20px
+}
+#how-phone {
+	font-size:20px;
+	margin-bottom:10px;
+	margin-top:10px
+}
+.twitter-timeline {
+	width:100%
+}
+.twitter #subscribe {
+	font-size:18px
+}
+.table-slim td,.table-slim th {
+	padding:0 3px;
+}
+.brand small {
+	font-size:14px;
+	color:#ccc;
+}
+.navcontainer ul {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+	text-align:center;
+}
+.navcontainer ul li {
+	display:inline;
+}
+.navcontainer ul li a {
+	padding:.2em 1em;
+}
+@media (min-width:1200px) {
+	#intro {
+		width:120px
+	}
+	#intro-share {
+		width:120px
+	}
+}
+@media (min-width:768px) and (max-width:979px) {
+	#intro {
+		width:130px
+	}
+	#intro-share {
+		width:80px
+	}
+}
+@media (max-width:767px) {
+	#intro-share {
+		margin-bottom:9px
+	}
+}
+#intro-share img {
+	width:20px;
+	height:20px
+}
+#middle-share img {
+	width:16px;
+	height: 16px
+}

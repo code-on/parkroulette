@@ -1,152 +1,149 @@
 {% extends "base.html" %}
+
 {% block content %}
-    <!--modal -->
-    <div class="modal fade hide" tabindex="-1" role="dialog" id="sharemodal">
-        <div class="modal-header">
-            <h5>Share</h5>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <form>
-                <textarea name="limitedtextarea" id="limitedtextarea" onkeydown="limitText(this.form.limitedtextarea,'#count',119)"
-                          onkeyup="limitText(this.form.limitedtextarea,'#count',119)" class="input-block-level"
-                          id="textarea">I'm about to check my parking ticket chance at parkroulette.com</textarea>
+<!--modal -->
+<div class="modal fade hide" tabindex="-1" role="dialog" id="sharemodal">
+	<div class="modal-header">
+		<h5>Share</h5>
+	</div>
+	<div class="modal-body" id="modal-body">
+		<form>
+			<textarea name="limitedtextarea" id="limitedtextarea" onkeydown="limitText(this.form.limitedtextarea,'#count',119)" onkeyup="limitText(this.form.limitedtextarea,'#count',119)" class="input-block-level" id="textarea">I'm about to check my parking ticket chance at parkroulette.com</textarea>
+			<div class="count" style="font-size: 12px">
+				You have<span id="count">56</span> characters left
+			</div>
+		</form>
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="span3">
+					<a href="https://www.facebook.com" onclick="fb_top('fb-popup-link','#textarea')" id="fb-popup-link" target="_blank">
+					<img src="/static/img/btn_facebook.png"></a>
+					<a href="https://www.twitter.com" onclick="twitter_top('tweeter-popup-link','#textarea')" id="tweeter-popup-link" target="_blank">
+					<img src="/static/img/btn_twitter.png"></a>
+					<a href="https://www.google.com" onclick="googleone_top('googleone-popup-link')" id="googleone-popup-link" target="_blank">
+					<img src="/static/img/btn_google_plusone.png"></a>
+				</div>
+				<div class="span9">
+					<a href="#" class="btn pull-right" data-dismiss="modal" onclick="$('#search-form').submit()">No, thanks</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--end modal -->
 
-                <div class="count" style="font-size: 12px">You have<span id="count">56</span> characters left</div>
-            </form>
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="span3">
-                        <a href="https://www.facebook.com" onclick="fb_top('fb-popup-link','#textarea')"
-                           id="fb-popup-link" target="_blank">
-                            <img src="/static/img/btn_facebook.png"></a>
-                        <a href="https://www.twitter.com" onclick="twitter_top('tweeter-popup-link','#textarea')"
-                           id="tweeter-popup-link" target="_blank">
-                            <img src="/static/img/btn_twitter.png"></a>
-                        <a href="https://www.google.com" onclick="googleone_top('googleone-popup-link')"
-                           id="googleone-popup-link" target="_blank">
-                            <img src="/static/img/btn_google_plusone.png"></a>
-                    </div>
-                    <div class="span9">
-                        <a href="#" class="btn pull-right" data-dismiss="modal" onclick="$('#search-form').submit()">No,
-                            thanks</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--end modal -->
+<!--intro -->
+<div class="row">
+	<div class="span5">
+		<div class="row">
+			<div class="span2" id="intro">
+				<a href="/" class="intro">
+				<p class="align-left intro">
+					Parkroulette
+				</p>
+				</a>
+			</div>
+			<div class="span3" id="intro-share">
+				<a href="https://www.facebook.com" onclick="fb_top('fb-top-link','#textarea')" id="fb-top-link" target="_blank">
+				<img src="/static/img/btn_facebook.png"></a>
+				<a href="https://www.twitter.com" onclick="twitter_top('tweeter-top-link','#textarea')" id="tweeter-top-link" target="_blank">
+				<img src="/static/img/btn_twitter.png"></a>
+				<a href="https://www.google.com" onclick="googleone_top('googleone-top-link')" id="googleone-top-link" target="_blank">
+				<img src="/static/img/btn_google_plusone.png"></a>
+			</div>
+		</div>
+	</div>
+	<div class="span7">
+		 {% if not city_form %}
+		<p class="align-right notify hidden-phone">
+			Would like to have parkroulette in your city? <a href="{% url "subscription" %}">Click here</a>
+		</p>
+		<p class="align-left notify visible-phone">
+			Would like to have parkroulette in your city? <a href="{% url "subscription" %}">Click here</a>
+		</p>
+		 {% endif %}
+	</div>
+</div>
+<!--end intro -->
 
-    <!--intro -->
-    <div class="row">
-        <div class="span5">
-            <div class="row">
-                <div class="span2" id="intro">
-                    <a href="/" class="intro"><p class="align-left intro">Parkroulette</p></a>
-                </div>
-                <div class="span3" id="intro-share">
-                    <a href="https://www.facebook.com" onclick="fb_top('fb-top-link','#textarea')"
-                       id="fb-top-link" target="_blank">
-                        <img src="/static/img/btn_facebook.png"></a>
-                    <a href="https://www.twitter.com" onclick="twitter_top('tweeter-top-link','#textarea')"
-                       id="tweeter-top-link" target="_blank">
-                        <img src="/static/img/btn_twitter.png"></a>
-                    <a href="https://www.google.com" onclick="googleone_top('googleone-top-link')"
-                       id="googleone-top-link" target="_blank">
-                        <img src="/static/img/btn_google_plusone.png"></a>
-                </div>
-            </div>
-        </div>
-        <div class="span7">
-            {% if not city_form %}
-            <p class="align-right notify hidden-phone">Would like to have parkroulette in your city? <a href="{% url "subscription" %}">Click
-                here</a></p>
+<!--well -->
+<div class="well">
+	 {% block well %}
+	<div class="row-fluid">
+		<div class="span9">
+			<h3 id="share-top-text">Calculate the chance you will get a parking ticket at any address in San Francisco</h3>
+			<p>
+				Based on public records of actual tickets we will give you a chance of getting ticket if you park illegally on a chosen address
+			</p>
+			<h5>Try it:</h5>
+			 {% for error in form.errors %}
+			<div class="alert alert-error">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				{{ form.errors.as_text }}.
+			</div>
+			 {% endfor %}
+			<form id="search-form" action="{% url "get-heatmap" %}">
+				<div class="row-fluid">
+					<div class="span5">
+						<label>{{ form.address.label }}</label>
+						{{ form.address }}
+					</div>
+					<div class="span3">
+						<label>{{ form.distance.label }}</label>
+						{{ form.distance }}
+					</div>
+					<div class="span4">
+						<label>&nbsp;</label>
+						<a href="#submit" id="submit" class="btn btn-warning btn-block" type="submit">Get chance of ticket</a>
+						<input id="heatmap-button" data-url="{% url "get-heatmap" %}" type="submit" value="Get chance of ticket" style="display: none"/>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="span3">
+			<img src="/static/no-parking.png" class="pull-right hidden-phone">
+		</div>
+	</div>
+	 {% endblock well %}
+	<div id="message" style="display: none">
+		<a href="">Add this to your home screen so you can check parking on the go!</a>
+	</div>
+</div>
+<!--end well -->
 
-            <p class="align-left notify visible-phone">Would like to have parkroulette in your city? <a href="{% url "subscription" %}">Click
-                here</a></p>
-            {% endif %}
-        </div>
-    </div>
-    <!--end intro -->
-    <!--well -->
-    <div class="well">
+ {% block output %}
 
-        {% block well %}
-            <div class="row-fluid">
-                <div class="span9">
-                    <h3 id="share-top-text">Calculate the chance you will get a parking ticket at any address in San
-                        Francisco</h3>
-
-                    <p>Based on public records of actual tickets we will give you a chance of
-                        getting ticket if you park illegally on a chosen address</p>
-                    <h5>Try it:</h5>
-                    {% for error in form.errors %}
-                        <div class="alert alert-error">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            {{ form.errors.as_text }}.
-                        </div>
-                    {% endfor %}
-                    <form id="search-form" action="{% url "get-heatmap" %}">
-                        <div class="row-fluid">
-                            <div class="span5">
-                                <label>{{ form.address.label }}</label>
-                                {{ form.address }}
-                            </div>
-                            <div class="span2">
-                                <label>{{ form.distance.label }}</label>
-                                {{ form.distance }}
-                            </div>
-                            <div class="span5">
-                                <label>&nbsp;</label>
-                                <a href="#submit" id="submit" class="btn btn-warning btn-block" type="submit">Get
-                                    chance of ticket</a>
-                                <input id="heatmap-button" data-url="{% url "get-heatmap" %}"
-                                       type="submit" value="Get chance of ticket" style="display: none"/>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="span3">
-                    <img src="/static/no-parking.png" class="pull-right hidden-phone">
-                </div>
-            </div>
-        {% endblock well %}
-     <div id="message" style="display: none"><a href="">Add this to your home screen so you can check parking on the go!</a></div>
-    </div><!--end well -->
-
-    {% block output %}
-        <div class="row hidden-phone" id="how-span" style="height:15px">
-            <div class="span6" style="height:15px"></div>
-            <div class="span6">
-                <span id="how">How it works:</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="span6 twitter">
-                <a class="twitter-timeline" height="385" href="https://twitter.com/sfgov"
-                   data-widget-id="341934962053890049">Tweets by @sfgov</a></br>
-                {% if not user_form %}
-                <a href="{% url "subscribe" %}" id="subscribe">Subscribe to our news and releases</a>
-                {% endif %}
-            </div>
-            <span class="visible-phone" id="how-phone">How it works:</span>
-
-            <div class="span6 slider">
-                <div class="flexslider">
-                    <ul class="slides">
-                        <li>
-                            <img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=1" alt="">
-                        </li>
-                        <li>
-                            <img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=2" alt="">
-                        </li>
-                        <li>
-                            <img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=3" alt="">
-                        </li>
-                    </ul>
-                </div>
-                <!--end slider -->
-            </div>
-        </div>
-    {% endblock %}
+<div class="row hidden-phone" id="how-span" style="height:15px">
+	<div class="span6" style="height:15px">
+	</div>
+	<div class="span6">
+		<span id="how">How it works:</span>
+	</div>
+</div>
+<div class="row">
+	<div class="span6 twitter">
+		<a class="twitter-timeline" height="385" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a></br>
+		{% if not user_form %} <a href="{% url "subscribe" %}" id="subscribe">Subscribe to our news and releases</a>
+		{% endif %}
+	</div>
+	<span class="visible-phone" id="how-phone">How it works:</span>
+	<div class="span6 slider">
+		<div class="flexslider">
+			<ul class="slides">
+				<li>
+				<img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=1" alt="">
+				</li>
+				<li>
+				<img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=2" alt="">
+				</li>
+				<li>
+				<img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=3" alt="">
+				</li>
+			</ul>
+		</div>
+		<!--end slider -->
+	</div>
+</div>
+{% endblock %}
 
 {% endblock %}
