@@ -7,6 +7,9 @@ def rel(*x):
 
 sys.path.insert(0, rel('..', 'lib'))
 
+GEOIP_PATH = os.path.join(rel('..', 'lib'), 'geoip')
+GEOIP_DEBUG = True
+
 # Quick-start development settings - unsuitable for production
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -112,6 +115,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     rel('static'),
 )
+
 
 
 try:
