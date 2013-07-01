@@ -71,9 +71,12 @@
 <div class="well">
 	 {% block well %}
 	<div class="row-fluid">
-    {% if request|city %}
 		<div class="span9">
 			<h3 id="share-top-text">Calculate the chance you will get a parking ticket at any address in San Francisco</h3>
+            {% if not request|city %}
+                    <h4 id="share-top-text">Sorry, Parkroulette is only available for San Francisco. <a
+                            href="{% url "subscription" %}">Click here</a> to sign up for other cities.</h4>
+            {% endif %}
 			<p>
 				Based on public records of actual tickets we will give you a chance of getting ticket if you park illegally on a chosen address
 			</p>
@@ -102,15 +105,6 @@
 				</div>
 			</form>
 		</div>
-
-    {% else %}
-
-        <div class="span9">
-        <h3 id="share-top-text">Sorry, Parkroulette is only available for San Francisco. <a href="{% url "subscription" %}">Click here</a> to sign up for other cities.</h3>
-        </div>
-
-    {% endif %}
-
 		<div class="span3">
 			<img src="/static/no-parking.png" class="pull-right hidden-phone">
 		</div>
