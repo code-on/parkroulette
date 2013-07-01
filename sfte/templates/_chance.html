@@ -1,5 +1,5 @@
 {% if data.chance %}{% load humanize %}
-    <strong class="results">{{ data.tickets_count }} tickets</strong> were issued within {{ data.get_distance_display }} meters of <strong>{{ data.place }}</strong>
+    <strong class="results">{{ data.tickets_count }} tickets</strong> were issued within {{ data.get_distance_display }} of <strong>{{ data.place }}</strong>
     while that address was <strong>patrolled {{ data.patrols_count }} times</strong> over <strong>{{ data.hours_count|intcomma }} hours </strong>
     {% if data.start_time != None %}
         between <strong>{{ data.start_time }}</strong> and <strong>{{ data.end_time }}</strong>
