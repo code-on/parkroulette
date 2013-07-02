@@ -20,7 +20,8 @@
 			</br>
 			<strong>Share:</strong>
 			<div>
-				<span id='share-middle-text'>Check out parkroulette.com for parking tickets estimation in San Francisco</span>
+				<span id='share-middle-text'>I just found out that the chance of getting a parking ticket at {{ data.place }} is {{ data.chance|floatformat:1 }}% per hour.
+                    Try it out for any address in San Francisco.</span>
 			</div>
 			<div class="span3" id="middle-share">
 				<a href="https://www.facebook.com" onclick="fb_top('fb-middle-link','#share-middle-text')" id="fb-middle-link" target="_blank">
