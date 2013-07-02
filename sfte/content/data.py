@@ -14,7 +14,8 @@ from django.db.models import Max, Min
 from django.utils.functional import cached_property
 from django.utils.http import urlquote
 from django.utils.text import slugify
-from geopy import geocoders
+from pygeocoder import Geocoder
+from googlemaps import GoogleMaps
 
 logger = logging.getLogger()
 cache = get_cache('default')
@@ -25,13 +26,18 @@ def get_place_data(address):
     sl_address = slugify(address)
     data = address_cache.get(sl_address)
     if not data:
-        g = geocoders.GoogleV3(domain='maps.google.com')
-        data = g.geocode(
-            u'{address}, San Francisco, CA, United States'.format(address=address),
-            exactly_one=False
-        )[0]
+        result = Geocoder.geocode(u'{address}, San Francisco, CA, United States'.format(address=address))
+        data = (result.street_number + ' ' + result.route, get_coordinates(result))
         address_cache.set(sl_address, data)
     return data
+
+
+def get_coordinates(result):
+    origin = ', '.join([i['long_name'] for i in result.current_data['address_components'][1:]])
+    dest = ', '.join([i['long_name'] for i in result.current_data['address_components']])
+    addr = GoogleMaps(result)
+    coordinates = addr.directions(origin, dest)
+    return tuple(coordinates['Directions']['Routes'][0]['End']['coordinates'][0:2])
 
 
 def _get_all_hours_count():
@@ -57,7 +63,7 @@ def _get_heatmap_data(datetimes, url):
 
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
     for i in range(1, 8):
-        data[0][i] = day_func(data[0][i], i-1)
+        data[0][i] = day_func(data[0][i], i - 1)
 
     day_total = [0, 0, 0, 0, 0, 0, 0]
     for hour in range(24):
@@ -124,8 +130,8 @@ class Data(object):
     @cached_property
     def geo_data(self):
         start_time = time.time()
-        place, (lat, lng) = get_place_data(self.address)
-        logger.info('Time for getting coords by address: {}s'.format(time.time()-start_time))
+        place, (lng, lat) = get_place_data(self.address)
+        logger.info('Time for getting coords by address: {}s'.format(time.time() - start_time))
         return {'place': place, 'lat': lat, 'lng': lng}
 
     @cached_property
@@ -191,7 +197,7 @@ class Data(object):
         values = map(lambda x: Decimal(x[1:]), values)
         #temporary workaround
         try:
-            return sum(values)/len(values)
+            return sum(values) / len(values)
         except ZeroDivisionError:
             return
 
