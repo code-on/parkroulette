@@ -8,10 +8,10 @@
 
 <div class="row-fluid" id="output-block">
 	 {% if form.is_valid %} {% if data.lat and data.lng %}
-	<div id="img-block" class="span2">
+	<div id="img-block" class="span6">
 		<img id="map"/>
 	</div>
-	<div class="span10">
+	<div class="span6">
 		<h4 id="place-block">{{ data.place }}</h4>
 		<div id="output-text">
 			 {% include "_chance.html" %}

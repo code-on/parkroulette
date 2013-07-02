@@ -102,12 +102,40 @@ $(document).ready(function(){
 </script>
 
 {% if data %}
-<script type="text/javascript">
-        var lat = '{{ data.lat }}'.replace(",", ".");
-        var lng = '{{ data.lng }}'.replace(",", ".");
-        var link = "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&markers=" + lat + "," + lng + "&zoom=16&size=200x200&sensor=false";
-        $("#map").attr("src", link);
-    </script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script>
+    var map;
+    function initialize() {
+        var myLatlng = new google.maps.LatLng({{ data.lat }}, {{  data.lng }});
+        var mapOptions = {
+            disableDefaultUI: true,
+            keyboardShortcuts: false,
+            zoom: 17,
+            minZoom: 17,
+            center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById('img-block'),
+                mapOptions);
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: "{{ data.place }}"
+        });
+        var redCircle = {
+            strokeColor: "#FB62C9",
+            strokeWeight: 2,
+            fillColor: "#EDBABF",
+            fillOpacity: 0.7,
+            map: map,
+            center: myLatlng,
+            radius: $("#id_distance").val()*100000
+        };
+        var cityCircle = new google.maps.Circle(redCircle);
+        cityCircle.bindTo('center', marker, 'position');
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
 {% endif %}
 
 {% if not request.GET.address %}

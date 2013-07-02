@@ -9,10 +9,10 @@
 {% block output %}
     {% if form.is_valid %}
         {% if data.lat %}
-            <div id="img-block" class="span4">
+            <div id="img-block" class="span6">
                 <img id="map"/>
             </div>
-            <div class="span8">
+            <div class="span6">
                 <h4 id="place-block">{{ data.place }}</h4>
                 <div>
                     {% include "_chance.html" %}
