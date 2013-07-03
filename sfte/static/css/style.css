@@ -110,3 +110,17 @@ select#id_distance {
 #img-block {
 	height:225px
 }
+
+@-moz-keyframes rotation {
+    from {-ms-transform: rotate(0deg);}
+    to {-ms-transform: rotate(359deg);}
+}
+@keyframes rotation {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(359deg);}
+}
+@-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+

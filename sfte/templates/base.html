@@ -120,10 +120,11 @@ $(document).ready(function(){
     }(document, "script", "twitter-wjs"));
 </script>
 <script>
-    $("#submit").click(function () {
+    $("#submit").click(function (event) {
+        event.preventDefault();
         var cookieShared = ($.cookie('cookieShared') != null)
-            ? $.cookie('cookieShared')
-            : 0;
+                ? $.cookie('cookieShared')
+                : 0;
         if (cookieShared == 0) {
             $("#sharemodal").modal('show')
             cookieShared++;
@@ -132,8 +133,11 @@ $(document).ready(function(){
             $('#search-form').submit()
         }
     });
+    $('#search-form').submit(function () {
+        $('.rotate').css('-webkit-animation', 'rotation 1s infinite linear');
+        $('.rotate').css('animation', 'rotation 1s infinite linear');
+    });
 </script>
-
 {% if data %}
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 <script>
