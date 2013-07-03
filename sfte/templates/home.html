@@ -11,7 +11,7 @@
 		<form>
 			<textarea name="limitedtextarea" id="limitedtextarea" onkeydown="limitText(this.form.limitedtextarea,'#count',119)" onkeyup="limitText(this.form.limitedtextarea,'#count',119)" class="input-block-level" id="textarea">Checking my parking ticket chance at parkroulette.com</textarea>
 			<div class="count" style="font-size: 12px">
-				You have<span id="count">56</span> characters left
+				You have<span id="count"> 56</span> characters left
 			</div>
 		</form>
 		<div class="row-fluid">
@@ -30,43 +30,7 @@
 			</div>
 		</div>
 	</div>
-</div>
-<!--end modal -->
-
-<!--intro -->
-<div class="row">
-	<div class="span5">
-		<div class="row">
-			<div class="span2" id="intro">
-				<a href="/" class="intro">
-				<p class="align-left intro">
-					Parkroulette
-				</p>
-				</a>
-			</div>
-			<div class="span3" id="intro-share">
-				<a href="https://www.facebook.com" onclick="fb_top('fb-top-link','#textarea')" id="fb-top-link" target="_blank">
-				<img src="/static/img/btn_facebook.png"></a>
-				<a href="https://www.twitter.com" onclick="twitter_top('tweeter-top-link','#textarea')" id="tweeter-top-link" target="_blank">
-				<img src="/static/img/btn_twitter.png"></a>
-				<a href="https://www.google.com" onclick="googleone_top('googleone-top-link')" id="googleone-top-link" target="_blank">
-				<img src="/static/img/btn_google_plusone.png"></a>
-			</div>
-		</div>
-	</div>
-	<div class="span7">
-		 {% if not city_form %}
-		<p class="align-right notify hidden-phone">
-			Would like to have parkroulette in your city? <a href="{% url "subscription" %}">Click here</a>
-		</p>
-		<p class="align-left notify visible-phone">
-			Would like to have parkroulette in your city? <a href="{% url "subscription" %}">Click here</a>
-		</p>
-		 {% endif %}
-	</div>
-</div>
-<!--end intro -->
-
+</div><!--end modal -->
 <!--well -->
 <div class="well">
 	 {% block well %}
@@ -113,8 +77,7 @@
 	<div id="message" style="display: none">
 		<a href="">Add this to your home screen so you can check parking on the go!</a>
 	</div>
-</div>
-<!--end well -->
+</div><!--end well -->
 
  {% block output %}
 
