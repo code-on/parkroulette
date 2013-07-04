@@ -143,7 +143,7 @@ $(document).ready(function(){
 <script>
     var map;
     function initialize() {
-        var myLatlng = new google.maps.LatLng({{ data.lat }}, {{  data.lng }});
+        var myLatlng = new google.maps.LatLng("{{ data.lat }}".replace(/,/g , "."), "{{ data.lng }}".replace(/,/g , "."));
         var mapOptions = {
             disableDefaultUI: true,
             keyboardShortcuts: false,
