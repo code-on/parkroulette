@@ -14,8 +14,8 @@ from django.db.models import Max, Min
 from django.utils.functional import cached_property
 from django.utils.http import urlquote
 from django.utils.text import slugify
-from pygeocoder import Geocoder
-from googlemaps import GoogleMaps
+from pygeocoder.pygeocoder import Geocoder
+from googlemaps.googlemaps import GoogleMaps
 
 logger = logging.getLogger()
 cache = get_cache('default')
