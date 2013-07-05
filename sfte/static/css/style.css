@@ -151,6 +151,10 @@ table .time-now {
 	    width: 27px;
 	    height:27px
    }
+    #intro-share img {
+	    width: 27px;
+	    height:27px
+   }
 }
 
 @-moz-keyframes rotation {

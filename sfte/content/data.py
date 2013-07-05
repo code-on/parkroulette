@@ -47,7 +47,7 @@ def _get_all_hours_count():
     return cache.get('hours_count')
 
 
-def _get_heatmap_data(datetimes, url):
+def _get_heatmap_tickets_data(datetimes, url):
     day_param_func = lambda d: '&week_day={0}'.format(d + 1)
     day_func = lambda c, d: '<a href="{0}{1}">{2}</a>'.format(url, day_param_func(d), c)
 
@@ -79,6 +79,30 @@ def _get_heatmap_data(datetimes, url):
     all_count = sum(day_total)
     for i in range(7):
         day_total[i] = day_func(day_total[i], i)
+    data.append(['Total'] + day_total + [''])
+    return {
+        'heatmap': data,
+        'count': all_count,
+    }
+
+
+def _get_heatmap_paths_data(datetimes, url):
+    day_hours = map(lambda x: (x.isoweekday() % 7, x.hour), datetimes)
+    grouped_tickets = Counter(day_hours)
+    data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
+    print data
+    day_total = [0, 0, 0, 0, 0, 0, 0]
+    for hour in range(24):
+        hour_data = [HOURS_DICT[hour]]
+        hour_total = 0
+        for day in range(7):
+            count = grouped_tickets.get((day, hour), 0)
+            hour_data.append(count)
+            day_total[day] += count
+            hour_total += count
+        hour_data.append(hour_total)
+        data.append(hour_data)
+    all_count = sum(day_total)
     data.append(['Total'] + day_total + [''])
     return {
         'heatmap': data,
@@ -131,6 +155,7 @@ class Data(object):
     def geo_data(self):
         start_time = time.time()
         place, (lng, lat) = get_place_data(self.address)
+        self.address = place
         logger.info('Time for getting coords by address: {}s'.format(time.time() - start_time))
         return {'place': place, 'lat': lat, 'lng': lng}
 
@@ -246,7 +271,7 @@ class Data(object):
         url = '{0}?address={1}&distance={2}'.format(reverse('get-laws'), urlquote(self.address), self.distance)
         tc_qs = self.get_ticket_qs(ignore_daytime=True)
         datetimes = tc_qs.values_list('issue_datetime', flat=True)
-        return _get_heatmap_data(datetimes, url)
+        return _get_heatmap_tickets_data(datetimes, url)
 
     def tickets_heatmap(self):
         return self.tickets_heatmap_data['heatmap']
@@ -259,7 +284,7 @@ class Data(object):
         url = '{0}?address={1}&distance={2}'.format(reverse('get-laws'), urlquote(self.address), self.distance)
         ph_qs = self.get_path_qs(ignore_daytime=True)
         datetimes = ph_qs.values_list('start_datetime', flat=True)
-        return _get_heatmap_data(datetimes, url)
+        return _get_heatmap_paths_data(datetimes, url)
 
     def paths_heatmap(self):
         return self.paths_heatmap_data['heatmap']
