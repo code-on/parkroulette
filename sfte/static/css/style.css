@@ -58,9 +58,44 @@ select#id_distance {
 .twitter #subscribe {
 	font-size:18px
 }
-.table-slim td,.table-slim th {
-	padding:0 3px;
+
+
+.table{
+    margin-bottom: 0px;
 }
+
+div.source {
+    margin-bottom: 20px;
+}
+
+.table td,.table th {
+	padding:0 3px;
+    text-align: right;
+}
+
+#tickets-heatmap td:hover, #tickets-heatmap .row-total:hover, #tickets-heatmap .column-total:hover{
+    background-color: #89d8ff !important;
+}
+
+.table td a, .table th a  {
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: #333;
+}
+
+.table td a, .table th a  {
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: #333;
+}
+table .time-now {
+    outline: #0070FF solid thick;
+    outline-width: 4px;
+    outline-offset: -3px;
+}
+
 .brand small {
 	font-size:14px;
 	color:#ccc;
@@ -77,6 +112,21 @@ select#id_distance {
 .navcontainer ul li a {
 	padding:.2em 1em;
 }
+
+#intro-share img {
+	width:20px;
+	height:20px
+}
+#middle-share img {
+	width:16px;
+	height: 16px
+}
+
+#img-block {
+	height:225px
+}
+
+
 @media (min-width:1200px) {
 	#intro {
 		width:120px
@@ -97,18 +147,10 @@ select#id_distance {
 	#intro-share {
 		margin-bottom:9px
 	}
-}
-#intro-share img {
-	width:20px;
-	height:20px
-}
-#middle-share img {
-	width:16px;
-	height: 16px
-}
-
-#img-block {
-	height:225px
+    #intro-share img {
+	    width: 35px;
+	    height:35px
+   }
 }
 
 @-moz-keyframes rotation {
