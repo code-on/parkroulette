@@ -33,40 +33,100 @@
 		</div>
 	</div>
 </div>
-<div class="row-fluid" id="output-table">
-	<div class="span6">
-		<h5>Tickets ({{ data.tickets_heatmap_count }})</h5>
-		<table class="table table-slim table-bordered" id="tickets-heatmap">
-		 {% with data.tickets_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
-		</table>
-	</div>
-	<div class="span6">
-		<h5>Patrols ({{ data.paths_heatmap_count }})</h5>
-		<table class="table table-slim table-bordered" id="paths-heatmap">
-		 {% with data.paths_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
-		</table>
-	</div>
-</div>
-</div>
-<script>
-                    var heatmap_options = {
-                        colorArray: [
-                            "#63BE7B",
-                            "#FBE983",
-                            "#F8696B"
-                        ],
-                        nullColor: "#63BE7B",
-                        readValue: function (e) {
-                            return ($(e).children("a").html())
-                        }
-                    }
-                    $("#paths-heatmap td").hottie(heatmap_options);
-                    $("#paths-heatmap th.column-total").hottie(heatmap_options);
-                    $("#paths-heatmap th.row-total").hottie(heatmap_options);
-                    $("#tickets-heatmap td").hottie(heatmap_options);
-                    $("#tickets-heatmap th.column-total").hottie(heatmap_options);
-                    $("#tickets-heatmap th.row-total").hottie(heatmap_options);
-                </script>
+         <div class="row-fluid tabbable" id="output-table">
+
+             <ul class="nav nav-tabs">
+                 <li class="active"><a href="#tab1" data-toggle="tab"><h5>Patrols ({{ data.paths_heatmap_count }})</h5>
+                 </a></li>
+                 <li><a href="#tab2" data-toggle="tab"><h5>Tickets ({{ data.tickets_heatmap_count }})</h5></a></li>
+             </ul>
+
+             <div class="tab-content">
+                 <div class="tab-pane active" id="tab1">
+                     <table class="table table-slim table-bordered table-condensed" id="paths-heatmap">
+                         {% with data.paths_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
+                         {% if data.chance %}{% load humanize %}
+                             <caption>Patrols within {{ data.get_distance_display }} of {{ data.place }}
+                                 over {{ data.hours_count|intcomma }} hours in 2011 and 2012
+                             </caption>
+                         {% endif %}
+                     </table>
+                 </div>
+                 <div class="tab-pane" id="tab2">
+                     <table class="table table-slim table-bordered" id="tickets-heatmap">
+                         {% with data.tickets_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
+                         {% if data.chance %}{% load humanize %}
+                             <caption>Tickets within {{ data.get_distance_display }} of {{ data.place }}
+                                 over {{ data.hours_count|intcomma }} hours in 2011 and 2012
+                             </caption>
+                         {% endif %}
+                     </table>
+                 </div>
+             </div>
+         </div>
+         <script>
+             var date = new Date;
+             var weekday = new Array(7);
+             weekday[0] = "SUN";
+             weekday[1] = "MON";
+             weekday[2] = "TUE";
+             weekday[3] = "WED";
+             weekday[4] = "THU";
+             weekday[5] = "FRI";
+             weekday[6] = "SAT";
+             var dayOfWeek = weekday[date.getUTCDay()];
+             var H = date.getHours()
+             var h = H % 12 || 12;
+             var ampm = H < 12 ? "AM" : "PM";
+             var time = h + ampm;
+             $('.table thead th').each(function() {
+                 if ($(this).html() == dayOfWeek || $(this).children("a").html() == dayOfWeek){
+                    $(this).attr('class', 'day');
+                 }
+
+             });
+             $('.stats-title').each(function() {
+                 if ($(this).html() == time || $(this).children("a").html() == time){
+                    $(this).parent('tr').attr('class', 'hour');
+                 }
+
+             });
+             $('.day' ).each(function() {
+                 var column = $(this).index()-1;
+                 $('.hour' ).each(function() {
+                     var cell = $(this).find('td').eq(column);
+                     cell.attr('class', 'time-now');
+                 });
+               });
+             var heatmap_options = {
+                 colorArray: [
+                     "#63BE7B",
+                     "#FBE983",
+                     "#F8696B"
+                 ],
+                 nullColor: "#63BE7B",
+                 readValue: function (e) {
+                     return ($(e).children("a").html())
+                 }
+             }
+             $("#tickets-heatmap td").hottie(heatmap_options);
+             $("#tickets-heatmap th.column-total").hottie(heatmap_options);
+             $("#tickets-heatmap th.row-total").hottie(heatmap_options);
+             heatmap_options = {
+                 colorArray: [
+                     "#63BE7B",
+                     "#FBE983",
+                     "#F8696B"
+                 ],
+                 nullColor: "#63BE7B",
+                 readValue: function (e) {
+                     return ($(e).html())
+                 }
+             }
+             $("#paths-heatmap td").hottie(heatmap_options);
+             $("#paths-heatmap th.column-total").hottie(heatmap_options);
+             $("#paths-heatmap th.row-total").hottie(heatmap_options);
+         </script>
  {% else %} Sorry, we cannot find coordinates of this address. {% endif %} {% endif %}
 </div>
 

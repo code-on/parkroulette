@@ -60,8 +60,8 @@ select#id_distance {
 }
 
 
-.table{
-    margin-bottom: 0px;
+.tabbable {
+    margin-bottom: 25px;
 }
 
 div.source {
