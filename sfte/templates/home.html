@@ -32,7 +32,17 @@
 	</div>
 </div><!--end modal -->
 <!--well -->
-<div class="well">
+    {% if data %}
+        <div class="row-fluid results">
+            <div class="span10"><h4 class="results">results for: </h4>
+                <h3 class="results">{{ data.place }}</h3></div>
+            <div class="span2 pull-right"><a href="#" id="new-search" class="btn btn-warning btn-block results">New search</a>
+            </div>
+        </div>
+        <div class="well" style="display: none">
+    {% else %}
+        <div class="well">
+    {% endif %}
 	 {% block well %}
 	<div class="row-fluid">
 		<div class="span9">
@@ -78,7 +88,6 @@
 		<a href="">Add this to your home screen so you can check parking on the go!</a>
 	</div>
 </div><!--end well -->
-
  {% block output %}
 
 <div class="row hidden-phone" id="how-span" style="height:15px">

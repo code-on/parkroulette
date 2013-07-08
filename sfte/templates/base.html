@@ -184,12 +184,19 @@ $(document).ready(function(){
     }
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
+<script>
+    $("#new-search").click(function () {
+    $('div.results').slideUp('fast')
+    $('.well').slideDown('fast')
+
+    });
+</script>
 {% endif %}
 
 {% if not request.GET.address %}
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script>
-        var $text_field = $('#{{ form.address.auto_id }}');
+        var $text_field = $('#'+'{{ form.address.auto_id }}');
         if (Modernizr.geolocation) {
             navigator.geolocation.getCurrentPosition(fill_address);
         }
