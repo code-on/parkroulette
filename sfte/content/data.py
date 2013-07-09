@@ -86,11 +86,10 @@ def _get_heatmap_tickets_data(datetimes, url):
     }
 
 
-def _get_heatmap_paths_data(datetimes, url):
+def _get_heatmap_paths_data(datetimes):
     day_hours = map(lambda x: (x.isoweekday() % 7, x.hour), datetimes)
     grouped_tickets = Counter(day_hours)
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
-    print data
     day_total = [0, 0, 0, 0, 0, 0, 0]
     for hour in range(24):
         hour_data = [HOURS_DICT[hour]]
@@ -281,10 +280,9 @@ class Data(object):
 
     @cached_property
     def paths_heatmap_data(self):
-        url = '{0}?address={1}&distance={2}'.format(reverse('get-laws'), urlquote(self.address), self.distance)
         ph_qs = self.get_path_qs(ignore_daytime=True)
         datetimes = ph_qs.values_list('start_datetime', flat=True)
-        return _get_heatmap_paths_data(datetimes, url)
+        return _get_heatmap_paths_data(datetimes)
 
     def paths_heatmap(self):
         return self.paths_heatmap_data['heatmap']
