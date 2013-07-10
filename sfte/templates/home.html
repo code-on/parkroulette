@@ -33,10 +33,15 @@
 </div><!--end modal -->
 <!--well -->
     {% if data %}
-        <div class="row-fluid results">
-            <div class="span10"><h4 class="results">results for: </h4>
-                <h3 class="results">{{ data.place }}</h3></div>
-            <div class="span2 pull-right"><a href="#" id="new-search" class="btn btn-warning btn-block results">New search</a>
+        <div class="results">
+            <div class="well">
+                <div class="row-fluid">
+                    <div class="span10"><h4 class="results">results for: </h4>
+                        <h3 class="results">{{ data.place }}</h3></div>
+                    <div class="span2 pull-right"><a href="#" id="new-search" class="btn btn-warning btn-block results">New
+                        search</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="well" style="display: none">
