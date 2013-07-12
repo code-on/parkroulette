@@ -7,10 +7,18 @@
     {% if data.week_day %}
         on <strong>{{ data.get_week_day_display }}</strong>
     {% endif %}
-    in {{ data.year }}.
+    in {{ data.year }}.<br />
+    {% if null %}
+    Unable to calculate avarage cost.
+        {% if next_distance %}Try with
+            <a href="{{ request.path }}?address={{ request.GET.address }}&distance={{ next_distance }}">wider
+                radius.</a>
+        {% endif %}
+    {% else %}
     The average cost of a ticket was <strong>${{ data.tickets_avg_cost|floatformat:2 }}</strong>.
     Based on that information, if you park against the rules at that address for one hour, there is a <strong class="results">{{ data.chance|floatformat:1 }}%</strong>
     percent chance you will get a ticket with an expected cost of <strong>${{ data.tickets_exp_cost|floatformat:2 }}</strong>.
+    {% endif %}
 {% else %}
     Sorry, no records found for selected time
 {% endif %}

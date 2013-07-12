@@ -223,7 +223,7 @@ class Data(object):
         try:
             return sum(values) / len(values)
         except ZeroDivisionError:
-            return
+            return 0
 
 
     @cached_property
