@@ -42,7 +42,7 @@ def get_coordinates(result):
 
 def _get_all_hours_count():
     if 'hours_count' not in cache:
-        paths_data = Path.objects.aggregate(max=Max('day'), min=Min('day'))
+        paths_data = Path.objects.filter(valid=True).aggregate(max=Max('day'), min=Min('day'))
         cache.set('hours_count', (paths_data['max'] - paths_data['min']).days * 24)
     return cache.get('hours_count')
 
@@ -173,7 +173,7 @@ class Data(object):
     @cached_property
     def get_all_hours_count(self):
         if 'hours_count' not in cache:
-            paths_data = Path.objects.aggregate(max=Max('day'), min=Min('day'))
+            paths_data = Path.objects.filter(valid=True).aggregate(max=Max('day'), min=Min('day'))
             cache.set('hours_count', (paths_data['max'] - paths_data['min']).days * 24)
         return cache.get('hours_count')
 
@@ -223,7 +223,7 @@ class Data(object):
         try:
             return sum(values) / len(values)
         except ZeroDivisionError:
-            return
+            return 0
 
 
     @cached_property

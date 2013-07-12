@@ -27,15 +27,13 @@ a.intro {
 	text-decoration:none
 }
 
-h4.results, h3.results{
+h4.results, h3.results {
     display: inline;
 }
 
-div.results{
-    margin-bottom: 10px;
-    margin-top: 10px;
+.results .btn {
+    margin-top: 5px;
 }
-
 
 select#id_distance {
 	width:110px
