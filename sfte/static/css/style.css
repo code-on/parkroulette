@@ -242,3 +242,23 @@ table .time-now {
     height: 15px;
     width: 50px;
 }
+
+.how-it-works {
+    display: table;
+    height: 350px;
+    text-align: center;
+}
+
+.how-it-works h1 {
+    display: table-cell;
+    vertical-align: middle;
+
+}
+
+.how-it-works h1 a {
+    color: #333333;
+}
+
+.how-it-works h1 a:hover {
+    text-decoration: none;
+}
