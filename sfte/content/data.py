@@ -91,11 +91,13 @@ def _get_heatmap_paths_data(datetimes):
     grouped_tickets = Counter(day_hours)
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
     day_total = [0, 0, 0, 0, 0, 0, 0]
+    counts = []
     for hour in range(24):
         hour_data = [HOURS_DICT[hour]]
         hour_total = 0
         for day in range(7):
             count = grouped_tickets.get((day, hour), 0)
+            counts.append(count)
             hour_data.append(count)
             day_total[day] += count
             hour_total += count
@@ -106,8 +108,21 @@ def _get_heatmap_paths_data(datetimes):
     return {
         'heatmap': data,
         'count': all_count,
+        'legend': calculate_legend(counts, 5)
     }
 
+
+def calculate_legend(counts, steps):
+    if len(counts) > 0:
+        legend = [0]
+        count = 0
+        max_count = max(counts)
+        delta = max_count / float(steps-1)
+        for i in range(steps - 2):
+            count += delta
+            legend.append(int(count))
+        legend.append(max_count)
+        return legend
 
 class Data(object):
     year = 2012
@@ -289,6 +304,9 @@ class Data(object):
 
     def paths_heatmap_count(self):
         return self.paths_heatmap_data['count']
+
+    def paths_heatmap_legend(self):
+        return self.paths_heatmap_data['legend']
 
     @cached_property
     def paths_for_debug(self):

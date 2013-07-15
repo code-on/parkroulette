@@ -46,8 +46,22 @@
                      <table class="table table-slim table-bordered table-condensed" id="paths-heatmap">
                          {% with data.paths_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
                          {% if data.chance %}{% load humanize %}
-                             <caption>Patrols within {{ data.get_distance_display }} of {{ data.place }}
-                                 over {{ data.hours_count|intcomma }} hours in 2011 and 2012
+                             <caption>
+                                 <div class="row">
+                                     <div class="span7">
+                                         Patrols within {{ data.get_distance_display }} of {{ data.place }}
+                                         over {{ data.hours_count|intcomma }} hours in 2012
+                                     </div>
+                                     <div class='legend span5'>
+                                         <div class='legend-scale pull-right'>
+                                             <ul class='legend-labels'>
+                                                 {% for l in data.paths_heatmap_legend %}
+                                                     <li><span></span>{{ l }}</li>
+                                                 {% endfor %}
+                                             </ul>
+                                         </div>
+                                     </div>
+                                 </div>
                              </caption>
                          {% endif %}
                      </table>
@@ -126,6 +140,16 @@
              $("#paths-heatmap td").hottie(heatmap_options);
              $("#paths-heatmap th.column-total").hottie(heatmap_options);
              $("#paths-heatmap th.row-total").hottie(heatmap_options);
+             $(".legend-labels span").hottie({
+                 colorArray: [
+                     "#63BE7B",
+                     "#FBE983",
+                     "#F8696B"
+                 ],
+                 readValue: function (e) {
+                     return ($(e).parent('li').text())
+                 }
+             });
          </script>
  {% else %} Sorry, we cannot find coordinates of this address. {% endif %} {% endif %}
 </div>
