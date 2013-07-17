@@ -56,9 +56,6 @@ class TicketSearchForm(forms.Form):
         return Data(
             address=self.cleaned_data['address'],
             distance=self.cleaned_data['distance'],
-            week_day=self.cleaned_data['week_day'],
-            start_hour=self.hours[0],
-            end_hour=self.hours[1],
         )
 
     @cached_property
