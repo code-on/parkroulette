@@ -145,6 +145,18 @@ class Data(object):
     def place(self):
         return self.address
 
+    def times(self):
+        if not self.start_hour:
+            return None, None
+        return datetime.time(self.start_hour % 24), datetime.time(self.end_hour % 24)
+
+
+    def start_time(self):
+        return self.times()[0]
+
+    def end_time(self):
+        return self.times()[1]
+
     def get_distance_display(self):
         return DISTANCE_DICT[self.distance]
 
@@ -208,19 +220,6 @@ class Data(object):
     @cached_property
     def tickets_count(self):
         return self.get_ticket_qs().count()
-
-    def times(self):
-        if not self.start_hour:
-            return None, None
-        return datetime.time(self.start_hour % 24), datetime.time(self.end_hour % 24)
-
-    @property
-    def start_time(self):
-        return self.times[0]
-
-    @property
-    def end_time(self):
-        return self.times[1]
 
     @cached_property
     def tickets_avg_cost(self):

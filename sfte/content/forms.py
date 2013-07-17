@@ -29,10 +29,15 @@ class TicketSearchForm(forms.Form):
         return Data(
             address=self.cleaned_data['address'],
             distance=self.cleaned_data['distance'],
-            start_hour=start_hour,
-            end_hour=end_hour,
+            start_hour=self.hours(start_hour),
+            end_hour=self.hours(end_hour),
             week_day=week_day
         )
+
+    def hours(self, hour):
+        if hour is None:
+            return None
+        return int(hour)
 
     def get_errors(self):
         output = {}
