@@ -3,6 +3,7 @@ from decimal import Decimal
 import json
 import logging
 import time
+import datetime
 from content import HOURS_DICT, WEEK_DAYS_DICT, DISTANCE_DICT
 from content.models import Path, Log
 from content.query import _get_path_qs, _get_ticket_qs
@@ -125,9 +126,13 @@ def calculate_legend(counts, steps):
 
 class Data(object):
     year = 2012
-    def __init__(self, address, distance):
+
+    def __init__(self, address, distance, week_day=None, end_hour=None, start_hour=None):
         self.address = address
         self.distance = distance
+        self.week_day = week_day
+        self.end_hour = end_hour
+        self.start_hour = start_hour
         self.path_qs = list(self.get_path_qs())
 
     def create_log(self, type):
@@ -142,6 +147,9 @@ class Data(object):
 
     def get_distance_display(self):
         return DISTANCE_DICT[self.distance]
+
+    def get_week_day_display(self):
+        return WEEK_DAYS_DICT.get(self.week_day)
 
     @cached_property
     def geo_data(self):
@@ -173,8 +181,12 @@ class Data(object):
     def get_path_qs(self):
         return _get_path_qs(self.geopoint, self.distance)
 
-    def get_ticket_qs(self):
-        return _get_ticket_qs(self.geopoint, self.distance)
+    def get_ticket_qs(self, ignore_daytime=False):
+        if not ignore_daytime:
+            extra_args = [self.start_hour, self.end_hour, self.week_day]
+        else:
+            extra_args = []
+        return _get_ticket_qs(self.geopoint, self.distance, *extra_args)
 
     def laws_list(self):
         tc_qs = self.get_ticket_qs()
@@ -196,6 +208,19 @@ class Data(object):
     @cached_property
     def tickets_count(self):
         return self.get_ticket_qs().count()
+
+    def times(self):
+        if not self.start_hour:
+            return None, None
+        return datetime.time(self.start_hour % 24), datetime.time(self.end_hour % 24)
+
+    @property
+    def start_time(self):
+        return self.times[0]
+
+    @property
+    def end_time(self):
+        return self.times[1]
 
     @cached_property
     def tickets_avg_cost(self):
@@ -244,7 +269,7 @@ class Data(object):
     @cached_property
     def tickets_heatmap_data(self):
         url = '{0}?address={1}&distance={2}'.format(reverse('get-laws'), urlquote(self.address), self.distance)
-        tc_qs = self.get_ticket_qs()
+        tc_qs = self.get_ticket_qs(ignore_daytime=True)
         datetimes = tc_qs.values_list('issue_datetime', flat=True)
         return _get_heatmap_tickets_data(datetimes, url)
 

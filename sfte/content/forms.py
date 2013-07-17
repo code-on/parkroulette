@@ -5,10 +5,6 @@ from django.utils.functional import cached_property
 
 
 class TicketSearchForm(forms.Form):
-    WEEK_DAY_CHOICES = (
-        ('', '--------'),
-    ) + WEEK_DAYS
-    HOUR_CHOICES = (('', '--------'),) + tuple(HOURS_DICT.items())
     DISTANCE_CHOICES = (
         ('0.00015', '50ft (15m)'),
         ('0.0003', '100ft (30m)'),
@@ -25,50 +21,18 @@ class TicketSearchForm(forms.Form):
         label='Distance',
         widget=forms.Select(attrs={'class': 'small-widget'}),
     )
-    from_time = forms.ChoiceField(
-        choices=HOUR_CHOICES,
-        label='From time',
-        widget=forms.Select(attrs={'class': 'small-widget'}),
-        required=False,
-    )
-    to_time = forms.ChoiceField(
-        choices=HOUR_CHOICES,
-        label='To time',
-        widget=forms.Select(attrs={'class': 'small-widget'}),
-        required=False,
-    )
-    week_day = forms.ChoiceField(
-        choices=WEEK_DAY_CHOICES,
-        label='Week day',
-        widget=forms.Select(attrs={'class': 'small-widget'}),
-        required=False,
-    )
 
     def clean(self):
-        data = self.cleaned_data
-        if self.cleaned_data['from_time'] and self.cleaned_data['to_time']:
-            ft, tt = self.hours
-            if ft >= tt:
-                raise forms.ValidationError('"To time" must be later than "From time"')
-        return data
+        return self.cleaned_data
 
-    def get_data_object(self):
+    def get_data_object(self, start_hour=None, end_hour=None, week_day=None):
         return Data(
             address=self.cleaned_data['address'],
             distance=self.cleaned_data['distance'],
+            start_hour=start_hour,
+            end_hour=end_hour,
+            week_day=week_day
         )
-
-    @cached_property
-    def hours(self):
-        ft, tt = self.cleaned_data['from_time'], self.cleaned_data['to_time']
-        if not ft and not tt:
-            return None, None
-        if ft and not tt:
-            tt = 24
-        elif tt and not ft:
-            ft = 0
-        ft, tt = int(ft), int(tt)
-        return ft, tt
 
     def get_errors(self):
         output = {}
