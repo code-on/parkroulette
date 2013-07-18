@@ -27,9 +27,13 @@ def get_place_data(address):
     if not data:
         result = Geocoder.geocode(u'{address}, San Francisco, CA, United States'.format(address=address))
         if not result.route:
+            #TODO:try to find address in other cities
             result = Geocoder.geocode(address)
         if not result.street_number:
-            result.street_number = u''
+            result.street_number = ''
+        if not result.route:
+            #TODO:temporary hack
+            raise Exception("Given address can't be processed")
         data = (result.street_number + ' ' + result.route, get_coordinates(result))
         address_cache.set(sl_address, data)
     return data
@@ -38,7 +42,7 @@ def get_place_data(address):
 def get_coordinates(result):
     origin = ', '.join([i['long_name'] for i in result.current_data['address_components'][1:]]).encode('ascii', 'ignore')
     dest = ', '.join([i['long_name'] for i in result.current_data['address_components']]).encode('ascii', 'ignore')
-    #my own api key, temporary hack
+    #TODO:temporary hack
     addr = GoogleMaps('AIzaSyAe9JodBrnCM2Pc-2NdzieA27VCLYaERRE')
     coordinates = addr.directions(origin, dest)
     return tuple(coordinates['Directions']['Routes'][0]['End']['coordinates'][0:2])
