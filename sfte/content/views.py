@@ -29,7 +29,10 @@ def get_laws(request):
     form = TicketSearchForm(request.GET or None)
     context = {'form': form}
     if form.is_valid():
-        data = form.get_data_object()
+        start_hour = request.GET.get('from_time')
+        end_hour = request.GET.get('to_time')
+        week_day = request.GET.get('week_day')
+        data = form.get_data_object(start_hour=start_hour, end_hour=end_hour, week_day=week_day)
         data.create_log(type=Log.LAWS)
         context.update({'data': data})
     return context

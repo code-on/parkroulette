@@ -10,7 +10,6 @@ from content.query import _get_path_qs, _get_ticket_qs
 from django.contrib.gis.geos import fromstr
 from django.core.cache import get_cache
 from django.core.urlresolvers import reverse
-from django.db.models import Max, Min
 from django.utils.functional import cached_property
 from django.utils.http import urlquote
 from django.utils.text import slugify
@@ -40,10 +39,10 @@ def get_coordinates(result):
     return tuple(coordinates['Directions']['Routes'][0]['End']['coordinates'][0:2])
 
 
-def _get_all_hours_count():
+def _get_all_hours_count(qs):
     if 'hours_count' not in cache:
-        paths_data = Path.objects.filter(valid=True).aggregate(max=Max('day'), min=Min('day'))
-        cache.set('hours_count', (paths_data['max'] - paths_data['min']).days * 24)
+        paths_data = [p.day for p in qs]
+        cache.set('hours_count', (max(paths_data) - min(paths_data)).days * 24)
     return cache.get('hours_count')
 
 
@@ -91,11 +90,13 @@ def _get_heatmap_paths_data(datetimes):
     grouped_tickets = Counter(day_hours)
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
     day_total = [0, 0, 0, 0, 0, 0, 0]
+    counts = []
     for hour in range(24):
         hour_data = [HOURS_DICT[hour]]
         hour_total = 0
         for day in range(7):
             count = grouped_tickets.get((day, hour), 0)
+            counts.append(count)
             hour_data.append(count)
             day_total[day] += count
             hour_total += count
@@ -106,23 +107,37 @@ def _get_heatmap_paths_data(datetimes):
     return {
         'heatmap': data,
         'count': all_count,
+        'legend': calculate_legend(counts, 5)
     }
+
+
+def calculate_legend(counts, steps):
+    if len(counts) > 0:
+        legend = [0]
+        count = 0
+        max_count = max(counts)
+        delta = max_count / float(steps - 1)
+        for i in range(steps - 2):
+            count += delta
+            legend.append(int(count))
+        legend.append(max_count)
+        return legend
 
 
 class Data(object):
     year = 2012
 
-    def __init__(self, address, distance, week_day=None, start_hour=None, end_hour=None):
+    def __init__(self, address, distance, week_day=None, end_hour=None, start_hour=None):
         self.address = address
         self.distance = distance
         self.week_day = week_day
-        self.start_hour = start_hour
         self.end_hour = end_hour
+        self.start_hour = start_hour
+        self.path_qs = list(self.get_path_qs())
 
     def create_log(self, type):
         Log.objects.create(
             address=self.address,
-            from_time=self.times[0], to_time=self.times[1], week_day=self.get_week_day_display(),
             type=type,
         )
 
@@ -130,25 +145,23 @@ class Data(object):
     def place(self):
         return self.address
 
-    def get_week_day_display(self):
-        return WEEK_DAYS_DICT.get(self.week_day)
-
-    def get_distance_display(self):
-        return DISTANCE_DICT[self.distance]
-
-    @cached_property
     def times(self):
         if not self.start_hour:
             return None, None
         return datetime.time(self.start_hour % 24), datetime.time(self.end_hour % 24)
 
-    @property
-    def start_time(self):
-        return self.times[0]
 
-    @property
+    def start_time(self):
+        return self.times()[0]
+
     def end_time(self):
-        return self.times[1]
+        return self.times()[1]
+
+    def get_distance_display(self):
+        return DISTANCE_DICT[self.distance]
+
+    def get_week_day_display(self):
+        return WEEK_DAYS_DICT.get(self.week_day)
 
     @cached_property
     def geo_data(self):
@@ -173,16 +186,12 @@ class Data(object):
     @cached_property
     def get_all_hours_count(self):
         if 'hours_count' not in cache:
-            paths_data = Path.objects.filter(valid=True).aggregate(max=Max('day'), min=Min('day'))
-            cache.set('hours_count', (paths_data['max'] - paths_data['min']).days * 24)
+            paths_data = [p.day for p in self.path_qs]
+            cache.set('hours_count', (max(paths_data) - min(paths_data)).days * 24)
         return cache.get('hours_count')
 
-    def get_path_qs(self, ignore_daytime=False):
-        if not ignore_daytime:
-            extra_args = [self.start_hour, self.end_hour, self.week_day]
-        else:
-            extra_args = []
-        return _get_path_qs(self.geopoint, self.distance, *extra_args)
+    def get_path_qs(self):
+        return _get_path_qs(self.geopoint, self.distance)
 
     def get_ticket_qs(self, ignore_daytime=False):
         if not ignore_daytime:
@@ -206,7 +215,7 @@ class Data(object):
 
     @cached_property
     def hours_count(self):
-        return _get_all_hours_count()
+        return _get_all_hours_count(self.path_qs)
 
     @cached_property
     def tickets_count(self):
@@ -232,21 +241,12 @@ class Data(object):
 
     @cached_property
     def patrol_data(self):
-        ph_qs = self.get_path_qs()
-
-        datetimes = ph_qs.values_list('start_datetime', flat=True)
+        datetimes = [p.start_datetime for p in self.path_qs]
         hours = map(lambda x: (x.year, x.month, x.day, x.hour), datetimes)
-
         pcount = count = len(set(hours))
 
         if count == 0:
             return {'frequency': None, 'count': count, 'hours_count': 0}
-
-        if self.week_day:
-            pcount *= 7
-
-        if self.start_hour is not None:
-            pcount *= (self.end_hour - self.start_hour)
 
         frequency = 1.0 * pcount / self.hours_count
         return {'frequency': frequency, 'count': count}
@@ -280,8 +280,7 @@ class Data(object):
 
     @cached_property
     def paths_heatmap_data(self):
-        ph_qs = self.get_path_qs(ignore_daytime=True)
-        datetimes = ph_qs.values_list('start_datetime', flat=True)
+        datetimes = [p.start_datetime for p in self.path_qs]
         return _get_heatmap_paths_data(datetimes)
 
     def paths_heatmap(self):
@@ -290,10 +289,14 @@ class Data(object):
     def paths_heatmap_count(self):
         return self.paths_heatmap_data['count']
 
+    def paths_heatmap_legend(self):
+        return self.paths_heatmap_data['legend']
+
     @cached_property
     def paths_for_debug(self):
         if self.lat:
-            return [way.tuple for way in self.get_path_qs(ignore_daytime=True).values_list('path', flat=True)]
+            paths = [p.path for p in self.path_qs]
+            return [way.tuple for way in paths]
         return []
 
     def get_json_paths_for_debug(self):
