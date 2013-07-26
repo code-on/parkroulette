@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 {% load city %}
 
+
+
 {% block content %}
+
+
+{# facebook #}
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
 <!--modal -->
 <div class="modal fade hide" tabindex="-1" role="dialog" id="sharemodal">
 	<div class="modal-header">
@@ -95,39 +111,18 @@
 </div><!--end well -->
  {% block output %}
 
-<div class="row hidden-phone" id="how-span" style="height:15px">
-	<div class="span6" style="height:15px">
-	</div>
-	<div class="span6">
-		<span id="how">{% comment %}How it works:{% endcomment %}</span>
-	</div>
-</div>
+
 <div class="row">
-	<div class="span6 twitter">
-		<a class="twitter-timeline" height="385" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a></br>
+	<div class="span4 twitter">
+		<a class="twitter-timeline" height="600" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a></br>
 		{% if not user_form %} <a href="{% url "subscribe" %}" id="subscribe">Subscribe to our news and releases</a>
 		{% endif %}
 	</div>
-	<span class="visible-phone" id="how-phone">{% comment %}How it works:{% endcomment %}</span>
-	<div class="how-it-works span6">
+	<div class="span4">
+        <div class="fb-like-box" data-href="https://www.facebook.com/FacebookDevelopers" data-width="370" data-show-faces="true" data-stream="true" data-show-border="true" data-header="false"></div>
+	</div>
+	<div class="how-it-works span4">
         <h1><a href="/howitworks/">How it works</a></h1>
-		{% comment %}
-		{# no sliders for now untill we have real content #}
-		<div class="flexslider">
-			<ul class="slides">
-				<li>
-				<img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=1" alt="">
-				</li>
-				<li>
-				<img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=2" alt="">
-				</li>
-				<li>
-				<img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=3" alt="">
-				</li>
-			</ul>
-		</div>
-		{% endcomment %}
-		<!--end slider -->
 	</div>
 </div>
 {% endblock %}
