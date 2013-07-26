@@ -1,6 +1,6 @@
 {% extends "home.html" %}
 {% block extra_ga %}
-{% if form.is_valid %}  _gaq.push(['_trackEvent', 'click', 'heatmap', '{{ data.address }}']);
+{% if form.is_valid %}  _gaq.push(['_trackEvent', 'search-address', 'heatmap', '{{ data.address }}']);
 {% endif %}
 {% endblock %}
 
