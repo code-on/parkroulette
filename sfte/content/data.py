@@ -99,6 +99,8 @@ def _get_heatmap_paths_data(datetimes):
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
     day_total = [0, 0, 0, 0, 0, 0, 0]
     counts = []
+    now = datetime.datetime.now()
+    now_count = 0
     for hour in range(24):
         hour_data = [HOURS_DICT[hour]]
         hour_total = 0
@@ -108,14 +110,18 @@ def _get_heatmap_paths_data(datetimes):
             hour_data.append(count)
             day_total[day] += count
             hour_total += count
+            if now.isoweekday() == day + 1 and now.hour == hour:
+                now_count += count
         hour_data.append(hour_total)
         data.append(hour_data)
+
     all_count = sum(day_total)
     data.append(['Total'] + day_total + [''])
     return {
         'heatmap': data,
         'count': all_count,
-        'legend': calculate_legend(counts, 5)
+        'legend': calculate_legend(counts, 5),
+        'now_count': now_count,
     }
 
 
@@ -302,6 +308,17 @@ class Data(object):
 
     def paths_heatmap_legend(self):
         return self.paths_heatmap_data['legend']
+
+    def paths_heatmap_now_count(self):
+        return self.paths_heatmap_data['now_count']
+
+    @cached_property
+    def now_chance(self):
+        return 100 * self.paths_heatmap_data['now_count'] / (self.hours_count / 24)
+
+    @cached_property
+    def now_tickets_exp_cost(self):
+        return self.tickets_avg_cost * (self.now_chance / 100)
 
     @cached_property
     def paths_for_debug(self):

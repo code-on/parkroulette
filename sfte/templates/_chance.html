@@ -22,6 +22,11 @@
     <p>
     Based on the information above, if you park against the rules at {{ data.place }}, there is a <strong class="results">{{ data.chance|floatformat:1 }}%
     percent chance per hour</strong> you will get a ticket for an <strong>expected cost of ${{ data.tickets_exp_cost|floatformat:2 }} per hour</strong>.
+    </p>
+    <p>
+    During the hour of <strong>{% now "gA e" %} on {% now "l" %}s</strong>,
+    there is a <strong class="results">{{ data.now_chance|floatformat:1 }}%
+    percent chance per hour</strong> you will get a ticket for an <strong>expected cost of ${{ data.now_tickets_exp_cost|floatformat:2 }} per hour</strong>.
     {% endif %}
     </p>
 
