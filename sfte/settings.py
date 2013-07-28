@@ -96,10 +96,10 @@ LIMIT_LONGTITUDES = (32, 42)
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'sf',
+        'NAME': 'parkroulette2012',
         'USER': 'admin',
         'PASSWORD': 'admin',
-        'HOST': 'localhost',
+        'HOST': 'parkroulette.com',
     }
 }
 
