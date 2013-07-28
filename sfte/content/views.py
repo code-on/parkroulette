@@ -1,6 +1,5 @@
 from django.template.response import TemplateResponse
 from utils.views import render_to
-from django.contrib.gis.geoip import GeoIP
 
 from content.forms import TicketSearchForm
 from content.models import Log

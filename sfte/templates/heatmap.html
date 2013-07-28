@@ -6,7 +6,7 @@
 
 {% block output %}
 
-<div class="row-fluid" id="output-block">
+<div class="well row-fluid" id="output-block">
 	 {% if form.is_valid %} {% if data.lat and data.lng %}
 	<div id="img-block" class="span6">
 	</div>
@@ -50,14 +50,15 @@
                                  <div class="row">
                                      <div class="span7">
                                          Patrols within {{ data.get_distance_display }} of {{ data.place }}
-                                         over {{ data.hours_count|intcomma }} hours in 2012
                                      </div>
                                      <div class='legend span5'>
                                          <div class='legend-scale pull-right'>
                                              <ul class='legend-labels'>
+                                                <li>LOW</li>
                                                  {% for l in data.paths_heatmap_legend %}
                                                      <li><span></span>{{ l }}</li>
                                                  {% endfor %}
+                                                 <li>HIGH</li>
                                              </ul>
                                          </div>
                                      </div>
@@ -70,8 +71,23 @@
                      <table class="table table-slim table-bordered" id="tickets-heatmap">
                          {% with data.tickets_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
                          {% if data.chance %}{% load humanize %}
-                             <caption>Tickets within {{ data.get_distance_display }} of {{ data.place }}
-                                 over {{ data.hours_count|intcomma }} hours in 2011 and 2012
+                             <caption>
+                                <div class="row">
+                                    <div class="span7">
+                                        Tickets within {{ data.get_distance_display }} of {{ data.place }}
+                                    </div>
+                                    <div class='legend span5'>
+                                        <div class='legend-scale pull-right'>
+                                            <ul class='legend-labels'>
+                                               <li>LOW</li>
+                                                {% for l in data.tickets_heatmap_legend %}
+                                                    <li><span></span>{{ l }}</li>
+                                                {% endfor %}
+                                                <li>HIGH</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                              </caption>
                          {% endif %}
                      </table>

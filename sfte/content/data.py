@@ -70,11 +70,13 @@ def _get_heatmap_tickets_data(datetimes, url):
         data[0][i] = day_func(data[0][i], i - 1)
 
     day_total = [0, 0, 0, 0, 0, 0, 0]
+    counts = []
     for hour in range(24):
         hour_data = [hour_func(HOURS_DICT[hour], hour)]
         hour_total = 0
         for day in range(7):
             count = grouped_tickets.get((day, hour), 0)
+            counts.append(count)
             hour_data.append(cell_func(count, day, hour))
             day_total[day] += count
             hour_total += count
@@ -87,6 +89,7 @@ def _get_heatmap_tickets_data(datetimes, url):
     return {
         'heatmap': data,
         'count': all_count,
+        'legend': calculate_legend(counts, 5)
     }
 
 
@@ -282,6 +285,9 @@ class Data(object):
 
     def tickets_heatmap_count(self):
         return self.tickets_heatmap_data['count']
+
+    def tickets_heatmap_legend(self):
+        return self.tickets_heatmap_data['legend']
 
     @cached_property
     def paths_heatmap_data(self):

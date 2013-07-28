@@ -11,14 +11,14 @@ class TicketSearchForm(forms.Form):
         ('0.0006', '200ft (60m)'),
     )
     address = forms.CharField(
-        label='Type your parking address:',
+        label='Parking address',
         widget=forms.TextInput(
-            attrs={'type': 'text', 'class': 'input-block-level input-medium', 'placeholder': 'f.e. 1234 Market st'})
+            attrs={'type': 'text', 'class': 'input-block-level input-medium', 'placeholder': 'e.g. 1234 Market St'})
     )
     distance = forms.ChoiceField(
         initial=DISTANCE_CHOICES[0][0],
         choices=DISTANCE_CHOICES,
-        label='Distance',
+        label='Within distance',
         widget=forms.Select(attrs={'class': 'small-widget'}),
     )
 
