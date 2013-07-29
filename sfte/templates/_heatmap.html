@@ -17,7 +17,9 @@
             {% elif forloop.last %}
                 <th class="row-total">{{ day_data }}</th>
             {% else %}
-                <td>{{ day_data }}</td>
+                <td>
+                    {{ day_data }}
+                </td>
             {% endif %}
         {% endfor %}
     </tr>

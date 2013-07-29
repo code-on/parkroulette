@@ -93,12 +93,13 @@ def _get_heatmap_tickets_data(datetimes, url):
     }
 
 
-def _get_heatmap_paths_data(datetimes):
+def _get_heatmap_paths_data(datetimes, cell_func=lambda x: x, hour_func=lambda x: x, day_func=lambda x: x, count_func=lambda x: x):
     day_hours = map(lambda x: (x.isoweekday() % 7, x.hour), datetimes)
     grouped_tickets = Counter(day_hours)
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
     day_total = [0, 0, 0, 0, 0, 0, 0]
     counts = []
+    # assumes settings.TIME_ZONE is PDT
     now = datetime.datetime.now()
     now_count = 0
     for hour in range(24):
@@ -106,16 +107,18 @@ def _get_heatmap_paths_data(datetimes):
         hour_total = 0
         for day in range(7):
             count = grouped_tickets.get((day, hour), 0)
-            counts.append(count)
-            hour_data.append(count)
+            counts.append(count_func(count))
+            hour_data.append(cell_func(count))
             day_total[day] += count
             hour_total += count
-            if now.isoweekday() == day + 1 and now.hour == hour:
+            if int(now.strftime('%w')) == day and now.hour == hour:
                 now_count += count
-        hour_data.append(hour_total)
+        hour_data.append(hour_func(hour_total))
         data.append(hour_data)
-
     all_count = sum(day_total)
+    for i in range(7):
+        day_total[i] = day_func(day_total[i])
+
     data.append(['Total'] + day_total + [''])
     return {
         'heatmap': data,
@@ -313,8 +316,38 @@ class Data(object):
         return self.paths_heatmap_data['now_count']
 
     @cached_property
+    def costs_heatmap_data(self):
+        datetimes = [p.start_datetime for p in self.path_qs]
+
+        def cost_function_factory(divisor):
+            # $ symbol is stripped out before value is passed to colorizer
+            return lambda c: '${0:.2f}'.format(
+                (self.tickets_avg_cost * c) / divisor
+            )
+
+        cell_func = cost_function_factory(self.hours_count / (24 * 7))
+        hour_func = cost_function_factory(self.hours_count / 24)
+        day_func = cost_function_factory(self.hours_count / 7)
+        # TODO: get $ symbol in legend
+        count_func = lambda c: int((self.tickets_avg_cost * c) / (24 * 7))
+
+        return _get_heatmap_paths_data(datetimes, cell_func, hour_func, day_func, count_func)
+
+    def costs_heatmap(self):
+        return self.costs_heatmap_data['heatmap']
+
+    def costs_heatmap_count(self):
+        return self.costs_heatmap_data['count']
+
+    def costs_heatmap_legend(self):
+        return self.costs_heatmap_data['legend']
+
+    def costs_heatmap_now_count(self):
+        return self.costs_heatmap_data['now_count']
+
+    @cached_property
     def now_chance(self):
-        return 100 * self.paths_heatmap_data['now_count'] / (self.hours_count / 24)
+        return 100 * Decimal(self.paths_heatmap_data['now_count']) / (self.hours_count / 24)
 
     @cached_property
     def now_tickets_exp_cost(self):
