@@ -82,6 +82,14 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'addresses'
     },
+    'paths': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'paths'
+    },
+    'tickets': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'tickets'
+    },
 }
 
 ROOT_URLCONF = 'urls'
