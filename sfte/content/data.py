@@ -243,7 +243,7 @@ class Data(object):
         # don't worked, need store "fine_amt" in decimal field, not monetary field
         #return self.get_ticket_qs().aggregate(average=Avg('fine_amt'), count=Count())['average']
 
-        values = list(self.get_ticket_qs().filter(fine_amt__isnull=False).values_list('fine_amt', flat=True))
+        values = [x.fine_amt for x in self.get_ticket_qs() if x.fine_amt]
         values = map(lambda x: Decimal(x[1:]), values)
         #temporary workaround
         try:
@@ -286,7 +286,7 @@ class Data(object):
     def tickets_heatmap_data(self):
         url = '{0}?address={1}&distance={2}'.format(reverse('get-laws'), urlquote(self.address), self.distance)
         tc_qs = self.get_ticket_qs(ignore_daytime=True)
-        datetimes = tc_qs.values_list('issue_datetime', flat=True)
+        datetimes = [x.issue_datetime for x in tc_qs]
         return _get_heatmap_tickets_data(datetimes, url)
 
     def tickets_heatmap(self):
