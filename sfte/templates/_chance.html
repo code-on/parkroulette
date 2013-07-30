@@ -1,14 +1,16 @@
 {% if data.chance %}{% load humanize %}
-    <strong class="results">{{ data.tickets_count }} tickets</strong> were issued within {{ data.get_distance_display }} of <strong>{{ data.place }}</strong>
-    while that address was <strong>patrolled {{ data.patrols_count }} times</strong> over <strong>{{ data.hours_count|intcomma }} hours </strong>
+    <p>
+    <strong class="results">{{ data.tickets_count }} tickets</strong> were issued within <strong>{{ data.get_distance_display }}</strong> of <strong>{{ data.place }}</strong>
+    while that address was <strong>patrolled {{ data.patrols_count }} times</strong> over <strong>{{ data.hours_count|intcomma }} hours</strong>
     {% if data.start_time != None %}
         between <strong>{{ data.start_time }}</strong> and <strong>{{ data.end_time }}</strong>
     {% endif %}
     {% if data.week_day %}
         on <strong>{{ data.get_week_day_display }}</strong>
-    {% endif %}
-    in {{ data.year }}.<br />
+    {% endif %}.
     {% if null %}
+    </p>
+    <p>
     Unable to calculate avarage cost.
         {% if next_distance %}Try with
             <a href="{{ request.path }}?address={{ request.GET.address }}&distance={{ next_distance }}">wider
@@ -16,9 +18,18 @@
         {% endif %}
     {% else %}
     The average cost of a ticket was <strong>${{ data.tickets_avg_cost|floatformat:2 }}</strong>.
-    Based on that information, if you park against the rules at that address for one hour, there is a <strong class="results">{{ data.chance|floatformat:1 }}%</strong>
-    percent chance you will get a ticket with an expected cost of <strong>${{ data.tickets_exp_cost|floatformat:2 }}</strong>.
+    </p>
+    <p>
+    Based on the information above, if you park against the rules at {{ data.place }}, there is a <strong class="results">{{ data.chance|floatformat:1 }}%
+    percent chance per hour</strong> you will get a ticket for an <strong>expected cost of ${{ data.tickets_exp_cost|floatformat:2 }} per hour</strong>.
+    </p>
+    <p>
+    During the hour of <strong>{% now "gA" %} on {% now "l" %}s</strong>,
+    there is a <strong class="results">{{ data.now_chance|floatformat:1 }}%
+    percent chance per hour</strong> you will get a ticket for an <strong>expected cost of ${{ data.now_tickets_exp_cost|floatformat:2 }} per hour</strong>.
     {% endif %}
+    </p>
+
 {% else %}
     Sorry, no records found for selected time
 {% endif %}

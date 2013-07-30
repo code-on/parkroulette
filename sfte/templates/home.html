@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 {% load city %}
 
+
+
 {% block content %}
+
+
+{# facebook #}
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
 <!--modal -->
 <div class="modal fade hide" tabindex="-1" role="dialog" id="sharemodal">
 	<div class="modal-header">
@@ -33,33 +49,19 @@
 </div><!--end modal -->
 <!--well -->
     {% if data %}
-        <div class="results">
-            <div class="well">
-                <div class="row-fluid">
-                    <div class="span10"><h4 class="results">results for: </h4>
-                        <h3 class="results">{{ data.place }}</h3></div>
-                    <div class="span2 pull-right"><a href="#" id="new-search" class="btn btn-warning btn-block results">New
-                        search</a>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="well" style="display: none">
     {% else %}
         <div class="well">
     {% endif %}
+
 	 {% block well %}
 	<div class="row-fluid">
 		<div class="span9">
-			<h3 id="share-top-text">Calculate the chance you will get a parking ticket at any address in San Francisco</h3>
+			<h3 id="share-top-text">Calculate the chance of a parking ticket anywhere in San Francisco</h3>
             {% if not request|city %}
                     <h4 id="share-top-text">Sorry, Parkroulette is only available for San Francisco. <a
-                            href="{% url "subscription" %}">Click here</a> to sign up for other cities.</h4>
+                            href="{% url "subscription" %}">Sign up</a> for other cities.</h4>
             {% endif %}
-			<p>
-				Based on public records of actual tickets we will give you a chance of getting ticket if you park illegally on a chosen address
-			</p>
-			<h5>Try it:</h5>
 			 {% for error in form.errors %}
 			<div class="alert alert-error">
 				<button type="button" class="close" data-dismiss="alert">×</button>
@@ -67,8 +69,8 @@
 			</div>
 			 {% endfor %}
 			<form id="search-form" action="{% url "get-heatmap" %}">
-				<div class="row-fluid">
-					<div class="span5">
+				<div class="row-fluid control-group">
+					<div class="span4">
 						<label>{{ form.address.label }}</label>
 						{{ form.address }}
 					</div>
@@ -76,9 +78,10 @@
 						<label>{{ form.distance.label }}</label>
 						{{ form.distance }}
 					</div>
+				</div>
+				<div class="row-fluid">
 					<div class="span4">
-						<label>&nbsp;</label>
-						<a href="#" id="submit" class="btn btn-warning btn-block" type="submit">Get chance of ticket</a>
+						<a href="#" id="submit" class="btn btn-large btn-primary" 	 	type="submit">Get chance of ticket</a>
 						<input id="heatmap-button" data-url="{% url "get-heatmap" %}" type="submit" value="Get chance of ticket" style="display: none"/>
 					</div>
 				</div>
@@ -93,41 +96,20 @@
 		<a href="">Add this to your home screen so you can check parking on the go!</a>
 	</div>
 </div><!--end well -->
+
  {% block output %}
 
-<div class="row hidden-phone" id="how-span" style="height:15px">
-	<div class="span6" style="height:15px">
-	</div>
-	<div class="span6">
-		<span id="how">{% comment %}How it works:{% endcomment %}</span>
-	</div>
-</div>
 <div class="row">
-	<div class="span6 twitter">
-		<a class="twitter-timeline" height="385" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a></br>
+	<div class="span4 twitter">
+		<a class="twitter-timeline" height="600" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a></br>
 		{% if not user_form %} <a href="{% url "subscribe" %}" id="subscribe">Subscribe to our news and releases</a>
 		{% endif %}
 	</div>
-	<span class="visible-phone" id="how-phone">{% comment %}How it works:{% endcomment %}</span>
-	<div class="how-it-works span6">
+	<div class="span4">
+        <div class="fb-like-box" data-href="https://www.facebook.com/FacebookDevelopers" data-width="370" data-show-faces="true" data-stream="true" data-show-border="true" data-header="false"></div>
+	</div>
+	<div class="how-it-works span4">
         <h1><a href="/howitworks/">How it works</a></h1>
-		{% comment %}
-		{# no sliders for now untill we have real content #}
-		<div class="flexslider">
-			<ul class="slides">
-				<li>
-				<img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=1" alt="">
-				</li>
-				<li>
-				<img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=2" alt="">
-				</li>
-				<li>
-				<img src="http://dummyimage.com/600x400/757682/fff.jpg&amp;text=3" alt="">
-				</li>
-			</ul>
-		</div>
-		{% endcomment %}
-		<!--end slider -->
 	</div>
 </div>
 {% endblock %}

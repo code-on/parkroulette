@@ -1,12 +1,12 @@
 {% extends "home.html" %}
 {% block extra_ga %}
-{% if form.is_valid %} _gaq.push(['_trackEvent', 'click', 'heatmap', 'address', '{{ data.address }}']);
+{% if form.is_valid %}  _gaq.push(['_trackEvent', 'search-address', 'heatmap', '{{ data.address }}']);
 {% endif %}
 {% endblock %}
 
 {% block output %}
 
-<div class="row-fluid" id="output-block">
+<div class="well row-fluid" id="output-block">
 	 {% if form.is_valid %} {% if data.lat and data.lng %}
 	<div id="img-block" class="span6">
 	</div>
@@ -18,6 +18,9 @@
 		<div id="block-share">
 			</br>
 			<strong>Share:</strong>
+
+            <div class="fb-like" data-href="http://parkroulette.com/" data-send="true" data-layout="button_count" data-width="450" data-show-faces="true"></div>
+
 			<div>
 				<span id='share-middle-text'>I just found out that the chance of getting a parking ticket at {{ data.place }} is {{ data.chance|floatformat:1 }}% per hour.
                     Try it out for any address in San Francisco.</span>
@@ -39,6 +42,7 @@
                  <li class="active"><a href="#tab1" data-toggle="tab"><h5>Patrols ({{ data.paths_heatmap_count }})</h5>
                  </a></li>
                  <li><a href="#tab2" data-toggle="tab"><h5>Tickets ({{ data.tickets_heatmap_count }})</h5></a></li>
+                 <li><a href="#tab3" data-toggle="tab"><h5>Costs</h5></a></li>
              </ul>
 
              <div class="tab-content">
@@ -50,14 +54,16 @@
                                  <div class="row">
                                      <div class="span7">
                                          Patrols within {{ data.get_distance_display }} of {{ data.place }}
-                                         over {{ data.hours_count|intcomma }} hours in 2012
+                                         by day of week and hour of day
                                      </div>
                                      <div class='legend span5'>
                                          <div class='legend-scale pull-right'>
                                              <ul class='legend-labels'>
+                                                <li>LOW</li>
                                                  {% for l in data.paths_heatmap_legend %}
                                                      <li><span></span>{{ l }}</li>
                                                  {% endfor %}
+                                                 <li>HIGH</li>
                                              </ul>
                                          </div>
                                      </div>
@@ -70,8 +76,52 @@
                      <table class="table table-slim table-bordered" id="tickets-heatmap">
                          {% with data.tickets_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
                          {% if data.chance %}{% load humanize %}
-                             <caption>Tickets within {{ data.get_distance_display }} of {{ data.place }}
-                                 over {{ data.hours_count|intcomma }} hours in 2011 and 2012
+                             <caption>
+                                <div class="row">
+                                    <div class="span7">
+                                        Tickets within {{ data.get_distance_display }} of {{ data.place }}
+                                        by day of week and hour of day.
+                                        <br />
+                                        Click on any cell to see more info.
+                                    </div>
+                                    <div class='legend span5'>
+                                        <div class='legend-scale pull-right'>
+                                            <ul class='legend-labels'>
+                                               <li>LOW</li>
+                                                {% for l in data.tickets_heatmap_legend %}
+                                                    <li><span></span>{{ l }}</li>
+                                                {% endfor %}
+                                                <li>HIGH</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                             </caption>
+                         {% endif %}
+                     </table>
+                 </div>
+                 <div class="tab-pane" id="tab3">
+                     <table class="table table-slim table-bordered table-condensed" id="costs-heatmap">
+                         {% with data.costs_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
+                         {% if data.chance %}{% load humanize %}
+                             <caption>
+                                 <div class="row">
+                                     <div class="span7">
+                                         Expected costs per hour within {{ data.get_distance_display }} of {{ data.place }}
+                                         by day of week and hour of day
+                                     </div>
+                                     <div class='legend span5'>
+                                         <div class='legend-scale pull-right'>
+                                             <ul class='legend-labels'>
+                                                <li>LOW</li>
+                                                 {% for l in data.costs_heatmap_legend %}
+                                                     <li><span></span>{{ l }}</li>
+                                                 {% endfor %}
+                                                 <li>HIGH</li>
+                                             </ul>
+                                         </div>
+                                     </div>
+                                 </div>
                              </caption>
                          {% endif %}
                      </table>
@@ -134,22 +184,31 @@
                  ],
                  nullColor: "#63BE7B",
                  readValue: function (e) {
-                     return ($(e).html())
+                     return ($(e).text().replace('$', ''));
                  }
              }
+
              $("#paths-heatmap td").hottie(heatmap_options);
              $("#paths-heatmap th.column-total").hottie(heatmap_options);
              $("#paths-heatmap th.row-total").hottie(heatmap_options);
-             $(".legend-labels span").hottie({
+
+             $("#costs-heatmap td").hottie(heatmap_options);
+             $("#costs-heatmap th.column-total").hottie(heatmap_options);
+             $("#costs-heatmap th.row-total").hottie(heatmap_options);
+
+             var legend_options = {
                  colorArray: [
                      "#63BE7B",
                      "#FBE983",
                      "#F8696B"
                  ],
                  readValue: function (e) {
-                     return ($(e).parent('li').text())
+                     return ($(e).parent('li').text());
                  }
-             });
+             };
+             $("#tickets-heatmap .legend-labels span").hottie(legend_options);
+             $("#paths-heatmap .legend-labels span").hottie(legend_options);
+             $("#costs-heatmap .legend-labels span").hottie(legend_options);
          </script>
  {% else %} Sorry, we cannot find coordinates of this address. {% endif %} {% endif %}
 </div>

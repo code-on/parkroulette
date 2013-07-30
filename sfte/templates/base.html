@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="Content-Script-Type" content="text/javascript">
-
+<meta name="google-site-verification" content="iIZXLFL7UhvQnmEVymv8gkiH9TUBq1mFEgO6coU2mvI" />
 <title>{% block title %}Parkroulette{% endblock %}</title>
 
 <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
@@ -61,10 +61,10 @@
 	<div class="span7">
 		 {% if not city_form %}
 		<p class="align-right notify hidden-phone">
-			Would like to have parkroulette in your city? <a href="{% url "subscription" %}">Click here</a>
+			Want parkroulette in <a href="{% url "subscription" %}">your city</a>?
 		</p>
 		<p class="align-left notify visible-phone">
-			Would like to have parkroulette in your city? <a href="{% url "subscription" %}">Click here</a>
+            Want parkroulette in <a href="{% url "subscription" %}">your city</a>?
 		</p>
 		 {% endif %}
 	</div>

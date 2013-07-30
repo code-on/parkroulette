@@ -1,5 +1,5 @@
 from django import template
-from django.contrib.gis.geoip import GeoIP
+from django.contrib.gis.geoip import *
 from django.conf import settings
 
 register = template.Library()
@@ -7,9 +7,10 @@ register = template.Library()
 
 @register.filter
 def city(request):
-    g = GeoIP().city(get_ip(request))
-    if g:
-        return g['city'] == 'San Francisco' and g['area_code'] == 415
+    if HAS_GEOIP:
+        g = GeoIP().city(get_ip(request))
+        if g:
+            return g['city'] == 'San Francisco' and g['area_code'] == 415
     return
 
 
