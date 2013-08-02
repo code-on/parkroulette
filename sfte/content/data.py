@@ -247,7 +247,6 @@ class Data(object):
         # don't worked, need store "fine_amt" in decimal field, not monetary field
         #return self.get_ticket_qs().aggregate(average=Avg('fine_amt'), count=Count())['average']
 
-        values = self.get_tickets_fine()
         values = [x.fine_amt for x in self.get_ticket_qs() if x.fine_amt]
         values = map(lambda x: Decimal(x[1:]), values)
         #temporary workaround
