@@ -217,6 +217,9 @@ class Data(object):
             extra_args = []
         return _get_ticket_qs(self.geopoint, self.distance, *extra_args)
 
+    def get_tickets_fine(self):
+        return _get_tickets_fine(self.geopoint, self.distance)
+
     def laws_list(self):
         tc_qs = self.get_ticket_qs()
 
@@ -243,6 +246,7 @@ class Data(object):
         # don't worked, need store "fine_amt" in decimal field, not monetary field
         #return self.get_ticket_qs().aggregate(average=Avg('fine_amt'), count=Count())['average']
 
+        values = self.get_tickets_fine()
         values = [x.fine_amt for x in self.get_ticket_qs() if x.fine_amt]
         values = map(lambda x: Decimal(x[1:]), values)
         #temporary workaround

@@ -33,3 +33,7 @@ def _get_ticket_qs(geopoint, distance, start_hour=None, end_hour=None, week_day=
             params=[end_hour, start_hour]
         )
     return tc_qs
+
+
+def _get_tickets_fine(geopoint, distance):
+    return Ticket.objects.filter(geopoint__dwithin=(geopoint, Decimal(distance)), fine_amt__isnull=False).values_list('fine_amt', flat=True)
