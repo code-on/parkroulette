@@ -6,6 +6,7 @@ import time
 import datetime
 from content import HOURS_DICT, WEEK_DAYS_DICT, DISTANCE_DICT
 from content.models import Path, Log
+from content.query import _get_path_qs, _get_ticket_qs, _get_tickets_fine
 from content.query import _get_path_qs, _get_ticket_qs
 from django.contrib.gis.geos import fromstr
 from django.core.cache import get_cache
