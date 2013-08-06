@@ -6,6 +6,7 @@ import time
 import datetime
 from content import HOURS_DICT, WEEK_DAYS_DICT, DISTANCE_DICT
 from content.models import Path, Log
+from content.query import _get_path_qs, _get_ticket_qs, _get_tickets_fine
 from content.query import _get_path_qs, _get_ticket_qs
 from django.contrib.gis.geos import fromstr
 from django.core.cache import get_cache
@@ -220,6 +221,9 @@ class Data(object):
         else:
             extra_args = []
         return _get_ticket_qs(self.geopoint, self.distance, *extra_args)
+
+    def get_tickets_fine(self):
+        return _get_tickets_fine(self.geopoint, self.distance)
 
     def laws_list(self):
         tc_qs = self.get_ticket_qs()
