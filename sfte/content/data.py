@@ -149,12 +149,14 @@ def calculate_legend(counts, steps):
 class Data(object):
     year = 2012
 
-    def __init__(self, address, distance, week_day=None, end_hour=None, start_hour=None):
+    def __init__(self, address, distance, week_day=None, end_hour=None, start_hour=None, init_lat=None, init_lng=None):
         self.address = address
         self.distance = distance
         self.week_day = week_day
         self.end_hour = end_hour
         self.start_hour = start_hour
+        self.init_lat = init_lat
+        self.init_lng = init_lng
         self.path_qs = list(self.get_path_qs())
 
     def create_log(self, type):
@@ -199,11 +201,11 @@ class Data(object):
 
     @cached_property
     def lat(self):
-        return self.geo_data['lat']
+        return self.init_lat or self.geo_data['lat']
 
     @cached_property
     def lng(self):
-        return self.geo_data['lng']
+        return self.init_lng or self.geo_data['lng']
 
     @cached_property
     def get_all_hours_count(self):
@@ -262,7 +264,7 @@ class Data(object):
 
     @cached_property
     def tickets_exp_cost(self):
-        return self.tickets_avg_cost * Decimal(self.patrol_frequency)
+        return self.tickets_avg_cost * Decimal(unicode(self.patrol_frequency))
 
     @cached_property
     def patrol_data(self):
