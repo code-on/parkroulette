@@ -43,15 +43,16 @@ def get_heatmap(request):
     context = {'form': form}
     if form.is_valid():
         data = form.get_data_object()
-        data.create_log(type=Log.HEATMAP)
-        if data.tickets_avg_cost <= 0:
-            dist = request.GET['distance']
-            choices = TicketSearchForm.DISTANCE_CHOICES
-            if dist != choices[-1][0]:
-                for c in choices:
-                    if c[0] == dist:
-                        context.update({'next_distance': choices[choices.index(c)+1][0]})
-                        break
+        if data.geopoint:
+            data.create_log(type=Log.HEATMAP)
+            if data.tickets_avg_cost <= 0:
+                dist = request.GET['distance']
+                choices = TicketSearchForm.DISTANCE_CHOICES
+                if dist != choices[-1][0]:
+                    for c in choices:
+                        if c[0] == dist:
+                            context.update({'next_distance': choices[choices.index(c)+1][0]})
+                            break
             context.update({'null': True})
         context.update({'data': data})
     return context

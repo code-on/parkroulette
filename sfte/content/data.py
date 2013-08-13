@@ -4,18 +4,22 @@ import json
 import logging
 import time
 import datetime
-from content import HOURS_DICT, WEEK_DAYS_DICT, DISTANCE_DICT
-from content.models import Path, Log
-from content.query import _get_path_qs, _get_ticket_qs, _get_tickets_fine
-from content.query import _get_path_qs, _get_ticket_qs
+
 from django.contrib.gis.geos import fromstr
 from django.core.cache import get_cache
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
 from django.utils.http import urlquote
 from django.utils.text import slugify
+from django.conf import settings
+
 from pygeocoder.pygeocoder import Geocoder
 from googlemaps.googlemaps import GoogleMaps
+
+from content import HOURS_DICT, WEEK_DAYS_DICT, DISTANCE_DICT
+from content.models import Log
+from content.query import _get_path_qs, _get_ticket_qs, _get_tickets_fine
+
 
 logger = logging.getLogger()
 cache = get_cache('default')
@@ -25,26 +29,22 @@ address_cache = get_cache('addresses')
 def get_place_data(address):
     sl_address = slugify(address)
     data = address_cache.get(sl_address)
-    if not data:
-        result = Geocoder.geocode(u'{address}, San Francisco, CA, United States'.format(address=address))
-        if not result.route:
-            #TODO:try to find address in other cities
-            result = Geocoder.geocode(address)
-        if not result.street_number:
+    if data is None:
+        result = Geocoder.geocode('{address}, San Francisco, CA, United States'.format(address=address))
+        if result.route is None:
+            return None, (None, None)
+        if result.street_number is None:
             result.street_number = ''
-        if not result.route:
-            #TODO:temporary hack
-            raise Exception("Given address can't be processed")
-        data = (result.street_number + ' ' + result.route, get_coordinates(result))
+        data = ('{0} {1}'.format(result.street_number, result.route), get_coordinates(result))
         address_cache.set(sl_address, data)
     return data
 
 
 def get_coordinates(result):
-    origin = ', '.join([i['long_name'] for i in result.current_data['address_components'][1:]]).encode('ascii', 'ignore')
+    origin = ', '.join([i['long_name'] for i in result.current_data['address_components'][1:]]).encode('ascii',
+                                                                                                       'ignore')
     dest = ', '.join([i['long_name'] for i in result.current_data['address_components']]).encode('ascii', 'ignore')
-    #TODO:temporary hack
-    addr = GoogleMaps('AIzaSyAe9JodBrnCM2Pc-2NdzieA27VCLYaERRE')
+    addr = GoogleMaps(settings.GOOGLE_API_KEY)
     coordinates = addr.directions(origin, dest)
     return tuple(coordinates['Directions']['Routes'][0]['End']['coordinates'][0:2])
 
@@ -98,7 +98,8 @@ def _get_heatmap_tickets_data(datetimes, url):
     }
 
 
-def _get_heatmap_paths_data(datetimes, cell_func=lambda x: x, hour_func=lambda x: x, day_func=lambda x: x, count_func=lambda x: x):
+def _get_heatmap_paths_data(datetimes, cell_func=lambda x: x, hour_func=lambda x: x, day_func=lambda x: x,
+                            count_func=lambda x: x):
     day_hours = map(lambda x: (x.isoweekday() % 7, x.hour), datetimes)
     grouped_tickets = Counter(day_hours)
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
@@ -157,7 +158,7 @@ class Data(object):
         self.start_hour = start_hour
         self.init_lat = init_lat
         self.init_lng = init_lng
-        self.path_qs = list(self.get_path_qs())
+        self.path_qs = list(self.get_path_qs()) if self.get_path_qs() else None
 
     def create_log(self, type):
         Log.objects.create(
@@ -197,7 +198,8 @@ class Data(object):
 
     @cached_property
     def geopoint(self):
-        return fromstr('POINT({lng} {lat})'.format(lat=self.lat, lng=self.lng), srid=4269) if self.lat else None
+        return fromstr('POINT({lng} {lat})'.format(lat=self.lat, lng=self.lng),
+                       srid=4269) if self.lat and self.address else None
 
     @cached_property
     def lat(self):
@@ -215,7 +217,7 @@ class Data(object):
         return cache.get('hours_count')
 
     def get_path_qs(self):
-        return _get_path_qs(self.geopoint, self.distance)
+        return _get_path_qs(self.geopoint, self.distance) if self.geopoint else None
 
     def get_ticket_qs(self, ignore_daytime=False):
         if not ignore_daytime:

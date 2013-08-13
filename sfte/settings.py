@@ -10,6 +10,8 @@ sys.path.insert(0, rel('..', 'lib'))
 GEOIP_PATH = os.path.join(rel('..', 'lib'), 'geoip')
 GEOIP_DEBUG = True
 
+GOOGLE_API_KEY = 'AIzaSyAe9JodBrnCM2Pc-2NdzieA27VCLYaERRE'
+
 # Quick-start development settings - unsuitable for production
 
 # SECURITY WARNING: keep the secret key used in production secret!
