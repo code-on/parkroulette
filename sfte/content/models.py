@@ -32,8 +32,12 @@ class Path(models.Model):
     end_datetime = models.DateTimeField(null=True, blank=True)
     waypoints = models.MultiPointField(srid=4269, null=True, blank=True)
     valid = models.BooleanField(default=True)
+    is_cached = models.BooleanField(default=False)
 
     objects = models.GeoManager()
+
+    def __unicode__(self):
+        return self.path_id
 
     class Meta:
         managed = False
@@ -66,6 +70,9 @@ class Ticket(models.Model):
     geopoint = models.PointField(srid=4269, null=True, blank=True)
 
     objects = models.GeoManager()
+
+    def __unicode__(self):
+        return self.ticket_id
 
     class Meta:
         managed = False

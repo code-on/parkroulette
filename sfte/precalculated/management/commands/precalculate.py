@@ -27,10 +27,10 @@ class Command(BaseCommand):
             print '----------------------------------------'
             print 'Calculating points on paths'
             print '----------------------------------------'
-            total = Path.objects.filter(valid=True).count()
+            total = Path.objects.filter(valid=True, is_cached=False).count()
             count = 0
             for i in range(0, total, CHUNK_SIZE):
-                for path in Path.objects.all()[i:i+CHUNK_SIZE].iterator():
+                for path in Path.objects.filter(valid=True, is_cached=False)[i:i+CHUNK_SIZE].iterator():
                     length = path.path.length
                     distance = created_number = 0
                     while distance <= length:
@@ -39,6 +39,8 @@ class Command(BaseCommand):
                             CachedData.objects.create(location=location)
                             created_number += 1
                         distance += STEP_DISTANCE
+                    path.is_cached = True
+                    path.save()
                     count += 1
                     print 'Path "%s" done. Created points %s' % (count, created_number)
 
