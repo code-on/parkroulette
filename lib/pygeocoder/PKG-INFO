@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: pygeocoder
-Version: 1.2.0.2
+Version: 1.2.1
 Summary: Python interface for Google Geocoding API V3. Can be used to easily geocode, reverse geocode, validate and format addresses.
 Home-page: http://code.xster.net/pygeocoder
 Author: Xiao Yu
@@ -8,7 +8,7 @@ Author-email: xiao@xiao-yu.com
 License: BSD
 Download-URL: http://code.xster.net/pygeocoder/downloads
 Description: ==================
-        pygeocoder 1.2.0.2
+        pygeocoder 1.2.1
         ==================
         Xiao Yu
         Sébastien Fievet
@@ -29,9 +29,10 @@ Description: ==================
         
         Dependencies
         ------------
-        It has dependency on the json module, included with Python versions 2.6 and
-        later and available for download as simplejson for earlier versions.
-        functools is needed and included in Python 2.5.
+        It has dependency on the json module, included with Python versions 2.6 and later and available for download as simplejson for earlier versions. functools is needed and included in Python 2.5. Requirement for hmac is included with Python 2.2. hashlib depends on Python 2.5. base64 depends on Python 2.4.
+        
+        requests library is needed and installed by setuptools.
+        
         It is developed on Python 2.7 but should work on earlier versions. It is also compatible with Python 3.
         
         
@@ -60,6 +61,15 @@ Description: ==================
         
         Changelog
         ---------
+        Version 1.2.1
+        Proxy support
+        
+        Version 1.2.0.3
+        setup.py dependency fix
+        
+        Version 1.2.0.2
+        Minor setup.py Python 3 fix
+        
         Version 1.2.0.1
         setup.py dependency fix
         
@@ -103,7 +113,6 @@ Classifier: Topic :: Scientific/Engineering :: GIS
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Requires: json
 Requires: functools
-Requires: requests
 Requires: base64
 Requires: hmac
 Requires: hashlib

@@ -14,7 +14,11 @@ Distutils setup script for pygeocoder module.
 """
 
 import os
-from distutils.core import setup
+
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 from __version__ import VERSION
 
@@ -29,7 +33,8 @@ setup(
     long_description=open(os.path.join(os.path.dirname(__file__), 'README.txt'), 'r').read(),
     py_modules=['pygeocoder', 'pygeolib', '__version__'],
     provides=['pygeocoder'],
-    requires=['json', 'functools', 'requests', 'base64', 'hmac', 'hashlib'],
+    requires=['json', 'functools', 'base64', 'hmac', 'hashlib'],
+    install_requires=['requests'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
