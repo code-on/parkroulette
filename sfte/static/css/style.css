@@ -239,7 +239,7 @@ table .time-now {
 
 .how-it-works {
     display: table;
-    height: 350px;
+    height: 535px;
     text-align: center;
 }
 
@@ -289,4 +289,13 @@ table .time-now {
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
+}
+
+div.fb-like-box,
+div.fb-like-box > span,
+div.fb-like-box > span > iframe[style],
+div.fb-comments,
+div.fb-comments > span,
+div.fb-comments > span > iframe[style] {
+  width: 100% !important;
 }
