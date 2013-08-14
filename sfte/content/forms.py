@@ -1,14 +1,20 @@
-from content import HOURS_DICT, WEEK_DAYS
-from content.data import Data
+from decimal import Decimal
+import simplejson
+from django.conf import settings
 from django import forms
+from django.contrib.gis.geos import fromstr
 from django.utils.functional import cached_property
+from content import HOURS_DICT, WEEK_DAYS
+from content.data import Data, get_place_data
+from precalculated.models import CachedData
 
 
 class TicketSearchForm(forms.Form):
     DISTANCE_CHOICES = (
-        ('0.00015', '50ft (15m)'),
+        #('0.00015', '50ft (15m)'),
         ('0.0003', '100ft (30m)'),
         ('0.0006', '200ft (60m)'),
+        ('0.0009', '300ft (90m)'),
     )
     address = forms.CharField(
         label='Parking address',
@@ -26,6 +32,19 @@ class TicketSearchForm(forms.Form):
         return self.cleaned_data
 
     def get_data_object(self, start_hour=None, end_hour=None, week_day=None):
+        if settings.ENABLE_PRECALCULATED:
+            address = self.cleaned_data['address']
+            distance = round(100000 * float(self.cleaned_data['distance']))
+
+            place, (lng, lat) = get_place_data(address)
+            geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269) if lat and address else None
+
+            cache = CachedData.objects.exclude(json='').filter(location__distance_lt=(geopoint, distance))
+            if cache:
+                result = simplejson.loads(cache[0].json)
+                result['place'] = '%s (precached)' % place
+                return result
+
         return Data(
             address=self.cleaned_data['address'],
             distance=self.cleaned_data['distance'],

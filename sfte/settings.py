@@ -126,6 +126,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+ENABLE_PRECALCULATED = True
+
 
 STATIC_ROOT = rel('..', 'files')
 STATIC_URL = '/static/'

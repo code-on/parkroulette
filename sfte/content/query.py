@@ -1,7 +1,5 @@
 from decimal import Decimal
-from django.core.cache import get_cache
 from content.models import Ticket, Path
-
 
 
 def _get_paths_cache_name(geopoint, distance):
