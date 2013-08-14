@@ -10,7 +10,7 @@ CHUNK_SIZE = 1000
 # distance between precalculated points in one path
 STEP_DISTANCE = 0.0005
 # smallest allowed distance between two precalculated points
-CLOSE_DISTANCE = 0.0003
+CLOSE_DISTANCE = 25
 
 
 class Command(BaseCommand):
