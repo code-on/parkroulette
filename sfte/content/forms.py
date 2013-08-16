@@ -39,7 +39,9 @@ class TicketSearchForm(forms.Form):
             place, (lng, lat) = get_place_data(address)
             geopoint = fromstr('POINT({lng} {lat})'.format(lat=lat, lng=lng), srid=4269) if lat and address else None
 
-            cache = CachedData.objects.exclude(json='').filter(location__distance_lt=(geopoint, distance))
+            cache = None
+            if geopoint:
+                cache = CachedData.objects.exclude(json='').filter(location__distance_lt=(geopoint, distance))
             if cache:
                 result = simplejson.loads(cache[0].json)
                 result['place'] = '%s (precached)' % place
