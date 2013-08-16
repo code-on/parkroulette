@@ -20,7 +20,8 @@ def get_chance(request):
     if form.is_valid():
         data = form.get_data_object()
         try:
-            create_log(address=data.address, type=Log.CHANCE)
+            if data.geopoint:
+                create_log(address=data.address, type=Log.CHANCE)
         except AttributeError:
             create_log(address=data['address'], type=Log.CHANCE)
         context.update({'data': data})
@@ -37,7 +38,8 @@ def get_laws(request):
         week_day = request.GET.get('week_day')
         data = form.get_data_object(start_hour=start_hour, end_hour=end_hour, week_day=week_day)
         try:
-            create_log(address=data.address, type=Log.LAWS)
+            if data.geopoint:
+                create_log(address=data.address, type=Log.LAWS)
         except AttributeError:
             create_log(address=data['address'], type=Log.LAWS)
         context.update({'data': data})
