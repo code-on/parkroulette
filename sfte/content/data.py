@@ -26,6 +26,13 @@ cache = get_cache('default')
 address_cache = get_cache('addresses')
 
 
+def create_log(address, type):
+    Log.objects.create(
+        address=address,
+        type=type,
+    )
+
+
 def get_place_data(address):
     sl_address = slugify(address)
     data = address_cache.get(sl_address)
@@ -159,12 +166,6 @@ class Data(object):
         self.init_lat = init_lat
         self.init_lng = init_lng
         self.path_qs = list(self.get_path_qs()) if self.get_path_qs() else None
-
-    def create_log(self, type):
-        Log.objects.create(
-            address=self.address,
-            type=type,
-        )
 
     @property
     def place(self):

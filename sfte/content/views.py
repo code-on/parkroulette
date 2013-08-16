@@ -1,3 +1,4 @@
+from content.data import create_log
 from django.template.response import TemplateResponse
 from utils.views import render_to
 
@@ -18,7 +19,10 @@ def get_chance(request):
     context = {'form': form}
     if form.is_valid():
         data = form.get_data_object()
-        data.create_log(type=Log.CHANCE)
+        try:
+            create_log(address=data.address, type=Log.CHANCE)
+        except AttributeError:
+            create_log(address=data['address'], type=Log.CHANCE)
         context.update({'data': data})
     return context
 
@@ -32,7 +36,10 @@ def get_laws(request):
         end_hour = request.GET.get('to_time')
         week_day = request.GET.get('week_day')
         data = form.get_data_object(start_hour=start_hour, end_hour=end_hour, week_day=week_day)
-        data.create_log(type=Log.LAWS)
+        try:
+            create_log(address=data.address, type=Log.LAWS)
+        except AttributeError:
+            create_log(address=data['address'], type=Log.LAWS)
         context.update({'data': data})
     return context
 
@@ -45,7 +52,7 @@ def get_heatmap(request):
         data = form.get_data_object()
         try:
             if data.geopoint:
-                data.create_log(type=Log.HEATMAP)
+                create_log(address=data.address, type=Log.HEATMAP)
                 if data.tickets_avg_cost <= 0:
                     dist = request.GET['distance']
                     choices = TicketSearchForm.DISTANCE_CHOICES
@@ -54,14 +61,11 @@ def get_heatmap(request):
                             if c[0] == dist:
                                 context.update({'next_distance': choices[choices.index(c)+1][0]})
                                 break
-                context.update({'null': True})
+                    context.update({'null': True})
         except AttributeError:
             # cached data
-            Log.objects.create(
-                address=data.get('address'),
-                type=Log.HEATMAP,
-            )
-            if data.get('tickets_avg_cost') <= 0:
+            create_log(address=data['address'], type=Log.HEATMAP)
+            if data['tickets_avg_cost'] <= 0:
                 dist = request.GET['distance']
                 choices = TicketSearchForm.DISTANCE_CHOICES
                 if dist != choices[-1][0]:
@@ -69,7 +73,7 @@ def get_heatmap(request):
                         if c[0] == dist:
                             context.update({'next_distance': choices[choices.index(c)+1][0]})
                             break
-            context.update({'null': True})
+                context.update({'null': True})
         context.update({'data': data})
     return context
 

@@ -32,7 +32,7 @@ class TicketSearchForm(forms.Form):
         return self.cleaned_data
 
     def get_data_object(self, start_hour=None, end_hour=None, week_day=None):
-        if settings.ENABLE_PRECALCULATED:
+        if settings.ENABLE_PRECALCULATED and not (start_hour or end_hour or week_day):
             address = self.cleaned_data['address']
             distance = round(100000 * float(self.cleaned_data['distance']))
 
@@ -43,6 +43,15 @@ class TicketSearchForm(forms.Form):
             if cache:
                 result = simplejson.loads(cache[0].json)
                 result['place'] = '%s (precached)' % place
+                result['address'] = address
+                new_heatmap = []
+                for sublist in result['tickets_heatmap']:
+                    new_sublist = []
+                    for item in sublist:
+                        item = item.replace('Precached', address)
+                        new_sublist.append(item)
+                    new_heatmap.append(new_sublist)
+                result['tickets_heatmap'] = new_heatmap
                 return result
 
         return Data(
