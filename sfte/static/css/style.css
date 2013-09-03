@@ -18,21 +18,12 @@ p.notify {
     font-size: 16px
 }
 
-p.intro {
-    font-size: 27px
-}
-
 p.align-left {
     text-align: left;
 }
 
 p.align-right {
     text-align: right;
-}
-
-a.intro {
-    color: #000000;
-    text-decoration: none
 }
 
 h4.results, h3.results {
@@ -59,14 +50,6 @@ select#id_distance {
     font-size: 20px;
     margin-bottom: 10px;
     margin-top: 10px
-}
-
-.twitter-timeline {
-    width: 100%
-}
-
-.twitter #subscribe {
-    font-size: 18px;
 }
 
 .tabbable {
@@ -150,37 +133,9 @@ table .time-now {
     height: 225px
 }
 
-@media (min-width:1200px) {
-    #intro {
-        width: 120px
-    }
-
-    #intro-share {
-        width: 120px
-    }
-}
-
-@media (min-width:768px) and (max-width:979px) {
-    #intro {
-        width: 130px
-    }
-
-    #intro-share {
-        width: 80px
-    }
-}
-
 @media (max-width:767px) {
-    #intro-share {
-        margin-bottom: 9px
-    }
-
+    /* TODO: fix me */
     #middle-share img {
-        width: 27px;
-        height: 27px
-    }
-
-    #intro-share img {
         width: 27px;
         height: 27px
     }
@@ -289,13 +244,4 @@ table .time-now {
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
-}
-
-div.fb-like-box,
-div.fb-like-box > span,
-div.fb-like-box > span > iframe[style],
-div.fb-comments,
-div.fb-comments > span,
-div.fb-comments > span > iframe[style] {
-  width: 100% !important;
 }
