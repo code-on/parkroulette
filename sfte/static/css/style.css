@@ -18,11 +18,11 @@ p.notify {
     font-size: 16px
 }
 
-p.align-left {
+.align-left {
     text-align: left;
 }
 
-p.align-right {
+.align-right {
     text-align: right;
 }
 
@@ -35,7 +35,7 @@ h4.results, h3.results {
 }
 
 select#id_distance {
-    width: 110px
+    width: 140px
 }
 
 #how-span {
