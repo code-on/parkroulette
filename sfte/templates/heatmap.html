@@ -11,28 +11,34 @@
     	<div id="img-block" class="span6">
     	</div>
     	<div class="span6">
-    		<h4 id="place-block">{{ data.place }}</h4>
+    		<h3 id="place-block">
+                {{ data.place }}
+                {% if data.chance %}
+                = {{ data.chance|floatformat:1 }}% chance
+                {% endif %}
+            </h3>
     		<div id="output-text">
     			 {% include "_chance.html" %}
     		</div>
     		<div id="block-share" id="middle-share">
-                <span class="hidden" id="share-middle-text">
-                    The chance of getting a parking ticket at {{ data.place }} is {{ data.chance|floatformat:1 }}% per hour.
-                </span>
-                <p>
-                    <a href="/">
-                        Try another address
-                    </a>
-                </p>
-        		<p>
-                    <a
-                        href="https://www.facebook.com"
-                        onclick="fb_top('fb-middle-link','#share-middle-text')"
-                        id="fb-middle-link"
-                        target="_blank">
-                        Tell a friend on Facebook
-                    </a>
-                </p>
+                <a
+                    href="https://www.facebook.com"
+                    onclick="fb_top('fb-middle-link','#share-middle-text')"
+                    id="fb-middle-link"
+                    target="_blank">
+                    Tell a friend on Facebook
+                    <span class="hidden" id="share-middle-text">
+                        The chance of getting a parking ticket at {{ data.place }} is {{ data.chance|floatformat:1 }}% per hour.
+                    </span>
+                </a>
+                &middot;
+                <a href="/howitworks/">
+                    Learn how it works
+                </a>
+             	&middot;
+                <a href="/">
+                    Try another address
+                </a>
     		</div>
     	</div>
     </div>

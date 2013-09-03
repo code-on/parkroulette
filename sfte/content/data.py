@@ -155,6 +155,7 @@ def calculate_legend(counts, steps):
 
 
 class Data(object):
+    # TODO: still valid?
     year = 2012
 
     def __init__(self, address, distance, week_day=None, end_hour=None, start_hour=None, init_lat=None, init_lng=None):
@@ -246,6 +247,10 @@ class Data(object):
     @cached_property
     def hours_count(self):
         return _get_all_hours_count(self.path_qs)
+
+    @cached_property
+    def years_count(self):
+        return float(self.hours_count) / (24 * 365)
 
     @cached_property
     def tickets_count(self):

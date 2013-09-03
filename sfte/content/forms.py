@@ -44,7 +44,7 @@ class TicketSearchForm(forms.Form):
                 cache = CachedData.objects.exclude(json='').filter(location__distance_lt=(geopoint, distance))
             if cache:
                 result = simplejson.loads(cache[0].json)
-                result['place'] = '%s (precached)' % place
+                result['place'] = place
                 result['address'] = address
                 new_heatmap = []
                 for sublist in result['tickets_heatmap']:

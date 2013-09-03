@@ -12,21 +12,18 @@
             <div id="img-block" class="span2">
             </div>
             <div class="span8">
-                <h4 id="place-block">{{ data.place }}</h4>
                 <div>
                     {% if data.laws_list %}
-                        <p>
-                            In 2012, the top reasons for a parking citation within {{ data.get_distance_display }} meters of "{{ data.place }}"
-                            {% if data.week_day %}
-                                on {{ data.get_week_day_display }}
-                            {% endif %}
-                            {% if data.start_time != None %}
-                                between {{ data.start_time }} and {{ data.end_time }}
-                            {% endif %}
-                            was:
-                        </p>
-
                         <table class="table table-bordered table-striped">
+                            <caption>
+                                The top reasons for a parking citation within <strong>{{ data.get_distance_display }}</strong> of <strong>{{ data.place }}</strong>
+                                {% if data.week_day %}
+                                    on {{ data.get_week_day_display }}
+                                {% endif %}
+                                {% if data.start_time != None %}
+                                    between {{ data.start_time }} and {{ data.end_time }}
+                                {% endif %}
+                            </caption>
                             <thead>
                                 <tr>
                                     <th>count</th>
@@ -54,7 +51,7 @@
                 </div>
             </div>
         {% else %}
-            Sorry, we cannot find coordinates of this address.
+            <em>Sorry, we cannot find coordinates of this address.</em>
         {% endif %}
     {% endif %}
 {% endblock %}

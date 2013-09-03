@@ -11,9 +11,10 @@ urlpatterns = patterns('',
     url(r'^laws/$', 'content.views.get_laws', name='get-laws'),
     url(r'^heatmap/$', 'content.views.get_heatmap', name='get-heatmap'),
 
+    # todo: remove me, replace with simple emails to gregdingle+parkroulette@gmail.com
     url(r'^subscribe/$', 'subscribers.views.subscribe', name='subscribe'),
     url(r'^subscription/$', 'subscriptions.views.create', name='subscription'),
-    
+
     url(r'^debug/$', 'content.views.debug', name='debug'),
     url(r'^pathsplit/$', 'pathsplit.views.debug', name='pathsplit'),
 
@@ -23,7 +24,6 @@ urlpatterns = patterns('',
 urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^about/$', 'flatpage', {'url': '/about/'}, name='about'),
     url(r'^contact/$', 'flatpage', {'url': '/contact/'}, name='contact'),
-    url(r'^privacy/$', 'flatpage', {'url': '/privacy/'}, name='privacy'),
     url(r'^disclaimer/$', 'flatpage', {'url': '/disclaimer/'}, name='disclaimer'),
     url(r'^howitworks/$', 'flatpage', {'url': '/howitworks/'}, name='howitworks'),
 

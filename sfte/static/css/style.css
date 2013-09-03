@@ -35,7 +35,7 @@ h4.results, h3.results {
 }
 
 select#id_distance {
-    width: 140px
+    width: 160px
 }
 
 #how-span {
@@ -77,6 +77,10 @@ div.source {
 #tickets-heatmap .column-total,
 #paths-heatmap .column-total {
     border-top-width: 3px;
+}
+
+.table caption {
+    margin-bottom: 10px;
 }
 
 .table td a, .table th a {
@@ -122,6 +126,10 @@ table .time-now {
 #intro-share img {
     width: 20px;
     height: 20px
+}
+
+#intro img {
+    margin-bottom: 10px;
 }
 
 #middle-share img {

@@ -57,8 +57,8 @@
 		<div class="span9">
 			<h3 id="share-top-text">Calculate the chance of a parking ticket anywhere in San Francisco</h3>
             {% if not request|city %}
-                    <h4 id="share-top-text">Sorry, Parkroulette is only available for San Francisco. <a
-                            href="{% url "subscription" %}">Sign up</a> for other cities.</h4>
+                    <h5 id="share-top-text">Sorry, Parkroulette is only available for San Francisco. <a
+                            href="{% url "subscription" %}">Sign up</a> for other cities.</h5>
             {% endif %}
 			 {% for error in form.errors %}
 			<div class="alert alert-error">

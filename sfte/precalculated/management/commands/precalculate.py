@@ -15,17 +15,19 @@ CLOSE_DISTANCE = 25
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
-        make_option('--skip-points',
+        make_option(
+            '--skip-points',
             action='store_true',
             dest='skip-points',
             default=False,
             help='Skip points calculation (only gather data for existing points)'),
-        make_option('--only-points',
+        make_option(
+            '--only-points',
             action='store_true',
             dest='only-points',
             default=False,
             help='Perform only points calculation'),
-        )
+    )
 
     def handle(self, *args, **options):
         if not options.get('skip-points'):
@@ -67,6 +69,7 @@ class Command(BaseCommand):
                     'chance': calc.chance,
                     'get_distance_display': calc.get_distance_display(),
                     'hours_count': calc.hours_count,
+                    'years_count': calc.years_count,
                     'now_chance': calc.now_chance,
                     'now_tickets_exp_cost': calc.now_tickets_exp_cost,
                     'patrols_count': calc.patrols_count,
