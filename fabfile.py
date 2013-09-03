@@ -38,7 +38,7 @@ def deploy():
 
     with cd(env.base_dir):
         _wwwrun('git pull')
-        _wwwrun('find . -name "*.pyc" -exec rm {} \;')
+        _wwwrun('find . -name "*.pyc" -exec rm -f {} \;')
 
 
     with cd(env.project_dir):
