@@ -12,11 +12,9 @@
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=203535309815104";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-
-
 
 <!--modal -->
 <div class="modal fade hide" tabindex="-1" role="dialog" id="sharemodal">
@@ -101,18 +99,13 @@
 
 <div class="row">
 	<div class="span4 twitter">
-		<a class="twitter-timeline" height="600" href="https://twitter.com/sfgov" data-widget-id="341934962053890049">Tweets by @sfgov</a></br>
+		<a class="twitter-timeline" href="https://twitter.com/parkroulette" data-widget-id="374715911929749504">Tweets by @parkroulette</a>
+		</br>
 		{% if not user_form %} <a href="{% url "subscribe" %}" id="subscribe">Subscribe to our news and releases</a>
 		{% endif %}
 	</div>
 	<div class="span4">
-      <div style="text-align: center;">
-        <div class="fb-like-box" data-href="https://www.facebook.com/FacebookDevelopers" data-width="370" data-show-faces="true" data-stream="true" data-show-border="true" data-header="false"></div>
-      </div>
-	</div>
-	<div class="how-it-works span4">
-
-        <h1><a href="/howitworks/">How it works</a></h1>
+		<div class="fb-like" data-href="http://parkroulette.com/" data-width="450" data-show-faces="true" data-send="true"></div>
 	</div>
 </div>
 {% endblock output %}

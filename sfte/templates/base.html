@@ -41,24 +41,23 @@
 <div class="row">
 	<div class="span5">
 		<div class="row">
-			<div class="span2" id="intro">
-				<a href="/" class="intro">
-				<p class="align-left intro">
-					Parkroulette
-				</p>
-				</a>
-			</div>
-			<div class="span3" id="intro-share">
-				<a href="https://www.facebook.com" onclick="fb_top('fb-top-link','#textarea')" id="fb-top-link" target="_blank">
-				<img src="/static/img/btn_facebook.png"></a>
-				<a href="https://www.twitter.com" onclick="twitter_top('tweeter-top-link','#textarea')" id="tweeter-top-link" target="_blank">
-				<img src="/static/img/btn_twitter.png"></a>
-				<a href="https://www.google.com" onclick="googleone_top('googleone-top-link')" id="googleone-top-link" target="_blank">
-				<img src="/static/img/btn_google_plusone.png"></a>
-			</div>
+			<a href="/" class="span8" id="intro">
+                <img src="/static/img/logo.png" />
+			</a>
 		</div>
 	</div>
 	<div class="span7">
+
+        <!-- TODO: figure out span1, span3, concepts -->
+        <div class="span3" id="intro-share">
+            <a href="https://www.facebook.com" onclick="fb_top('fb-top-link','#textarea')" id="fb-top-link" target="_blank">
+            <img src="/static/img/btn_facebook.png"></a>
+            <a href="https://www.twitter.com" onclick="twitter_top('tweeter-top-link','#textarea')" id="tweeter-top-link" target="_blank">
+            <img src="/static/img/btn_twitter.png"></a>
+            <a href="https://www.google.com" onclick="googleone_top('googleone-top-link')" id="googleone-top-link" target="_blank">
+            <img src="/static/img/btn_google_plusone.png"></a>
+        </div>
+
 		 {% if not city_form %}
 		<p class="align-right notify hidden-phone">
 			Want parkroulette in <a href="{% url "subscription" %}">your city</a>?
