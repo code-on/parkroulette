@@ -166,6 +166,7 @@ $(document).ready(function(){
 {% if not request.GET.address %}
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script>
+// TODO: FIX ME ... only applies to search pages
         var $text_field = $('#'+'{{ form.address.auto_id }}');
         if (Modernizr.geolocation) {
             navigator.geolocation.getCurrentPosition(fill_address);

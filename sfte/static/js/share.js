@@ -3,11 +3,12 @@
         if(typeof(id)==='undefined') id='fb-top-link';
         if(typeof(text_id)==='undefined') text_id='#share-top-text';
     var link = document.getElementById(id);
-    var url="http://www.parkroulette.com"
+    var url="http://www.parkroulette.com";
     var facebook="https://www.facebook.com/sharer/sharer.php?s=100&p[url]=";
-    var sharetitle=encodeURIComponent(document.title)
+    var sharetitle=encodeURIComponent(document.title);
     var sharetxt=encodeURIComponent($(text_id).text());
-    link.href=facebook+url+'&p[title]='+sharetitle+'&p[summary]='+sharetxt;
+    var shareimg=encodeURIComponent('http://parkroulette.com/static/img/parkroulette-logo-car.png');
+    link.href=facebook+url+'&p[title]='+sharetitle+'&p[summary]='+sharetxt+'&p[images][0]='+shareimg;
   }
     // Twitter
    function twitter_top(id, text_id){
