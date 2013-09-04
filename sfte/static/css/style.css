@@ -2,18 +2,6 @@
     padding-top: 20px
 }
 
-.modal-header {
-    height: 20px;
-}
-
-.modal-header h5 {
-    margin-top: 0px;
-}
-
-.modal-body {
-    overflow: hidden;
-}
-
 p.notify {
     font-size: 16px
 }
@@ -108,21 +96,6 @@ table .time-now {
     color: #ccc;
 }
 
-.navcontainer ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    text-align: center;
-}
-
-.navcontainer ul li {
-    display: inline;
-}
-
-.navcontainer ul li a {
-    padding: .2em 1em;
-}
-
 #intro-share img {
     width: 20px;
     height: 20px
@@ -199,27 +172,6 @@ table .time-now {
     height: 15px;
     width: 50px;
 }
-
-.how-it-works {
-    display: table;
-    height: 535px;
-    text-align: center;
-}
-
-.how-it-works h1 {
-    display: table-cell;
-    vertical-align: middle;
-
-}
-
-.how-it-works h1 a {
-    color: #333333;
-}
-
-.how-it-works h1 a:hover {
-    text-decoration: none;
-}
-
 
 #id_address {
   height: 44px ;

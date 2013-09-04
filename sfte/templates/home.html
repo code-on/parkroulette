@@ -5,46 +5,6 @@
 
 {% block content %}
 
-
-{# facebook #}
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=203535309815104";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-<!--modal -->
-<div class="modal fade hide" tabindex="-1" role="dialog" id="sharemodal">
-	<div class="modal-header">
-		<h5>Share</h5>
-	</div>
-	<div class="modal-body" id="modal-body">
-		<form>
-			<textarea name="limitedtextarea" id="limitedtextarea" onkeydown="limitText(this.form.limitedtextarea,'#count',119)" onkeyup="limitText(this.form.limitedtextarea,'#count',119)" class="input-block-level" id="textarea">Checking my parking ticket chance at parkroulette.com</textarea>
-			<div class="count" style="font-size: 12px">
-				You have <span id="count">56</span> characters left
-			</div>
-		</form>
-		<div class="row-fluid">
-			<div class="span12">
-				<div class="span3">
-					<a href="https://www.facebook.com" onclick="fb_top('fb-popup-link','#textarea')" id="fb-popup-link" target="_blank">
-					<img src="/static/img/btn_facebook.png"></a>
-					<a href="https://www.twitter.com" onclick="twitter_top('tweeter-popup-link','#textarea')" id="tweeter-popup-link" target="_blank">
-					<img src="/static/img/btn_twitter.png"></a>
-					<a href="https://www.google.com" onclick="googleone_top('googleone-popup-link')" id="googleone-popup-link" target="_blank">
-					<img src="/static/img/btn_google_plusone.png"></a>
-				</div>
-				<div class="span9">
-					<a href="#" class="btn pull-right" data-dismiss="modal" onclick="$('#search-form').submit()">No, thanks</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div><!--end modal -->
 <!--well -->
     {% if data %}
         <div class="well" style="display: none">
@@ -55,17 +15,18 @@
 	 {% block well %}
 	<div class="row-fluid">
 		<div class="span9">
-			<h3 id="share-top-text">Calculate the chance of a parking ticket anywhere in San Francisco</h3>
+			<h3 id="share-top-text">
+				Calculate the chance of a parking ticket anywhere in San Francisco
+			</h3>
             {% if not request|city %}
-                    <h5 id="share-top-text">Sorry, Parkroulette is only available for San Francisco. <a
-                            href="{% url "subscription" %}">Sign up</a> for other cities.</h5>
+            <h5>Sorry, Parkroulette is only available for San Francisco. <a href="{% url "subscription" %}">Sign up</a> for other cities.</h5>
             {% endif %}
-			 {% for error in form.errors %}
+			{% for error in form.errors %}
 			<div class="alert alert-error">
 				<button type="button" class="close" data-dismiss="alert">×</button>
 				{{ form.errors.as_text }}.
 			</div>
-			 {% endfor %}
+			{% endfor %}
 			<form id="search-form" action="{% url "get-heatmap" %}">
 				<div class="row-fluid control-group">
 					<div class="span4">
@@ -100,9 +61,6 @@
 <div class="row">
 	<div class="span4 twitter">
 		<a class="twitter-timeline" href="https://twitter.com/parkroulette" data-widget-id="374715911929749504">Tweets by @parkroulette</a>
-		</br>
-		{% if not user_form %} <a href="{% url "subscribe" %}" id="subscribe">Subscribe to our news and releases</a>
-		{% endif %}
 	</div>
 	<div class="span4">
 		<div class="fb-like" data-href="http://parkroulette.com/" data-width="450" data-show-faces="true" data-send="true"></div>

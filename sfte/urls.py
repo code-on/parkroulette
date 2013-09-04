@@ -26,7 +26,7 @@ urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^contact/$', 'flatpage', {'url': '/contact/'}, name='contact'),
     url(r'^disclaimer/$', 'flatpage', {'url': '/disclaimer/'}, name='disclaimer'),
     url(r'^howitworks/$', 'flatpage', {'url': '/howitworks/'}, name='howitworks'),
-
+    url(r'^insurance/$', 'flatpage', {'url': '/insurance/'}, name='insurance'),
 )
 
 urlpatterns += staticfiles_urlpatterns()
