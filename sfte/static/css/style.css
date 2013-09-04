@@ -91,10 +91,8 @@ table .time-now {
 }
 
 @media (max-width:767px) {
-    /* TODO: fix me */
-    #middle-share img {
-        width: 27px;
-        height: 27px
+    #paths-heatmap {
+        font-size: smaller;
     }
 }
 
@@ -135,7 +133,7 @@ table .time-now {
 .legend .legend-scale ul li {
     display: block;
     float: left;
-    width: 50px;
+    width: 40px;
     margin-bottom: 6px;
     text-align: center;
     font-size: 80%;
@@ -146,7 +144,7 @@ table .time-now {
     display: block;
     float: left;
     height: 15px;
-    width: 50px;
+    width: 40px;
 }
 
 #id_address, #id_distance {
