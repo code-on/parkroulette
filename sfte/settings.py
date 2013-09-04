@@ -135,10 +135,12 @@ STATICFILES_DIRS = (
     rel('static'),
 )
 
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+}
 
 
 try:
     from settings_local import *
 except ImportError:
     pass
-
