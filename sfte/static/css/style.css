@@ -26,12 +26,14 @@ h4.results, h3.results {
 }
 
 #tickets-heatmap .row-total,
-#paths-heatmap .row-total {
+#paths-heatmap .row-total,
+#costs-heatmap .row-total {
     border-left-width: 3px;
 }
 
 #tickets-heatmap .column-total,
-#paths-heatmap .column-total {
+#paths-heatmap .column-total,
+#costs-heatmap .row-total {
     border-top-width: 3px;
 }
 
@@ -91,7 +93,9 @@ table .time-now {
 }
 
 @media (max-width:767px) {
-    #paths-heatmap {
+    #tickets-heatmap,
+    #paths-heatmap,
+    #costs-heatmap {
         font-size: smaller;
     }
 }

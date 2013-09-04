@@ -83,17 +83,6 @@
 $(document).ready(function(){
      if( /Android|iPhone|iPad/i.test(navigator.userAgent) ) {
        $("#message").fadeIn();
-
-      $('.table thead th').each(function() {
-                 if ($(this).html() != 'Total') {
-                     $(this).html($(this).html().slice(0, -1))
-                 }
-          });
-     $('.table thead th a').each(function() {
-                 if ($(this).html() != 'Total') {
-                     $(this).html($(this).html().slice(0, -1))
-                 }
-          });
      }
 });
 </script>
