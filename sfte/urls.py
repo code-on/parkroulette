@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^laws/$', 'content.views.get_laws', name='get-laws'),
     url(r'^heatmap/$', 'content.views.get_heatmap', name='get-heatmap'),
 
-    # todo: remove me, replace with simple emails to gregdingle+parkroulette@gmail.com
+    # DEPRECATED: user is simply directed to contact page
     url(r'^subscribe/$', 'subscribers.views.subscribe', name='subscribe'),
     url(r'^subscription/$', 'subscriptions.views.create', name='subscription'),
 

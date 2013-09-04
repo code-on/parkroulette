@@ -2,18 +2,6 @@
     padding-top: 20px
 }
 
-p.notify {
-    font-size: 16px
-}
-
-.align-left {
-    text-align: left;
-}
-
-.align-right {
-    text-align: right;
-}
-
 h4.results, h3.results {
     display: inline;
 }
@@ -22,30 +10,8 @@ h4.results, h3.results {
     margin-top: 5px;
 }
 
-select#id_distance {
-    width: 160px
-}
-
-#how-span {
-    margin-bottom: 15px
-}
-
-#how {
-    font-size: 20px
-}
-
-#how-phone {
-    font-size: 20px;
-    margin-bottom: 10px;
-    margin-top: 10px
-}
-
 .tabbable {
     margin-bottom: 25px;
-}
-
-div.source {
-    margin-bottom: 20px;
 }
 
 .table td, .table th {
@@ -53,7 +19,9 @@ div.source {
     text-align: right;
 }
 
-#tickets-heatmap td:hover, #tickets-heatmap .row-total:hover, #tickets-heatmap .column-total:hover {
+#tickets-heatmap td:hover,
+#tickets-heatmap .row-total:hover,
+#tickets-heatmap .column-total:hover {
     background-color: #89d8ff !important;
 }
 
@@ -105,13 +73,21 @@ table .time-now {
     margin-bottom: 10px;
 }
 
+#fbtwgl {
+    /* Olga's change to push down fb, twitter and goog to same level as logo */
+    margin-top: 40px;
+}
+
 #middle-share img {
     width: 16px;
     height: 16px
 }
 
 #img-block {
-    height: 225px
+    height: 225px;
+    /* copied from img-polaroid */
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width:767px) {
@@ -173,7 +149,7 @@ table .time-now {
     width: 50px;
 }
 
-#id_address {
+#id_address, #id_distance {
   height: 44px ;
   margin-bottom: 10px;
   line-height: 30px;
@@ -184,24 +160,6 @@ table .time-now {
           border-radius: 6px;
 }
 
-#id_address {
-  height: 44px ;
-  margin-bottom: 10px;
-  line-height: 30px;
-  padding: 11px 19px;
-  font-size: 17.5px;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
-}
-
-#id_distance {
-  height: 44px ;
-  margin-bottom: 10px;
-  line-height: 30px;
-  padding: 11px 19px;
-  font-size: 17.5px;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
+select#id_distance {
+    width: 160px
 }

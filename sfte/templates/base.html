@@ -41,7 +41,16 @@
                 <img src="/static/img/logo.png" />
             </a>
     	</div>
-        <div class="offset2 span4 align-right">
+        <div
+            class="fb-like span6 text-right"
+            data-width="200"
+            data-href="http://parkroulette.com/"
+            data-show-faces="true"
+            data-send="true">
+        </div>
+        {% comment %}
+        <!-- TODO: decide on best share widgets -->
+        <div class="hidden offset2 span4 text-right" id="fbtwgl">
             <span class="hidden" id="share-top-text">Calculate the chance of a parking ticket anywhere in San Francisco</span>
             <a href="https://www.facebook.com" onclick="fb_top('fb-top-link','#share-top-text')" id="fb-top-link" target="_blank">
             <img src="/static/img/btn_facebook.png"></a>
@@ -50,6 +59,7 @@
             <a href="https://www.google.com" onclick="googleone_top('googleone-top-link')" id="googleone-top-link" target="_blank">
             <img src="/static/img/btn_google_plusone.png"></a>
         </div>
+        {% endcomment %}
     </div>
     <!--end intro -->
 
@@ -60,42 +70,12 @@
 
 <div class="row footer">
 	<ul class="inline text-center">
-		<li><a href="/about/">About us</a></li>
+		<li><a href="/about/">About</a></li>
         <li><a href="/howitworks/">How it works</a></li>
 		<li><a href="/disclaimer/">Disclaimer</a></li>
         <li><a href="/contact/">Contact</a></li>
 	</ul>
 </div>
-
-<script>
-    $('#search-form').submit(function (event) {
-        $('.rotate').css('-webkit-animation', 'rotation 1s infinite linear');
-        $('.rotate').css('animation', 'rotation 1s infinite linear');
-    });
-    $("#submit").click(function (event) {
-        event.preventDefault();
-        $('#search-form').submit();
-    });
-</script>
-
-<script>
-$(document).ready(function(){
-     if( /Android|iPhone|iPad/i.test(navigator.userAgent) ) {
-       $("#message").fadeIn();
-
-      $('.table thead th').each(function() {
-                 if ($(this).html() != 'Total') {
-                     $(this).html($(this).html().slice(0, -1))
-                 }
-          });
-     $('.table thead th a').each(function() {
-                 if ($(this).html() != 'Total') {
-                     $(this).html($(this).html().slice(0, -1))
-                 }
-          });
-     }
-});
-</script>
 
 <script>
     $(document).ready(!function (d, s, id) {
@@ -117,7 +97,6 @@ $(document).ready(function(){
   js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=203535309815104";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-
 
 {% if data %}
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
@@ -154,47 +133,6 @@ $(document).ready(function(){
     }
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
-<script>
-    $("#new-search").click(function () {
-    $('.results').slideUp('fast')
-    $('.well').slideDown('fast')
-
-    });
-</script>
-{% endif %}
-
-{% if not request.GET.address %}
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script>
-// TODO: FIX ME ... only applies to search pages
-        var $text_field = $('#'+'{{ form.address.auto_id }}');
-        if (Modernizr.geolocation) {
-            navigator.geolocation.getCurrentPosition(fill_address);
-        }
-        function fill_address(position) {
-            if (!$text_field.val()) {
-                var latitude = position.coords.latitude,
-                        longtitude = position.coords.longitude,
-                        geocoder = new google.maps.Geocoder(),
-                        latlng = new google.maps.LatLng(latitude, longtitude);
-                geocoder.geocode({'latLng': latlng}, function (results, status) {
-                    if ((status == google.maps.GeocoderStatus.OK) && results) {
-                        var res = results[0],
-                                address = res.address_components[0].long_name;
-                        if (1 in res.address_components) {
-                            address = address + ' ' + res.address_components[1].long_name
-                        }
-                        set_address(address)
-                    }
-                })
-            }
-        }
-        function set_address(address) {
-            if (!$text_field.val()) {
-                $text_field.val(address);
-            }
-        }
-    </script>
 {% endif %}
 
 {% if settings.ENABLE_ANALYTICS %}

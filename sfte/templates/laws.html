@@ -15,7 +15,7 @@
                 <div>
                     {% if data.laws_list %}
                         <table class="table table-bordered table-striped">
-                            <caption>
+                            <caption class="lead">
                                 The top reasons for a parking citation within <strong>{{ data.get_distance_display }}</strong> of <strong>{{ data.place }}</strong>
                                 {% if data.week_day %}
                                     on {{ data.get_week_day_display }}
