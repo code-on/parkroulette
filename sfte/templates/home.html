@@ -6,13 +6,11 @@
 {% block content %}
 
 <!--well -->
-    {% if data %}
-        <div class="well" style="display: none">
-    {% else %}
-        <div class="well">
-    {% endif %}
+{% if not data %}
 
-	 {% block well %}
+<div class="well">
+	{% block well %}
+
 	<div class="row-fluid">
 		<div class="span9">
 			<h3 id="share-top-text">
@@ -50,22 +48,76 @@
 			<img src="/static/no-parking.png" class="pull-right hidden-phone rotate">
 		</div>
 	</div>
-	 {% endblock well %}
+  {% endblock well %}
 	<div id="message" style="display: none">
-		<a href="">Add this to your home screen so you can check parking on the go!</a>
-	</div>
-</div><!--end well -->
-
- {% block output %}
-
-<div class="row">
-	<div class="span4 twitter">
-		<a class="twitter-timeline" href="https://twitter.com/parkroulette" data-widget-id="374715911929749504">Tweets by @parkroulette</a>
-	</div>
-	<div class="span4">
-		<div class="fb-like" data-href="http://parkroulette.com/" data-width="450" data-show-faces="true" data-send="true"></div>
+		<a href="#">Add this to your home screen so you can check parking on the go!</a>
 	</div>
 </div>
-{% endblock output %}
+<!--end well -->
+
+<div class="row">
+  <p class="offset3 span6 twitter">
+    <a class="twitter-timeline" href="https://twitter.com/parkroulette" data-widget-id="374715911929749504">Tweets by @parkroulette</a>
+  </p>
+</div>
+
+{% else %}
+
+ {% block output %}
+ {% endblock output %}
+
+{% endif %}
+
+<script>
+    $('#search-form').submit(function (event) {
+        $('.rotate').css('-webkit-animation', 'rotation 1s infinite linear');
+        $('.rotate').css('animation', 'rotation 1s infinite linear');
+    });
+    $("#submit").click(function (event) {
+        event.preventDefault();
+        $('#search-form').submit();
+    });
+</script>
+
+<script>
+$(document).ready(function(){
+     if( /Android|iPhone|iPad/i.test(navigator.userAgent) ) {
+       $("#message").fadeIn();
+     }
+});
+</script>
+
+{% if not request.GET.address %}
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script>
+        var $text_field = $('#'+'{{ form.address.auto_id }}');
+        if (Modernizr.geolocation) {
+            navigator.geolocation.getCurrentPosition(fill_address);
+        }
+        function fill_address(position) {
+            if (!$text_field.val()) {
+                var latitude = position.coords.latitude,
+                        longtitude = position.coords.longitude,
+                        geocoder = new google.maps.Geocoder(),
+                        latlng = new google.maps.LatLng(latitude, longtitude);
+                geocoder.geocode({'latLng': latlng}, function (results, status) {
+                    if ((status == google.maps.GeocoderStatus.OK) && results) {
+                        var res = results[0],
+                                address = res.address_components[0].long_name;
+                        if (1 in res.address_components) {
+                            address = address + ' ' + res.address_components[1].long_name
+                        }
+                        set_address(address)
+                    }
+                })
+            }
+        }
+        function set_address(address) {
+            if (!$text_field.val()) {
+                $text_field.val(address);
+            }
+        }
+    </script>
+{% endif %}
 
 {% endblock content %}

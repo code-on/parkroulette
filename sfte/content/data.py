@@ -112,9 +112,6 @@ def _get_heatmap_paths_data(datetimes, cell_func=lambda x: x, hour_func=lambda x
     data = [['', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'Total']]
     day_total = [0, 0, 0, 0, 0, 0, 0]
     counts = []
-    # assumes settings.TIME_ZONE is PDT
-    now = datetime.datetime.now()
-    now_count = 0
     for hour in range(24):
         hour_data = [HOURS_DICT[hour]]
         hour_total = 0
@@ -124,8 +121,6 @@ def _get_heatmap_paths_data(datetimes, cell_func=lambda x: x, hour_func=lambda x
             hour_data.append(cell_func(count))
             day_total[day] += count
             hour_total += count
-            if int(now.strftime('%w')) == day and now.hour == hour:
-                now_count += count
         hour_data.append(hour_func(hour_total))
         data.append(hour_data)
     all_count = sum(day_total)
@@ -137,7 +132,6 @@ def _get_heatmap_paths_data(datetimes, cell_func=lambda x: x, hour_func=lambda x
         'heatmap': data,
         'count': all_count,
         'legend': calculate_legend(counts, 5),
-        'now_count': now_count,
     }
 
 
@@ -330,9 +324,6 @@ class Data(object):
     def paths_heatmap_legend(self):
         return self.paths_heatmap_data['legend']
 
-    def paths_heatmap_now_count(self):
-        return self.paths_heatmap_data['now_count']
-
     @cached_property
     def costs_heatmap_data(self):
         datetimes = [p.start_datetime for p in self.path_qs]
@@ -360,16 +351,28 @@ class Data(object):
     def costs_heatmap_legend(self):
         return self.costs_heatmap_data['legend']
 
-    def costs_heatmap_now_count(self):
-        return self.costs_heatmap_data['now_count']
-
     @cached_property
     def now_chance(self):
-        return 100 * Decimal(self.paths_heatmap_data['now_count']) / (self.hours_count / 24)
+        # assumes settings.TIME_ZONE is PDT
+        now = datetime.datetime.now()
+        # assumes heatmap has a header row and column
+        hour_row = self.paths_heatmap_data['heatmap'][now.hour + 1]
+        # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday
+        weekday = int(now.strftime('%w'))
+        now_paths = hour_row[weekday + 1]
+        print now_paths
+        return 100 * Decimal(now_paths) / (self.hours_count / 24)
 
     @cached_property
     def now_tickets_exp_cost(self):
-        return self.tickets_avg_cost * (self.now_chance / 100)
+        # assumes settings.TIME_ZONE is PDT
+        now = datetime.datetime.now()
+        # assumes heatmap has a header row and column
+        hour_row = self.costs_heatmap_data['heatmap'][now.hour + 1]
+        # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday
+        weekday = int(now.strftime('%w'))
+        # Returns a formatted amount such as $1.76
+        return hour_row[weekday + 1]
 
     @cached_property
     def paths_for_debug(self):
@@ -383,9 +386,4 @@ class Data(object):
 
     def get_paths_count_for_debug(self):  # Not uses
         return len(self.paths_for_debug)
-
-
-
-
-
 
