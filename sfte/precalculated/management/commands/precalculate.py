@@ -8,9 +8,9 @@ from content.data import Data
 
 CHUNK_SIZE = 1000
 # distance between precalculated points in one path
-STEP_DISTANCE = 0.0005
+STEP_DISTANCE = 0.0003
 # smallest allowed distance between two precalculated points
-CLOSE_DISTANCE = 25
+CLOSE_DISTANCE = 15
 
 
 class Command(BaseCommand):

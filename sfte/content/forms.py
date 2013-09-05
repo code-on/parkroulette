@@ -11,7 +11,7 @@ from precalculated.models import CachedData
 
 class TicketSearchForm(forms.Form):
     DISTANCE_CHOICES = (
-        #('0.00015', '50ft (15m)'),
+        ('0.00015', '50ft (15m)'),
         ('0.0003', '100ft (30m)'),
         ('0.0006', '200ft (60m)'),
         ('0.0009', '300ft (90m)'),
