@@ -17,9 +17,10 @@ def home(request, template='home.html'):
 def get_chance(request):
     form = TicketSearchForm(request.GET or None)
     no_cache = request.GET.get('no-cache')
+    debug = request.GET.get('debug')
     context = {'form': form}
     if form.is_valid():
-        data = form.get_data_object(no_cache=no_cache)
+        data = form.get_data_object(no_cache=no_cache, debug=debug)
         try:
             if data.geopoint:
                 create_log(address=data.address, type=Log.CHANCE)
@@ -33,12 +34,13 @@ def get_chance(request):
 def get_laws(request):
     form = TicketSearchForm(request.GET or None)
     no_cache = request.GET.get('no-cache')
+    debug = request.GET.get('debug')
     context = {'form': form}
     if form.is_valid():
         start_hour = request.GET.get('from_time')
         end_hour = request.GET.get('to_time')
         week_day = request.GET.get('week_day')
-        data = form.get_data_object(start_hour=start_hour, end_hour=end_hour, week_day=week_day, no_cache=no_cache)
+        data = form.get_data_object(start_hour=start_hour, end_hour=end_hour, week_day=week_day, no_cache=no_cache, debug=debug)
         try:
             if data.geopoint:
                 create_log(address=data.address, type=Log.LAWS)
@@ -52,9 +54,10 @@ def get_laws(request):
 def get_heatmap(request):
     form = TicketSearchForm(request.GET or None)
     no_cache = request.GET.get('no-cache')
+    debug = request.GET.get('debug')
     context = {'form': form}
     if form.is_valid():
-        data = form.get_data_object(no_cache=no_cache)
+        data = form.get_data_object(no_cache=no_cache, debug=debug)
         try:
             if data.geopoint:
                 create_log(address=data.address, type=Log.HEATMAP)
@@ -87,12 +90,13 @@ def get_heatmap(request):
 def debug(request):
     form = TicketSearchForm(request.GET or None)
     no_cache = request.GET.get('no-cache')
+    debug = request.GET.get('debug')
     form_is_valid = form.is_valid()
     context = {
         'form': form,
         'form_is_valid': form_is_valid,
     }
     if form_is_valid:
-        data = form.get_data_object(no_cache=no_cache)
+        data = form.get_data_object(no_cache=no_cache, debug=debug)
         context.update({'data': data})
     return context
