@@ -31,8 +31,8 @@ class TicketSearchForm(forms.Form):
     def clean(self):
         return self.cleaned_data
 
-    def get_data_object(self, start_hour=None, end_hour=None, week_day=None):
-        if settings.ENABLE_PRECALCULATED and not (start_hour or end_hour or week_day):
+    def get_data_object(self, start_hour=None, end_hour=None, week_day=None, no_cache=False):
+        if settings.ENABLE_PRECALCULATED and not no_cache and not (start_hour or end_hour or week_day):
             address = self.cleaned_data['address']
             distance = round(100000 * float(self.cleaned_data['distance']))
 
