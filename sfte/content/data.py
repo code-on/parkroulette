@@ -360,7 +360,6 @@ class Data(object):
         # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday
         weekday = int(now.strftime('%w'))
         now_paths = hour_row[weekday + 1]
-        print now_paths
         return 100 * Decimal(now_paths) / (self.hours_count / 24)
 
     @cached_property

@@ -11,7 +11,7 @@ from precalculated.models import CachedData
 
 class TicketSearchForm(forms.Form):
     DISTANCE_CHOICES = (
-        #('0.00015', '50ft (15m)'),
+        ('0.00015', '50ft (15m)'),
         ('0.0003', '100ft (30m)'),
         ('0.0006', '200ft (60m)'),
         ('0.0009', '300ft (90m)'),
@@ -31,8 +31,8 @@ class TicketSearchForm(forms.Form):
     def clean(self):
         return self.cleaned_data
 
-    def get_data_object(self, start_hour=None, end_hour=None, week_day=None):
-        if settings.ENABLE_PRECALCULATED and not (start_hour or end_hour or week_day):
+    def get_data_object(self, start_hour=None, end_hour=None, week_day=None, no_cache=False, debug=False):
+        if settings.ENABLE_PRECALCULATED and not no_cache and not (start_hour or end_hour or week_day):
             address = self.cleaned_data['address']
             distance = round(100000 * float(self.cleaned_data['distance']))
 
@@ -54,6 +54,11 @@ class TicketSearchForm(forms.Form):
                         new_sublist.append(item)
                     new_heatmap.append(new_sublist)
                 result['tickets_heatmap'] = new_heatmap
+
+                if debug:
+                    result['debug_lat'] = lat
+                    result['debug_lng'] = lng
+
                 return result
 
         return Data(
