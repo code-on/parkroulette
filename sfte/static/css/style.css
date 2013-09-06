@@ -33,7 +33,7 @@ h4.results, h3.results {
 
 #tickets-heatmap .column-total,
 #paths-heatmap .column-total,
-#costs-heatmap .row-total {
+#costs-heatmap .column-total {
     border-top-width: 3px;
 }
 
