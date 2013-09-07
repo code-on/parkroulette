@@ -138,7 +138,7 @@
             fillOpacity: 0.7,
             map: map,
             center: myLatlng,
-            radius: $("#id_distance").val()*100000
+            radius: {{ request.GET.distance }} * 100000
         };
         var cityCircle = new google.maps.Circle(redCircle);
         cityCircle.bindTo('center', marker, 'position');
