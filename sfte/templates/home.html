@@ -16,7 +16,7 @@
 			<h3 id="share-top-text">
 				Calculate the chance of a parking ticket anywhere in San Francisco
 			</h3>
-            {% if not request|city %}
+            {% if not request|california %}
             <h5>Sorry, Parkroulette is only available for San Francisco. <a href="{% url "subscription" %}">Sign up</a> for other cities.</h5>
             {% endif %}
 			{% for error in form.errors %}

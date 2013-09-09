@@ -107,9 +107,12 @@
     var map;
     function initialize() {
         var myLatlng = new google.maps.LatLng("{{ data.lat }}".replace(/,/g , "."), "{{ data.lng }}".replace(/,/g , "."));
+        // see https://developers.google.com/maps/documentation/javascript/reference
         var mapOptions = {
             disableDefaultUI: true,
             keyboardShortcuts: false,
+            draggable: false,
+            disableDoubleClickZoom: true,
             zoom: 17,
             minZoom: 17,
             center: myLatlng,

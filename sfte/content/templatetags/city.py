@@ -1,16 +1,24 @@
 from django import template
 from django.contrib.gis.geoip import *
-from django.conf import settings
 
 register = template.Library()
 
 
 @register.filter
-def city(request):
+def sanfrancisco(request):
     if HAS_GEOIP:
         g = GeoIP().city(get_ip(request))
         if g:
             return g['city'] == 'San Francisco' and g['area_code'] == 415
+    return
+
+
+@register.filter
+def california(request):
+    if HAS_GEOIP:
+        g = GeoIP().city(get_ip(request))
+        if g:
+            return g['region'] == 'CA' and g['country_code'] == 'US'
     return
 
 
