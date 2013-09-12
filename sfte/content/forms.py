@@ -4,8 +4,8 @@ from django.conf import settings
 from django import forms
 from django.contrib.gis.geos import fromstr
 from django.utils.functional import cached_property
-from content import HOURS_DICT, WEEK_DAYS
-from content.data import Data, get_place_data
+from content import HOURS_DICT, WEEK_DAYS, DISTANCE_DICT
+from content.data import Data, get_place_data, PrecalculatedData
 from precalculated.models import CachedData
 
 
@@ -44,8 +44,7 @@ class TicketSearchForm(forms.Form):
                 cache = CachedData.objects.exclude(json='').filter(location__distance_lt=(geopoint, distance))
             if cache:
                 result = simplejson.loads(cache[0].json)
-                result['place'] = place
-                result['address'] = address
+
                 new_heatmap = []
                 for sublist in result['tickets_heatmap']:
                     new_sublist = []
@@ -59,7 +58,15 @@ class TicketSearchForm(forms.Form):
                     result['debug_lat'] = lat
                     result['debug_lng'] = lng
 
-                return result
+                predata = PrecalculatedData(
+                    self.cleaned_data['address'],
+                    self.cleaned_data['distance'],
+                    result,
+                    init_lat=lat,
+                    init_lng=lng
+                )
+
+                return predata
 
         return Data(
             address=self.cleaned_data['address'],

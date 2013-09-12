@@ -50,8 +50,6 @@ class Command(BaseCommand):
             'get_distance_display': calc.get_distance_display(),
             'hours_count': calc.hours_count,
             'years_count': calc.years_count,
-            'now_chance': calc.now_chance,
-            'now_tickets_exp_cost': calc.now_tickets_exp_cost,
             'patrols_count': calc.patrols_count,
             'paths_heatmap': calc.paths_heatmap(),
             'paths_heatmap_legend': calc.paths_heatmap_legend(),

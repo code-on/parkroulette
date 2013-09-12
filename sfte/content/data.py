@@ -149,8 +149,6 @@ def calculate_legend(counts, steps):
 
 
 class Data(object):
-    # TODO: still valid?
-    year = 2012
 
     def __init__(self, address, distance, week_day=None, end_hour=None, start_hour=None, init_lat=None, init_lng=None):
         self.address = address
@@ -204,13 +202,6 @@ class Data(object):
     @cached_property
     def lng(self):
         return self.init_lng or self.geo_data['lng']
-
-    @cached_property
-    def get_all_hours_count(self):
-        if 'hours_count' not in cache:
-            paths_data = [p.day for p in self.path_qs]
-            cache.set('hours_count', (max(paths_data) - min(paths_data)).days * 24)
-        return cache.get('hours_count')
 
     def get_path_qs(self):
         return _get_path_qs(self.geopoint, self.distance) if self.geopoint else None
@@ -356,7 +347,7 @@ class Data(object):
         # assumes settings.TIME_ZONE is PDT
         now = datetime.datetime.now()
         # assumes heatmap has a header row and column
-        hour_row = self.paths_heatmap_data['heatmap'][now.hour + 1]
+        hour_row = self.paths_heatmap[now.hour + 1]
         # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday
         weekday = int(now.strftime('%w'))
         now_paths = hour_row[weekday + 1]
@@ -367,7 +358,7 @@ class Data(object):
         # assumes settings.TIME_ZONE is PDT
         now = datetime.datetime.now()
         # assumes heatmap has a header row and column
-        hour_row = self.costs_heatmap_data['heatmap'][now.hour + 1]
+        hour_row = self.costs_heatmap[now.hour + 1]
         # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday
         weekday = int(now.strftime('%w'))
         # Returns a formatted amount such as $1.76
@@ -385,4 +376,85 @@ class Data(object):
 
     def get_paths_count_for_debug(self):  # Not uses
         return len(self.paths_for_debug)
+
+
+class PrecalculatedData(Data):
+    """
+    Subclass of the poorly named "Data" class that intercepts calls to
+    selected methods for which we have precalculated results. Methods that
+    query the database are intentionally not implemented.
+    """
+
+    def __init__(self, address, distance, precalculated_data, init_lat=None, init_lng=None):
+        self.address = address
+        self.distance = distance
+        self.precalculated_data = precalculated_data
+        self.init_lat = init_lat
+        self.init_lng = init_lng
+
+    def get_ticket_qs(self, ignore_daytime=False):
+        raise NotImplementedError
+
+    def get_path_qs(self):
+        raise NotImplementedError
+
+    @cached_property
+    def hours_count(self):
+        return self.precalculated_data['hours_count']
+
+    @cached_property
+    def costs_heatmap(self):
+        return self.precalculated_data['costs_heatmap']
+
+    @cached_property
+    def costs_heatmap_count(self):
+        return self.precalculated_data['costs_heatmap_count']
+
+    @cached_property
+    def costs_heatmap_legend(self):
+        return self.precalculated_data['costs_heatmap_legend']
+
+    @cached_property
+    def tickets_heatmap(self):
+        return self.precalculated_data['tickets_heatmap']
+
+    @cached_property
+    def tickets_heatmap_count(self):
+        return self.precalculated_data['tickets_heatmap_count']
+
+    @cached_property
+    def tickets_heatmap_legend(self):
+        return self.precalculated_data['tickets_heatmap_legend']
+
+    @cached_property
+    def paths_heatmap(self):
+        return self.precalculated_data['paths_heatmap']
+
+    @cached_property
+    def paths_heatmap_count(self):
+        return self.precalculated_data['paths_heatmap_count']
+
+    @cached_property
+    def paths_heatmap_legend(self):
+        return self.precalculated_data['paths_heatmap_legend']
+
+    @cached_property
+    def tickets_count(self):
+        return self.precalculated_data['tickets_count']
+
+    @cached_property
+    def tickets_avg_cost(self):
+        return self.precalculated_data['tickets_avg_cost']
+
+    @cached_property
+    def tickets_exp_cost(self):
+        return self.precalculated_data['tickets_exp_cost']
+
+    @cached_property
+    def chance(self):
+        return self.precalculated_data['chance']
+
+    @cached_property
+    def patrols_count(self):
+        return self.precalculated_data['patrols_count']
 

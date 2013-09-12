@@ -1,7 +1,8 @@
 {% if data.chance %}{% load humanize %}
     <p>
     <strong class="results">{{ data.tickets_count }} tickets</strong> were issued within <strong>{{ data.get_distance_display }}</strong> of <strong>{{ data.place }}</strong>
-    while that address was <strong>patrolled {{ data.patrols_count|intcomma:1 }} times</strong> over <strong>{{ data.hours_count|intcomma:1 }} hours</strong>
+    while that address was <strong>patrolled {{ data.patrols_count|intcomma:1 }} times</strong> over <strong>{{ data.years_count|floatformat:1 }} years</strong>
+
     {% if data.start_time != None %}
         between <strong>{{ data.start_time }}</strong> and <strong>{{ data.end_time }}</strong>
     {% endif %}

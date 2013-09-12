@@ -25,7 +25,7 @@ def get_chance(request):
             if data.geopoint:
                 create_log(address=data.address, type=Log.CHANCE)
         except AttributeError:
-            create_log(address=data['address'], type=Log.CHANCE)
+            create_log(address=data.address, type=Log.CHANCE)
         context.update({'data': data})
     return context
 
@@ -45,7 +45,7 @@ def get_laws(request):
             if data.geopoint:
                 create_log(address=data.address, type=Log.LAWS)
         except AttributeError:
-            create_log(address=data['address'], type=Log.LAWS)
+            create_log(address=data.address, type=Log.LAWS)
         context.update({'data': data})
     return context
 
@@ -72,8 +72,8 @@ def get_heatmap(request):
                     context.update({'null': True})
         except AttributeError:
             # cached data
-            create_log(address=data['address'], type=Log.HEATMAP)
-            if data['tickets_avg_cost'] <= 0:
+            create_log(address=data.address, type=Log.HEATMAP)
+            if data.tickets_avg_cost <= 0:
                 dist = request.GET['distance']
                 choices = TicketSearchForm.DISTANCE_CHOICES
                 if dist != choices[-1][0]:
