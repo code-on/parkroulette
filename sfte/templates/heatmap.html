@@ -11,12 +11,13 @@
     	<div id="img-block" class="span6">
     	</div>
     	<div class="span6">
-    		<h3 id="place-block">
+            <h3 id="place-block">
                 {{ data.place }}
-                {% if data.chance %}
-                = {{ data.chance|floatformat:1 }}% chance
-                {% endif %}
             </h3>
+            {% if data.chance %}
+            <h4>= {{ data.chance|floatformat:1 }}% average chance per hour</h4>
+            <h4>= {{ data.now_chance|floatformat:1 }}% chance for current hour</h4>
+            {% endif %}
     		<div id="output-text">
     			 {% include "_chance.html" %}
     		</div>

@@ -1,6 +1,6 @@
 {% if data.chance %}{% load humanize %}
     <p>
-    <strong class="results">{{ data.tickets_count }} tickets</strong> were issued within <strong>{{ data.get_distance_display }}</strong> of <strong>{{ data.place }}</strong>
+    <strong>{{ data.tickets_count }} tickets</strong> were issued within <strong>{{ data.get_distance_display }}</strong> of <strong>{{ data.place }}</strong>
     while that address was <strong>patrolled {{ data.patrols_count|intcomma:1 }} times</strong> over <strong>{{ data.years_count|floatformat:1 }} years</strong>
 
     {% if data.start_time != None %}
@@ -18,10 +18,7 @@
                 radius.</a>
         {% endif %}
     {% else %}
-    The average cost of a ticket was <strong>${{ data.tickets_avg_cost|floatformat:2 }}</strong>.
-    </p>
-    <p>
-    Based on the information above, if you park against the <a href="/laws/?address=2717%2022nd%20st&distance=0.0003&from_time=0&to_time=23">rules at {{ data.place }}</a>, there is a <strong class="results">{{ data.chance|floatformat:1 }}%
+    The average cost of a ticket was <strong>${{ data.tickets_avg_cost|floatformat:2 }}</strong>. If you park against the <a href="/laws/?address=2717%2022nd%20st&distance=0.0003&from_time=0&to_time=23">rules at {{ data.place }}</a>, there is a <strong class="results">{{ data.chance|floatformat:1 }}%
     percent chance per hour</strong> you will get a ticket for an <strong>expected cost of ${{ data.tickets_exp_cost|floatformat:2 }} per hour</strong>.
     </p>
     <p>

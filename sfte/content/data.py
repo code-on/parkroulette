@@ -349,7 +349,7 @@ class Data(object):
         # assumes settings.TIME_ZONE is PDT
         now = datetime.datetime.now()
         # assumes heatmap has a header row and column
-        hour_row = self.paths_heatmap()[now.hour + 1]
+        hour_row = self.paths_heatmap[now.hour + 1]
         # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday
         weekday = int(now.strftime('%w'))
         now_paths = hour_row[weekday + 1]
@@ -360,7 +360,7 @@ class Data(object):
         # assumes settings.TIME_ZONE is PDT
         now = datetime.datetime.now()
         # assumes heatmap has a header row and column
-        hour_row = self.costs_heatmap()[now.hour + 1]
+        hour_row = self.costs_heatmap[now.hour + 1]
         # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday
         weekday = int(now.strftime('%w'))
         # Returns a formatted amount such as $1.76
