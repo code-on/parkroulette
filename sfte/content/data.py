@@ -353,7 +353,7 @@ class Data(object):
         # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday
         weekday = int(now.strftime('%w'))
         now_paths = hour_row[weekday + 1]
-        return 100 * Decimal(now_paths) / (self.hours_count / 24)
+        return 100 * Decimal(now_paths) / (self.hours_count / (24 * 7))
 
     @cached_property
     def now_tickets_exp_cost(self):
