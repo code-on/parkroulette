@@ -96,7 +96,7 @@ table .time-now {
     #tickets-heatmap,
     #paths-heatmap,
     #costs-heatmap {
-        font-size: smaller;
+        font-size: x-small;
     }
 }
 
