@@ -306,6 +306,7 @@ class Data(object):
         datetimes = [p.start_datetime for p in self.path_qs]
         return _get_heatmap_paths_data(datetimes)
 
+    @cached_property
     def paths_heatmap(self):
         return self.paths_heatmap_data['heatmap']
 
@@ -333,6 +334,7 @@ class Data(object):
 
         return _get_heatmap_paths_data(datetimes, cell_func, hour_func, day_func, count_func)
 
+    @cached_property
     def costs_heatmap(self):
         return self.costs_heatmap_data['heatmap']
 
