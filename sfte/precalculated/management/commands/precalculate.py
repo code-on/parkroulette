@@ -40,7 +40,7 @@ class Command(BaseCommand):
 
     def _calculate(self, pdata):
         init_lng, init_lat = pdata.location.coords
-        calc = Data(address=u'Precached', distance='0.0003', init_lat=init_lat, init_lng=init_lng)
+        calc = Data(address=u'Precached', distance='0.00015', init_lat=init_lat, init_lng=init_lng)
         results = {
             'address': calc.place,
             'place': calc.place,
