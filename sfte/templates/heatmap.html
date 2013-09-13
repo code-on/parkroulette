@@ -179,7 +179,7 @@
 
      });
      $('.day' ).each(function() {
-         var column = $(this).index()-1;
+         var column = $(this).index()-2;
          $('.hour' ).each(function() {
              var cell = $(this).find('td').eq(column);
              cell.attr('class', 'time-now');
