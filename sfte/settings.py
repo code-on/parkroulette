@@ -20,7 +20,7 @@ GOOGLE_API_KEY = 'AIzaSyAe9JodBrnCM2Pc-2NdzieA27VCLYaERRE'
 SECRET_KEY = 'jxi+z4+clfb=h4e1#@o_px270dprtqn1e+st6bb%kumglg-@0f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 

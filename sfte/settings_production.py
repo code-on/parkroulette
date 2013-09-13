@@ -6,6 +6,9 @@ INTERNAL_IPS = ('217.12.211.117', '107.3.149.69')
 
 GEOIP_DEBUG = False
 
+DEBUG = False
+ALLOWED_HOSTS = ['www.parkroulette.com', 'parkroulette.com']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
