@@ -126,7 +126,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-ENABLE_PRECALCULATED = True
+# Precalc is badly inconsistent. See http://sprinkle.code-on.be/tasks/parkroulette/29/
+ENABLE_PRECALCULATED = False
 
 # GEOCODING_PROVIDER = 'google'
 GEOCODING_PROVIDER = 'bing'
