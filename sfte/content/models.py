@@ -14,6 +14,10 @@ class Log(models.Model):
     from_time = models.TimeField(null=True, blank=True)
     to_time = models.TimeField(null=True, blank=True)
     type = models.PositiveSmallIntegerField(choices=TYPE_CHOICES)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        ordering = ('timestamp',)
 
 
     def __unicode__(self):

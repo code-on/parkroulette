@@ -3,7 +3,7 @@ from django.contrib.gis import admin
 
 
 class LogAdmin(admin.ModelAdmin):
-    list_display = ('address', 'week_day', 'from_time', 'to_time', 'type')
+    list_display = ('timestamp', 'address', 'week_day', 'from_time', 'to_time', 'type')
     list_filter = ('type',)
 
 
