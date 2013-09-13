@@ -306,6 +306,7 @@ class Data(object):
         datetimes = [p.start_datetime for p in self.path_qs]
         return _get_heatmap_paths_data(datetimes)
 
+    @cached_property
     def paths_heatmap(self):
         return self.paths_heatmap_data['heatmap']
 
@@ -333,6 +334,7 @@ class Data(object):
 
         return _get_heatmap_paths_data(datetimes, cell_func, hour_func, day_func, count_func)
 
+    @cached_property
     def costs_heatmap(self):
         return self.costs_heatmap_data['heatmap']
 
@@ -351,7 +353,7 @@ class Data(object):
         # Weekday as a decimal number, where 0 is Sunday and 6 is Saturday
         weekday = int(now.strftime('%w'))
         now_paths = hour_row[weekday + 1]
-        return 100 * Decimal(now_paths) / (self.hours_count / 24)
+        return 100 * Decimal(now_paths) / (self.hours_count / (24 * 7))
 
     @cached_property
     def now_tickets_exp_cost(self):

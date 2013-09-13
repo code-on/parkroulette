@@ -11,12 +11,13 @@
     	<div id="img-block" class="span6">
     	</div>
     	<div class="span6">
-    		<h3 id="place-block">
+            <h3 id="place-block">
                 {{ data.place }}
-                {% if data.chance %}
-                = {{ data.chance|floatformat:1 }}% chance
-                {% endif %}
             </h3>
+            {% if data.chance %}
+            <h4>= {{ data.chance|floatformat:1 }}% average chance per hour</h4>
+            <h4>= {{ data.now_chance|floatformat:1 }}% chance right now</h4>
+            {% endif %}
     		<div id="output-text">
     			 {% include "_chance.html" %}
     		</div>
@@ -47,27 +48,27 @@
 
     <!-- large screens -->
      <ul class="nav nav-tabs hidden-phone">
-         <li class="active"><a href="#tab1" data-toggle="tab">
+        <li class="active"><a href="#tab3" data-toggle="tab">
+           <h5>Costs (${{ data.tickets_exp_cost|floatformat:2 }})</h5></a></li>
+         <li><a href="#tab1" data-toggle="tab">
             <h5>Patrols ({{ data.paths_heatmap_count }})</h5>
          </a></li>
          <li><a href="#tab2" data-toggle="tab">
             <h5>Tickets ({{ data.tickets_heatmap_count }})</h5></a></li>
-         <li><a href="#tab3" data-toggle="tab">
-            <h5>Costs (${{ data.tickets_exp_cost|floatformat:2 }})</h5></a></li>
      </ul>
      <!-- small screens -->
      <ul class="nav nav-tabs visible-phone">
-         <li class="active"><a href="#tab1" data-toggle="tab">
+        <li class="active"><a href="#tab3" data-toggle="tab">
+           <h6>Costs</h6></a></li>
+         <li><a href="#tab1" data-toggle="tab">
             <h6>Patrols</h6>
          </a></li>
          <li><a href="#tab2" data-toggle="tab">
             <h6>Tickets</h6></a></li>
-         <li><a href="#tab3" data-toggle="tab">
-            <h6>Costs</h6></a></li>
      </ul>
 
      <div class="tab-content">
-         <div class="tab-pane active" id="tab1">
+         <div class="tab-pane" id="tab1">
              <table class="table table-slim table-bordered table-condensed" id="paths-heatmap">
                  {% with data.paths_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
                  {% if data.chance %}
@@ -122,7 +123,7 @@
                  {% endif %}
              </table>
          </div>
-         <div class="tab-pane" id="tab3">
+         <div class="tab-pane active" id="tab3">
              <table class="table table-slim table-bordered table-condensed" id="costs-heatmap">
                  {% with data.costs_heatmap as heatmap %}{% include "_heatmap.html" %}{% endwith %}
                  {% if data.chance %}{% load humanize %}
@@ -178,7 +179,7 @@
 
      });
      $('.day' ).each(function() {
-         var column = $(this).index()-1;
+         var column = $(this).index()-2;
          $('.hour' ).each(function() {
              var cell = $(this).find('td').eq(column);
              cell.attr('class', 'time-now');

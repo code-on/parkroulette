@@ -2,12 +2,12 @@
     padding-top: 20px
 }
 
-h4.results, h3.results {
-    display: inline;
+#output-text {
+    font-size: smaller;
 }
 
-.results .btn {
-    margin-top: 5px;
+#place-block {
+    margin-top: 0px;
 }
 
 .tabbable {
@@ -96,7 +96,7 @@ table .time-now {
     #tickets-heatmap,
     #paths-heatmap,
     #costs-heatmap {
-        font-size: smaller;
+        font-size: x-small;
     }
 }
 
