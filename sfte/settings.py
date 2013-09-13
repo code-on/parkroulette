@@ -128,6 +128,8 @@ USE_TZ = True
 
 ENABLE_PRECALCULATED = True
 
+# GEOCODING_PROVIDER = 'google'
+GEOCODING_PROVIDER = 'bing'
 
 STATIC_ROOT = rel('..', 'files')
 STATIC_URL = '/static/'

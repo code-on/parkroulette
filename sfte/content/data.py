@@ -19,6 +19,7 @@ from googlemaps.googlemaps import GoogleMaps
 from content import HOURS_DICT, WEEK_DAYS_DICT, DISTANCE_DICT
 from content.models import Log
 from content.query import _get_path_qs, _get_ticket_qs, _get_tickets_fine
+from utils import binggeocode
 
 
 logger = logging.getLogger()
@@ -37,13 +38,24 @@ def get_place_data(address):
     sl_address = slugify(address)
     data = address_cache.get(sl_address)
     if data is None:
-        result = Geocoder.geocode('{address}, San Francisco, CA, United States'.format(address=address))
-        if result.route is None:
-            return None, (None, None)
-        if result.street_number is None:
-            result.street_number = ''
-        data = ('{0} {1}'.format(result.street_number, result.route), get_coordinates(result))
-        address_cache.set(sl_address, data)
+
+        if settings.GEOCODING_PROVIDER == 'google':
+            result = Geocoder.geocode('{address}, San Francisco, CA, United States'.format(address=address))
+            if result.route is None:
+                return None, (None, None)
+            if result.street_number is None:
+                result.street_number = ''
+            data = ('{0} {1}'.format(result.street_number, result.route), get_coordinates(result))
+            address_cache.set(sl_address, data)
+        elif settings.GEOCODING_PROVIDER == 'bing':
+            try:
+                data = binggeocode.query(address)
+            except binggeocode.GeocodeError:
+                return None, (None, None)
+            address_cache.set(sl_address, data)
+        else:
+            raise NotImplementedError
+
     return data
 
 

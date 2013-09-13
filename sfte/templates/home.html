@@ -16,10 +16,6 @@
 			<h3 id="share-top-text">
 				Calculate the chance of a parking ticket anywhere in San Francisco
 			</h3>
-            <h4 class="text-warning">
-                Sorry, Parkroulette address lookup is temporarily unavailable because
-                it has overrun its Google geocoding API limit. Please come back tomorrow.
-            </h4>
             {% if not request|california %}
             <h5>Sorry, Parkroulette is only available for San Francisco. <a href="{% url "subscription" %}">Sign up</a> for other cities.</h5>
             {% endif %}
