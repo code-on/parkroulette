@@ -1,5 +1,4 @@
 import simplejson
-from optparse import make_option
 from django.core.management import BaseCommand
 from content.models import Path
 from precalculated.models import CachedData
@@ -51,7 +50,7 @@ class Command(BaseCommand):
             'hours_count': calc.hours_count,
             'years_count': calc.years_count,
             'patrols_count': calc.patrols_count,
-            'paths_heatmap': calc.paths_heatmap(),
+            'paths_heatmap': calc.paths_heatmap,
             'paths_heatmap_legend': calc.paths_heatmap_legend(),
             'paths_heatmap_count': calc.paths_heatmap_count(),
             'tickets_count': calc.tickets_count,
@@ -60,7 +59,7 @@ class Command(BaseCommand):
             'tickets_heatmap': calc.tickets_heatmap(),
             'tickets_heatmap_legend': calc.tickets_heatmap_legend(),
             'tickets_heatmap_count': calc.tickets_heatmap_count(),
-            'costs_heatmap': calc.costs_heatmap(),
+            'costs_heatmap': calc.costs_heatmap,
             'costs_heatmap_legend': calc.costs_heatmap_legend(),
             'costs_heatmap_count': calc.costs_heatmap_count(),
         }
